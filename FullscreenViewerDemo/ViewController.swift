@@ -10,16 +10,26 @@ import UIKit
 
 class ViewController: UIViewController {
 
+	let viewables: [ViewerGroupViewable] = [DemoViewableView(color: .blue), DemoViewableView(color: .green), DemoViewableView(color: .yellow)]
+	
+	lazy var viewerGroupController: ViewerGroupController<BasicViewGroupContainer> = .init(viewableGroup: self.viewables)
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		// Do any additional setup after loading the view, typically from a nib.
+	}
+	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		
+		present(viewerGroupController, animated: true) {
+			
+		}
 	}
 
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
 		// Dispose of any resources that can be recreated.
 	}
-
 
 }
 
