@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C9B0EF96200B1BAF00A537BF /* DemoFullscreenViewableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B0EF95200B1BAF00A537BF /* DemoFullscreenViewableView.swift */; };
 		C9BB3C811FD4E5FF008B6D37 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BB3C801FD4E5FF008B6D37 /* AppDelegate.swift */; };
 		C9BB3C831FD4E5FF008B6D37 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BB3C821FD4E5FF008B6D37 /* ViewController.swift */; };
 		C9BB3C861FD4E5FF008B6D37 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C9BB3C841FD4E5FF008B6D37 /* Main.storyboard */; };
@@ -30,6 +31,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C9B0EF95200B1BAF00A537BF /* DemoFullscreenViewableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoFullscreenViewableView.swift; sourceTree = "<group>"; };
 		C9BB3C7D1FD4E5FF008B6D37 /* FullscreenViewerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FullscreenViewerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9BB3C801FD4E5FF008B6D37 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C9BB3C821FD4E5FF008B6D37 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -128,6 +130,7 @@
 			isa = PBXGroup;
 			children = (
 				C9BB3CA81FD4F3EE008B6D37 /* DemoViewableView.swift */,
+				C9B0EF95200B1BAF00A537BF /* DemoFullscreenViewableView.swift */,
 			);
 			path = DemoStuff;
 			sourceTree = "<group>";
@@ -248,6 +251,7 @@
 				C9BB3CA51FD4EA7C008B6D37 /* ViewerGroupController.swift in Sources */,
 				C9BB3CA91FD4F3EE008B6D37 /* DemoViewableView.swift in Sources */,
 				C9BB3C831FD4E5FF008B6D37 /* ViewController.swift in Sources */,
+				C9B0EF96200B1BAF00A537BF /* DemoFullscreenViewableView.swift in Sources */,
 				C9BB3C811FD4E5FF008B6D37 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

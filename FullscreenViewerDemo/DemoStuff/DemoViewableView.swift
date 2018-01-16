@@ -10,18 +10,27 @@ import UIKit
 
 class DemoViewableView: UIView, ViewerGroupViewable {
 	
-	var view: UIView { return self }
+	var view: UIView! { return self }
+	weak var delegate: ViewerGroupViewableDelegate?
 	
 	init(color: UIColor) {
 		super.init(frame: .zero)
 		
 		backgroundColor = color
+		
+		commonInit()
 	}
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		
 		backgroundColor = .blue
+		
+		commonInit()
+	}
+	
+	func commonInit() {
+		
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
@@ -46,6 +55,6 @@ extension DemoViewableView {
 				return "\(backgroundColor)"
 			}
 		}()
-		return "\(colorName) DemoViewController"
+		return "\(colorName) DemoViewController [\(super.description)]"
 	}
 }

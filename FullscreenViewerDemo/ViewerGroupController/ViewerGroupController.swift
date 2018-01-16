@@ -8,37 +8,51 @@
 
 import UIKit
 
-protocol ViewerGroupContainer {
-	var viewableContainerView: UIView { get }
+public protocol ViewerGroupContainer {
+	var viewableContainer: UIView { get }
 }
 
-protocol ViewerGroupViewable {
-	var view: UIView { get }
+public protocol ViewerGroupViewable: class {
+	var view: UIView! { get }
+	
+	weak var delegate: ViewerGroupViewableDelegate? { get set }
 }
 
-class EmptyViewable: UIView, ViewerGroupViewable {
-	var view: UIView { return self }
+public protocol ViewerGroupViewableDelegate: class {
+	func requestFullscreen(for viewable: ViewerGroupViewable)
+	
+	func requestMinimize(for viewable: ViewerGroupViewable)
 }
 
-class ViewerGroupController<ContainerViewType: UIView>: UIViewController, UIGestureRecognizerDelegate where ContainerViewType: ViewerGroupContainer {
+public class EmptyViewable: UIView, ViewerGroupViewable {
+	public var view: UIView! { return self }
+	public weak var delegate: ViewerGroupViewableDelegate?
+}
+
+public class ViewerGroupController<ContainerViewType: UIView>: UIViewController, UIGestureRecognizerDelegate, ViewerGroupViewableDelegate where ContainerViewType: ViewerGroupContainer {
+	private typealias Viewable = ViewerGroupViewable
 	
 	let containerView = ContainerViewType()
 	
-	let viewableGroup: [ViewerGroupViewable]
+	private let viewableGroup: [Viewable]
+	private var proxies: [UIView: UIView] = [:] // viewable.view -> proxy view
 	
-	var currentViewIndex: Int?
+	var currentViewIndex: Int = 0
 	
-	init(viewableGroup: [ViewerGroupViewable]) {
+	public init(viewableGroup: [ViewerGroupViewable]) {
 		self.viewableGroup = viewableGroup
 		
 		super.init(nibName: nil, bundle: nil)
+		commonInit()
 	}
 	
 	func commonInit() {
+		view.clipsToBounds = true
 		
+		viewableGroup.forEach { $0.delegate = self }
 	}
 	
-	override func viewDidLoad() {
+	public override func viewDidLoad() {
 		
 		guard viewableGroup.count > 0 else {
 			return
@@ -48,15 +62,16 @@ class ViewerGroupController<ContainerViewType: UIView>: UIViewController, UIGest
 		leftSwipeRecognizer.direction = .left
 		leftSwipeRecognizer.delegate = self
 		view.addGestureRecognizer(leftSwipeRecognizer)
+		
 		let rightSwipeRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(userSwipedRight(_:)))
 		rightSwipeRecognizer.direction = .right
 		rightSwipeRecognizer.delegate = self
 		view.addGestureRecognizer(rightSwipeRecognizer)
 		
-		showViewable(at: 0)
+		showViewable(at: currentViewIndex)
 	}
 	
-	override func loadView() {
+	public override func loadView() {
 		view = containerView
 	}
 	
@@ -85,9 +100,10 @@ class ViewerGroupController<ContainerViewType: UIView>: UIViewController, UIGest
 				)
 		)
 		
+		containerView.viewableContainer.applyLayout(layout)
+		
 		UIView.animate(withDuration: 0.3) {
-			self.containerView.viewableContainerView.applyLayout(layout)
-			self.containerView.viewableContainerView.layoutIfNeeded()
+			self.containerView.viewableContainer.layoutIfNeeded()
 		}
 	}
 	
@@ -98,27 +114,66 @@ class ViewerGroupController<ContainerViewType: UIView>: UIViewController, UIGest
 		return viewableGroup[index]
 	}
 	
+	// MARK: - ViewerGroupViewableDelegate
+	
+	public func requestFullscreen(for viewable: ViewerGroupViewable) {
+		let fullscreenWindow = UIApplication.shared.keyWindow!
+		
+		let currentFrame = fullscreenWindow.convert(viewable.view.frame, from: viewable.view)
+		
+		let proxyView = UIView()
+		proxyView.alpha = 0
+		proxyView.frame = currentFrame
+		fullscreenWindow.addSubview(proxyView)
+		proxies[viewable.view] = proxyView
+		
+		viewable.view.translatesAutoresizingMaskIntoConstraints = true
+		fullscreenWindow.addSubview(viewable.view)
+		viewable.view.didMoveToSuperview()
+		
+		viewable.view.frame = currentFrame
+		
+		UIView.animate(withDuration: 0.3) {
+			viewable.view.frame = fullscreenWindow.frame
+		}
+	}
+	
+	public func requestMinimize(for viewable: ViewerGroupViewable) {
+		guard let proxyView = proxies[viewable.view] else {
+			return
+		}
+		
+		UIView.animate(withDuration: 0.3, animations: {
+			viewable.view.frame = proxyView.frame
+		}) { [weak self] _ in
+			guard let strongSelf = self else { return }
+			strongSelf.showViewable(at: strongSelf.currentViewIndex)
+			viewable.view.didMoveToSuperview()
+			
+			strongSelf.proxies.removeValue(forKey: proxyView)
+		}
+	}
+	
 	// MARK: - Gestures
 	
 	@objc func userSwipedLeft(_ sender: UIGestureRecognizer) {
-		guard let currentIndex = currentViewIndex else { return }
-		showViewable(at: currentIndex + 1)
+		
+		showViewable(at: currentViewIndex + 1)
 	}
 	
 	@objc func userSwipedRight(_ sender: UIGestureRecognizer) {
-		guard let currentIndex = currentViewIndex else { return }
-		showViewable(at: currentIndex - 1)
+		showViewable(at: currentViewIndex - 1)
 	}
 	
 	// MARK: - NSCodable
 	
-	required init?(coder aDecoder: NSCoder) {
-		viewableGroup = aDecoder.decodeObject(forKey: viewableGroupKey) as! [ViewerGroupViewable]
+	public required init?(coder aDecoder: NSCoder) {
+		viewableGroup = aDecoder.decodeObject(forKey: viewableGroupKey) as! [Viewable]
 		
 		super.init(coder: aDecoder)
 	}
 	
-	override func encode(with aCoder: NSCoder) {
+	public override func encode(with aCoder: NSCoder) {
 		super.encode(with: aCoder)
 		
 		aCoder.encode(viewableGroup, forKey: viewableGroupKey)
