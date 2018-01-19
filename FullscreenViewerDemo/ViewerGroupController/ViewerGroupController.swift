@@ -16,6 +16,13 @@ public protocol ViewerGroupViewable: class {
 	var view: UIView! { get }
 	
 	weak var delegate: ViewerGroupViewableDelegate? { get set }
+	
+	func configure(for: ViewableConfiguration) -> Void
+}
+
+public enum ViewableConfiguration {
+	case normal
+	case fullscreen
 }
 
 public protocol ViewerGroupViewableDelegate: class {
@@ -27,6 +34,7 @@ public protocol ViewerGroupViewableDelegate: class {
 public class EmptyViewable: UIView, ViewerGroupViewable {
 	public var view: UIView! { return self }
 	public weak var delegate: ViewerGroupViewableDelegate?
+	public func configure(for: ViewableConfiguration) {}
 }
 
 public class ViewerGroupController<ContainerViewType: UIView>: UIViewController, UIGestureRecognizerDelegate, ViewerGroupViewableDelegate where ContainerViewType: ViewerGroupContainer {
@@ -141,10 +149,8 @@ public class ViewerGroupController<ContainerViewType: UIView>: UIViewController,
 		
 		let currentFrame = fullscreenWindow.convert(viewable.view.frame, from: viewable.view)
 		
-		let proxyView = UIView()
-//		proxyView.alpha = 0
-		proxyView.backgroundColor = .black
-		proxyView.frame = currentFrame
+		let proxyView = UIView(frame: currentFrame)
+		proxyView.alpha = 0
 		fullscreenWindow.addSubview(proxyView)
 		proxies[viewable.view] = proxyView
 		
@@ -156,6 +162,7 @@ public class ViewerGroupController<ContainerViewType: UIView>: UIViewController,
 		
 		UIView.animate(withDuration: 0.3, animations: {
 			viewable.view.frame = fullscreenWindow.frame
+			viewable.configure(for: .fullscreen)
 		}) { [weak self] _ in
 			guard let strongSelf = self else { return }
 			
@@ -175,6 +182,7 @@ public class ViewerGroupController<ContainerViewType: UIView>: UIViewController,
 		
 		UIView.animate(withDuration: 0.3, animations: {
 			viewable.view.frame = proxyFrame
+			viewable.configure(for: .normal)
 		}) { [weak self] _ in
 			guard let strongSelf = self else { return }
 			

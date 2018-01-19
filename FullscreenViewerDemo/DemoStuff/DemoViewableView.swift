@@ -36,6 +36,8 @@ class DemoViewableView: UIView, ViewerGroupViewable {
 	required init?(coder aDecoder: NSCoder) {
 		fatalError()
 	}
+	
+	func configure(for: ViewableConfiguration) {}
 }
 
 extension DemoViewableView {

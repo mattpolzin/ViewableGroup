@@ -14,15 +14,20 @@ class DemoFullscreenViewableView: DemoViewableView {
 
 class DemoFullscreenViewable: UIViewController, ViewerGroupViewable {
 	
+	let backgroundColor: UIColor
 	weak var delegate: ViewerGroupViewableDelegate?
 	
-	init() {
+	var fullscreen: Bool = false
+	
+	init(color: UIColor) {
+		backgroundColor = color
 		super.init(nibName: nil, bundle: nil)
 		
 		commonInit()
 	}
 	
 	override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+		backgroundColor = .purple
 		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
 		
 		commonInit()
@@ -38,16 +43,25 @@ class DemoFullscreenViewable: UIViewController, ViewerGroupViewable {
 	}
 	
 	override func loadView() {
-		view = DemoFullscreenViewableView(color: .purple)
+		view = DemoFullscreenViewableView(color: backgroundColor)
 	}
 	
 	@objc func userTapped() {
 		
-		if view.superview == UIApplication.shared.keyWindow! {
+		if fullscreen {
 			delegate?.requestMinimize(for: self)
 			return
 		}
 		
 		delegate?.requestFullscreen(for: self)
+	}
+	
+	func configure(for configuration: ViewableConfiguration) {
+		switch configuration {
+		case .normal:
+			fullscreen = false
+		case .fullscreen:
+			fullscreen = true
+		}
 	}
 }
