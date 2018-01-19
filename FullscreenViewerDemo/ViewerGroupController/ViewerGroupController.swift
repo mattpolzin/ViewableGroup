@@ -75,16 +75,16 @@ public class ViewerGroupController<ContainerViewType: UIView>: UIViewController,
 		view = containerView
 	}
 	
-	private func showViewable(at viewableIndex: Int) {
+	private func showViewable(at viewableIndex: Int, animated: Bool = true) {
 		guard viewableGroup.count > viewableIndex,
 			viewableIndex >= 0 else { return }
 		
-		layout(index: viewableIndex)
+		layout(index: viewableIndex, animated: animated)
 		
 		currentViewIndex = viewableIndex
 	}
 	
-	private func layout(index: Int) {
+	private func layout(index: Int, animated: Bool = true) {
 		guard viewableGroup.count > index,
 			index >= 0 else { return }
 		
@@ -102,9 +102,9 @@ public class ViewerGroupController<ContainerViewType: UIView>: UIViewController,
 		
 		containerView.viewableContainer.applyLayout(layout)
 		
-		UIView.animate(withDuration: 0.3) {
-			self.containerView.viewableContainer.layoutIfNeeded()
-		}
+		let animateIfNeeded: (@escaping () -> Void) -> Void = animated ? { action in UIView.animate(withDuration: 0.3, animations: action) } : { action in action() }
+		
+		animateIfNeeded(self.containerView.viewableContainer.layoutIfNeeded)
 	}
 	
 	private func viewable(at index: Int) -> ViewerGroupViewable {
@@ -122,6 +122,7 @@ public class ViewerGroupController<ContainerViewType: UIView>: UIViewController,
 		let currentFrame = fullscreenWindow.convert(viewable.view.frame, from: viewable.view)
 		
 		let proxyView = UIView()
+//		proxyView.backgroundColor = .black
 		proxyView.alpha = 0
 		proxyView.frame = currentFrame
 		fullscreenWindow.addSubview(proxyView)
@@ -147,7 +148,7 @@ public class ViewerGroupController<ContainerViewType: UIView>: UIViewController,
 			viewable.view.frame = proxyView.frame
 		}) { [weak self] _ in
 			guard let strongSelf = self else { return }
-			strongSelf.showViewable(at: strongSelf.currentViewIndex)
+			strongSelf.showViewable(at: strongSelf.currentViewIndex, animated: false)
 			viewable.view.didMoveToSuperview()
 			
 			strongSelf.proxies.removeValue(forKey: proxyView)
