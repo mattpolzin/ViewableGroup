@@ -79,23 +79,43 @@ public class ViewerGroupController<ContainerViewType: UIView>: UIViewController,
 		guard viewableGroup.count > viewableIndex,
 			viewableIndex >= 0 else { return }
 		
-		layout(index: viewableIndex, animated: animated)
+		layout(around: .viewable(at: viewableIndex), animated: animated)
 		
 		currentViewIndex = viewableIndex
 	}
 	
-	private func layout(index: Int, animated: Bool = true) {
+	enum CurrentViewable {
+		case viewable(at: Int)
+		case proxy(view: UIView, at: Int)
+	}
+	
+	/// Layout all of the viewables.
+	private func layout(around viewable: CurrentViewable, animated: Bool = true) {
+		let index: Int
+		let currentView: UIView
+		
+		switch viewable {
+		case .viewable(at: let idx):
+			index = idx
+			currentView = self.viewable(at: idx).view
+			
+		case .proxy(view: let view, at: let idx):
+			index = idx
+			currentView = view
+		}
+		
 		guard viewableGroup.count > index,
 			index >= 0 else { return }
 		
-		let viewables = [index - 2, index - 1, index, index + 1, index + 2].map(viewable(at:))
+		var views = [index - 2, index - 1, index + 1, index + 2].map(viewable(at:)).flatMap { $0.view }
+		views.insert(currentView, at: 2)
 		
-		guard let leftView: LayoutEntity = viewables.first.map({ .sizedView($0.view, .lengthEqualTo(ratio: 1 / CGFloat(viewables.count))) }) else { return }
+		guard let leftView: LayoutEntity = views.first.map({ .sizedView($0, .lengthEqualTo(ratio: 1 / CGFloat(views.count))) }) else { return }
 		
-		let otherViews: [(independent: LayoutEntity, same: LayoutEntity)] = viewables.dropFirst().map { (independent: .space(0), same: .view($0.view)) }
+		let otherViews: [(independent: LayoutEntity, same: LayoutEntity)] = views.dropFirst().map { (independent: .space(0), same: .view($0)) }
 		
 		let layout: Layout = .vertical(align: .center, marginEdges: .none,
-			.horizontal(align: .fill, size: .breadthEqualTo(ratio: CGFloat(viewables.count)),
+			.horizontal(align: .fill, size: .breadthEqualTo(ratio: CGFloat(views.count)),
 						.matched(leftView, otherViews, priority: .required)
 				)
 		)
@@ -122,8 +142,8 @@ public class ViewerGroupController<ContainerViewType: UIView>: UIViewController,
 		let currentFrame = fullscreenWindow.convert(viewable.view.frame, from: viewable.view)
 		
 		let proxyView = UIView()
-//		proxyView.backgroundColor = .black
-		proxyView.alpha = 0
+//		proxyView.alpha = 0
+		proxyView.backgroundColor = .black
 		proxyView.frame = currentFrame
 		fullscreenWindow.addSubview(proxyView)
 		proxies[viewable.view] = proxyView
@@ -134,8 +154,13 @@ public class ViewerGroupController<ContainerViewType: UIView>: UIViewController,
 		
 		viewable.view.frame = currentFrame
 		
-		UIView.animate(withDuration: 0.3) {
+		UIView.animate(withDuration: 0.3, animations: {
 			viewable.view.frame = fullscreenWindow.frame
+		}) { [weak self] _ in
+			guard let strongSelf = self else { return }
+			
+			strongSelf.layout(around: .proxy(view: proxyView, at: strongSelf.currentViewIndex), animated: false)
+			fullscreenWindow.applyLayout(.horizontal(align: .fill, .view(viewable.view)))
 		}
 	}
 	
@@ -144,14 +169,19 @@ public class ViewerGroupController<ContainerViewType: UIView>: UIViewController,
 			return
 		}
 		
+		let fullscreenWindow = UIApplication.shared.keyWindow!
+		
+		let proxyFrame = fullscreenWindow.convert(proxyView.frame, from: proxyView)
+		
 		UIView.animate(withDuration: 0.3, animations: {
-			viewable.view.frame = proxyView.frame
+			viewable.view.frame = proxyFrame
 		}) { [weak self] _ in
 			guard let strongSelf = self else { return }
+			
 			strongSelf.showViewable(at: strongSelf.currentViewIndex, animated: false)
 			viewable.view.didMoveToSuperview()
 			
-			strongSelf.proxies.removeValue(forKey: proxyView)
+			strongSelf.proxies.removeValue(forKey: viewable.view)
 		}
 	}
 	
