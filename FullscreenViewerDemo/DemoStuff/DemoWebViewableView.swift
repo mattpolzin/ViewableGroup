@@ -27,6 +27,7 @@ class DemoWebViewableView: DemoFullscreenViewableView {
 		webView.loadRequest(URLRequest(url: URL(string: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Large_Scaled_Forest_Lizard.jpg")!))
 		
 		webView.scrollView.bounces = false
+		clipsToBounds = true
 	}
 }
 
@@ -61,8 +62,6 @@ class DemoWebViewable: DemoFullscreenViewable, UIScrollViewDelegate {
 		let atMin = (x: scrollPos.x == 0, y: scrollPos.y == 0)
 		let atMax = (x: scrollPos.x + viewSize.width == contentSize.width,
 					 y: scrollPos.y + viewSize.height == contentSize.height)
-		
-		print(velocity)
 		
 		let isNeutral = (x: velocity.x == 0 ||
 							(velocity.x <= 75 && abs(velocity.y) > abs(velocity.x)) ||

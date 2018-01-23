@@ -71,11 +71,6 @@ public class ViewerGroupController<ContainerViewType: UIView>: UIViewController,
 	}
 	
 	public override func viewDidLoad() {
-		
-		guard viewableGroup.count > 0 else {
-			return
-		}
-		
 		let leftRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(userSwipedLeft(_:)))
 		leftSwipeRecognizer = leftRecognizer
 		leftRecognizer.direction = .left
@@ -100,7 +95,6 @@ public class ViewerGroupController<ContainerViewType: UIView>: UIViewController,
 			viewableIndex >= 0 else { return }
 		
 		// update viewable focus before laying out views
-		print("show index: \(viewableIndex)")
 		var idx = 0
 		for viewable in viewableGroup {
 			
@@ -182,13 +176,14 @@ public class ViewerGroupController<ContainerViewType: UIView>: UIViewController,
 		
 		viewable.view.frame = currentFrame
 		
+		viewable.fullscreen = true
 		UIView.animate(withDuration: 0.3, animations: {
-			viewable.view.frame = fullscreenWindow.frame
-			viewable.fullscreen = true
+			viewable.view.frame = fullscreenWindow.bounds
 		}) { [weak self] _ in
 			guard let strongSelf = self else { return }
 			
 			strongSelf.layout(around: .proxy(view: proxyView, at: strongSelf.currentViewIndex), animated: false)
+			
 			fullscreenWindow.applyLayout(.horizontal(align: .fill, .view(viewable.view)))
 		}
 	}
@@ -202,9 +197,9 @@ public class ViewerGroupController<ContainerViewType: UIView>: UIViewController,
 		
 		let proxyFrame = fullscreenWindow.convert(proxyView.frame, from: proxyView)
 		
+		viewable.fullscreen = false
 		UIView.animate(withDuration: 0.3, animations: {
 			viewable.view.frame = proxyFrame
-			viewable.fullscreen = false
 		}) { [weak self] _ in
 			guard let strongSelf = self else { return }
 			
@@ -219,13 +214,13 @@ public class ViewerGroupController<ContainerViewType: UIView>: UIViewController,
 	
 	@objc func userSwipedLeft(_ sender: UIGestureRecognizer) {
 		guard browsingEnabled else { return }
-		print("browse right")
+		
 		showViewable(at: currentViewIndex + 1)
 	}
 	
 	@objc func userSwipedRight(_ sender: UIGestureRecognizer) {
 		guard browsingEnabled else { return }
-		print("browse left")
+		
 		showViewable(at: currentViewIndex - 1)
 	}
 	
