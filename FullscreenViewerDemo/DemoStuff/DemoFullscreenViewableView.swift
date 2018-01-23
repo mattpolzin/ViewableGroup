@@ -12,10 +12,12 @@ class DemoFullscreenViewableView: DemoViewableView {
 	
 }
 
-class DemoFullscreenViewable: UIViewController, ViewerGroupViewable {
+class DemoFullscreenViewable: UIViewController, ViewerGroupViewable, UIGestureRecognizerDelegate {
 	
 	let backgroundColor: UIColor
 	weak var delegate: ViewerGroupViewableDelegate?
+	
+	var active: Bool = false
 	
 	var fullscreen: Bool = false
 	
@@ -39,6 +41,7 @@ class DemoFullscreenViewable: UIViewController, ViewerGroupViewable {
 	
 	func commonInit() {
 		let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(userTapped))
+		tapRecognizer.delegate = self
 		view.addGestureRecognizer(tapRecognizer)
 	}
 	
@@ -54,14 +57,5 @@ class DemoFullscreenViewable: UIViewController, ViewerGroupViewable {
 		}
 		
 		delegate?.requestFullscreen(for: self)
-	}
-	
-	func configure(for configuration: ViewableConfiguration) {
-		switch configuration {
-		case .normal:
-			fullscreen = false
-		case .fullscreen:
-			fullscreen = true
-		}
 	}
 }

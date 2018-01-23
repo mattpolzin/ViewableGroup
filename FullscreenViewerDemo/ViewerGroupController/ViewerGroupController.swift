@@ -13,39 +13,49 @@ public protocol ViewerGroupContainer {
 }
 
 public protocol ViewerGroupViewable: class {
+	
+	/// The Viewable must expose a view to be displayed in the view group.
 	var view: UIView! { get }
 	
+	/// Set by the controller to allow the viewable
+	/// to delegate to the controller.
 	weak var delegate: ViewerGroupViewableDelegate? { get set }
 	
-	func configure(for: ViewableConfiguration) -> Void
-}
-
-public enum ViewableConfiguration {
-	case normal
-	case fullscreen
+	/// True if the viewable is fullscreen
+	var fullscreen: Bool { get set }
+	
+	/// True if the viewable has focus
+	var active: Bool { get set }
 }
 
 public protocol ViewerGroupViewableDelegate: class {
 	func requestFullscreen(for viewable: ViewerGroupViewable)
 	
 	func requestMinimize(for viewable: ViewerGroupViewable)
+	
+	var browsingEnabled: Bool { get set }
 }
 
 public class EmptyViewable: UIView, ViewerGroupViewable {
 	public var view: UIView! { return self }
 	public weak var delegate: ViewerGroupViewableDelegate?
-	public func configure(for: ViewableConfiguration) {}
+	public var active: Bool = false
+	public var fullscreen: Bool = false
 }
 
 public class ViewerGroupController<ContainerViewType: UIView>: UIViewController, UIGestureRecognizerDelegate, ViewerGroupViewableDelegate where ContainerViewType: ViewerGroupContainer {
 	private typealias Viewable = ViewerGroupViewable
 	
 	let containerView = ContainerViewType()
+	public var browsingEnabled: Bool = true
 	
 	private let viewableGroup: [Viewable]
 	private var proxies: [UIView: UIView] = [:] // viewable.view -> proxy view
 	
-	var currentViewIndex: Int = 0
+	private var leftSwipeRecognizer: UISwipeGestureRecognizer?
+	private var rightSwipeRecognizer: UISwipeGestureRecognizer?
+	
+	private var currentViewIndex: Int = 0
 	
 	public init(viewableGroup: [ViewerGroupViewable]) {
 		self.viewableGroup = viewableGroup
@@ -66,15 +76,17 @@ public class ViewerGroupController<ContainerViewType: UIView>: UIViewController,
 			return
 		}
 		
-		let leftSwipeRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(userSwipedLeft(_:)))
-		leftSwipeRecognizer.direction = .left
-		leftSwipeRecognizer.delegate = self
-		view.addGestureRecognizer(leftSwipeRecognizer)
+		let leftRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(userSwipedLeft(_:)))
+		leftSwipeRecognizer = leftRecognizer
+		leftRecognizer.direction = .left
+		leftRecognizer.delegate = self
+		view.addGestureRecognizer(leftRecognizer)
 		
-		let rightSwipeRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(userSwipedRight(_:)))
-		rightSwipeRecognizer.direction = .right
-		rightSwipeRecognizer.delegate = self
-		view.addGestureRecognizer(rightSwipeRecognizer)
+		let rightRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(userSwipedRight(_:)))
+		rightSwipeRecognizer = rightRecognizer
+		rightRecognizer.direction = .right
+		rightRecognizer.delegate = self
+		view.addGestureRecognizer(rightRecognizer)
 		
 		showViewable(at: currentViewIndex)
 	}
@@ -86,6 +98,16 @@ public class ViewerGroupController<ContainerViewType: UIView>: UIViewController,
 	private func showViewable(at viewableIndex: Int, animated: Bool = true) {
 		guard viewableGroup.count > viewableIndex,
 			viewableIndex >= 0 else { return }
+		
+		// update viewable focus before laying out views
+		print("show index: \(viewableIndex)")
+		var idx = 0
+		for viewable in viewableGroup {
+			
+			viewable.active = idx == viewableIndex
+			
+			idx = idx + 1
+		}
 		
 		layout(around: .viewable(at: viewableIndex), animated: animated)
 		
@@ -162,7 +184,7 @@ public class ViewerGroupController<ContainerViewType: UIView>: UIViewController,
 		
 		UIView.animate(withDuration: 0.3, animations: {
 			viewable.view.frame = fullscreenWindow.frame
-			viewable.configure(for: .fullscreen)
+			viewable.fullscreen = true
 		}) { [weak self] _ in
 			guard let strongSelf = self else { return }
 			
@@ -182,7 +204,7 @@ public class ViewerGroupController<ContainerViewType: UIView>: UIViewController,
 		
 		UIView.animate(withDuration: 0.3, animations: {
 			viewable.view.frame = proxyFrame
-			viewable.configure(for: .normal)
+			viewable.fullscreen = false
 		}) { [weak self] _ in
 			guard let strongSelf = self else { return }
 			
@@ -196,12 +218,23 @@ public class ViewerGroupController<ContainerViewType: UIView>: UIViewController,
 	// MARK: - Gestures
 	
 	@objc func userSwipedLeft(_ sender: UIGestureRecognizer) {
-		
+		guard browsingEnabled else { return }
+		print("browse right")
 		showViewable(at: currentViewIndex + 1)
 	}
 	
 	@objc func userSwipedRight(_ sender: UIGestureRecognizer) {
+		guard browsingEnabled else { return }
+		print("browse left")
 		showViewable(at: currentViewIndex - 1)
+	}
+	
+	public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+		return gestureRecognizer == leftSwipeRecognizer || gestureRecognizer == rightSwipeRecognizer
+	}
+	
+	public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+		return false
 	}
 	
 	// MARK: - NSCodable

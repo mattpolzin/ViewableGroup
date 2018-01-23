@@ -13,6 +13,9 @@ class DemoViewableView: UIView, ViewerGroupViewable {
 	var view: UIView! { return self }
 	weak var delegate: ViewerGroupViewableDelegate?
 	
+	var active: Bool = false
+	var fullscreen: Bool = false
+	
 	init(color: UIColor) {
 		super.init(frame: .zero)
 		
@@ -36,8 +39,6 @@ class DemoViewableView: UIView, ViewerGroupViewable {
 	required init?(coder aDecoder: NSCoder) {
 		fatalError()
 	}
-	
-	func configure(for: ViewableConfiguration) {}
 }
 
 extension DemoViewableView {

@@ -10,7 +10,7 @@ import UIKit
 
 class ViewController: UIViewController {
 
-	let viewables: [ViewerGroupViewable] = [DemoViewableView(color: .blue), DemoFullscreenViewable(), DemoViewableView(color: .green), DemoViewableView(color: .yellow)]
+	let viewables: [ViewerGroupViewable] = [DemoViewableView(color: .blue), DemoFullscreenViewable(), DemoWebViewable(), DemoViewableView(color: .green), DemoViewableView(color: .yellow)]
 	
 	lazy var viewerGroupController: ViewerGroupController<BasicViewGroupContainer> = .init(viewableGroup: self.viewables)
 	
