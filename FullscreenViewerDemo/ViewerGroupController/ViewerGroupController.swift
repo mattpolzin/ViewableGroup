@@ -44,7 +44,7 @@ public protocol ViewerGroupViewable: class {
 public protocol ViewerGroupViewableDelegate: class {
 	func requestFullscreen(for viewable: ViewerGroupViewable)
 	
-	func requestMinimize(for viewable: ViewerGroupViewable)
+	func requestUnfullscreen(for viewable: ViewerGroupViewable)
 	
 	var browsingEnabled: Bool { get set }
 }
@@ -205,7 +205,7 @@ public class ViewerGroupController<ContainerViewType: UIView>: UIViewController,
 		}
 	}
 	
-	public func requestMinimize(for viewable: ViewerGroupViewable) {
+	public func requestUnfullscreen(for viewable: ViewerGroupViewable) {
 		guard let proxyView = proxies[viewable.view] else {
 			return
 		}
@@ -252,16 +252,6 @@ public class ViewerGroupController<ContainerViewType: UIView>: UIViewController,
 	// MARK: - NSCodable
 	
 	public required init?(coder aDecoder: NSCoder) {
-		viewableGroup = aDecoder.decodeObject(forKey: viewableGroupKey) as! [Viewable]
-		
-		super.init(coder: aDecoder)
+		fatalError()
 	}
-	
-	public override func encode(with aCoder: NSCoder) {
-		super.encode(with: aCoder)
-		
-		aCoder.encode(viewableGroup, forKey: viewableGroupKey)
-	}
-	
-	private let viewableGroupKey = "viewable_group"
 }

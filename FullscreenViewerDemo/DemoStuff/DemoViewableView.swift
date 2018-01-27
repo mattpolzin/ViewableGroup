@@ -55,7 +55,7 @@ extension DemoViewableView {
 				return "green"
 				
 			default:
-				return "\(backgroundColor)"
+				return "\(String(describing: backgroundColor))"
 			}
 		}()
 		return "\(colorName) DemoViewController [\(super.description)]"

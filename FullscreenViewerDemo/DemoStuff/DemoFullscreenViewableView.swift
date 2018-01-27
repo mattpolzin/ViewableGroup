@@ -52,7 +52,7 @@ class DemoFullscreenViewable: UIViewController, ViewerGroupViewable, UIGestureRe
 	@objc func userTapped() {
 		
 		if fullscreen {
-			delegate?.requestMinimize(for: self)
+			delegate?.requestUnfullscreen(for: self)
 			return
 		}
 		
