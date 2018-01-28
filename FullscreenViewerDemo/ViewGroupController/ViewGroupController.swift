@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  ViewGroupController.swift
 //  FullscreenViewerDemo
 //
 //  Created by Mathew Polzin on 12/3/17.
@@ -8,56 +8,8 @@
 
 import UIKit
 
-/// A container for the entire group of viewables. Types of this protocol are responsible
-/// for the appearance of the container where the current viewable is displayed. In
-/// practice, ViewerGroupController also requires its ViewerGroupContainer to be
-/// a UIView itself and to have its viewable container set up within its bounds.
-///
-/// The goal is to leave the layout within its superview and the appearance of the
-/// "viewing window" (viewableContainer) to the coder while the
-/// ViewerGroupController displays one viewable at a time within the viewableContainer.
-///
-/// |-------------| <- Viewer group container (UIVIew).
-/// |    |==|     | <- viewable container (UIView) constrained within groupe container.
-/// |-------------|
-///
-public protocol ViewerGroupContainer {
-	var viewableContainer: UIView { get }
-}
-
-public protocol ViewerGroupViewable: class {
-	
-	/// The Viewable must expose a view to be displayed in the view group.
-	var view: UIView! { get }
-	
-	/// Set by the controller to allow the viewable
-	/// to delegate to the controller.
-	weak var delegate: ViewerGroupViewableDelegate? { get set }
-	
-	/// True if the viewable is fullscreen
-	var fullscreen: Bool { get set }
-	
-	/// True if the viewable has focus
-	var active: Bool { get set }
-}
-
-public protocol ViewerGroupViewableDelegate: class {
-	func requestFullscreen(for viewable: ViewerGroupViewable)
-	
-	func requestUnfullscreen(for viewable: ViewerGroupViewable)
-	
-	var browsingEnabled: Bool { get set }
-}
-
-public class EmptyViewable: UIView, ViewerGroupViewable {
-	public var view: UIView! { return self }
-	public weak var delegate: ViewerGroupViewableDelegate?
-	public var active: Bool = false
-	public var fullscreen: Bool = false
-}
-
-public class ViewerGroupController<ContainerViewType: UIView>: UIViewController, UIGestureRecognizerDelegate, ViewerGroupViewableDelegate where ContainerViewType: ViewerGroupContainer {
-	private typealias Viewable = ViewerGroupViewable
+public class ViewGroupController<ContainerViewType: UIView>: UIViewController, UIGestureRecognizerDelegate, ViewGroupViewableDelegate where ContainerViewType: ViewGroupContainer {
+	private typealias Viewable = ViewGroupViewable
 	
 	let containerView = ContainerViewType()
 	public var browsingEnabled: Bool = true
@@ -70,7 +22,7 @@ public class ViewerGroupController<ContainerViewType: UIView>: UIViewController,
 	
 	private var currentViewIndex: Int = 0
 	
-	public init(viewableGroup: [ViewerGroupViewable]) {
+	public init(viewableGroup: [ViewGroupViewable]) {
 		self.viewableGroup = viewableGroup
 		
 		super.init(nibName: nil, bundle: nil)
@@ -168,7 +120,7 @@ public class ViewerGroupController<ContainerViewType: UIView>: UIViewController,
 		animateIfNeeded(self.containerView.viewableContainer.layoutIfNeeded)
 	}
 	
-	private func viewable(at index: Int) -> ViewerGroupViewable {
+	private func viewable(at index: Int) -> ViewGroupViewable {
 		guard viewableGroup.count > index,
 			index >= 0 else { return EmptyViewable() }
 		
@@ -177,7 +129,7 @@ public class ViewerGroupController<ContainerViewType: UIView>: UIViewController,
 	
 	// MARK: - ViewerGroupViewableDelegate
 	
-	public func requestFullscreen(for viewable: ViewerGroupViewable) {
+	public func requestFullscreen(for viewable: ViewGroupViewable) {
 		let fullscreenWindow = UIApplication.shared.keyWindow!
 		
 		let currentFrame = fullscreenWindow.convert(viewable.view.frame, from: viewable.view)
@@ -205,7 +157,7 @@ public class ViewerGroupController<ContainerViewType: UIView>: UIViewController,
 		}
 	}
 	
-	public func requestUnfullscreen(for viewable: ViewerGroupViewable) {
+	public func requestUnfullscreen(for viewable: ViewGroupViewable) {
 		guard let proxyView = proxies[viewable.view] else {
 			return
 		}

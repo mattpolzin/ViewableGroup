@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C992E670201E6A8200DFD7B6 /* DemoViewGroupContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C992E66F201E6A8200DFD7B6 /* DemoViewGroupContainer.swift */; };
+		C992E672201E6BAF00DFD7B6 /* ViewGroupContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C992E671201E6BAF00DFD7B6 /* ViewGroupContainer.swift */; };
+		C992E674201E6C2700DFD7B6 /* ViewGroupViewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C992E673201E6C2700DFD7B6 /* ViewGroupViewable.swift */; };
+		C992E676201E6C7400DFD7B6 /* EmptyViewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C992E675201E6C7400DFD7B6 /* EmptyViewable.swift */; };
 		C9B0EF96200B1BAF00A537BF /* DemoFullscreenViewableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B0EF95200B1BAF00A537BF /* DemoFullscreenViewableView.swift */; };
 		C9B0EF982011BC3400A537BF /* DemoWebViewableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B0EF972011BC3400A537BF /* DemoWebViewableView.swift */; };
 		C9BB3C811FD4E5FF008B6D37 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BB3C801FD4E5FF008B6D37 /* AppDelegate.swift */; };
@@ -16,7 +20,7 @@
 		C9BB3C8B1FD4E5FF008B6D37 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C9BB3C891FD4E5FF008B6D37 /* LaunchScreen.storyboard */; };
 		C9BB3C961FD4E5FF008B6D37 /* FullscreenViewerDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BB3C951FD4E5FF008B6D37 /* FullscreenViewerDemoTests.swift */; };
 		C9BB3CA31FD4E718008B6D37 /* BasicViewGroupContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BB3CA21FD4E718008B6D37 /* BasicViewGroupContainer.swift */; };
-		C9BB3CA51FD4EA7C008B6D37 /* ViewerGroupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BB3CA41FD4EA7C008B6D37 /* ViewerGroupController.swift */; };
+		C9BB3CA51FD4EA7C008B6D37 /* ViewGroupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BB3CA41FD4EA7C008B6D37 /* ViewGroupController.swift */; };
 		C9BB3CA91FD4F3EE008B6D37 /* DemoViewableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BB3CA81FD4F3EE008B6D37 /* DemoViewableView.swift */; };
 		C9BB3CAD1FDA5A1D008B6D37 /* CwlLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BB3CAC1FDA5A1D008B6D37 /* CwlLayout.swift */; };
 /* End PBXBuildFile section */
@@ -32,6 +36,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C992E66F201E6A8200DFD7B6 /* DemoViewGroupContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoViewGroupContainer.swift; sourceTree = "<group>"; };
+		C992E671201E6BAF00DFD7B6 /* ViewGroupContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewGroupContainer.swift; sourceTree = "<group>"; };
+		C992E673201E6C2700DFD7B6 /* ViewGroupViewable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewGroupViewable.swift; sourceTree = "<group>"; };
+		C992E675201E6C7400DFD7B6 /* EmptyViewable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyViewable.swift; sourceTree = "<group>"; };
 		C9B0EF95200B1BAF00A537BF /* DemoFullscreenViewableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoFullscreenViewableView.swift; sourceTree = "<group>"; };
 		C9B0EF972011BC3400A537BF /* DemoWebViewableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoWebViewableView.swift; sourceTree = "<group>"; };
 		C9BB3C7D1FD4E5FF008B6D37 /* FullscreenViewerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FullscreenViewerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -45,7 +53,7 @@
 		C9BB3C951FD4E5FF008B6D37 /* FullscreenViewerDemoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullscreenViewerDemoTests.swift; sourceTree = "<group>"; };
 		C9BB3C971FD4E5FF008B6D37 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C9BB3CA21FD4E718008B6D37 /* BasicViewGroupContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicViewGroupContainer.swift; sourceTree = "<group>"; };
-		C9BB3CA41FD4EA7C008B6D37 /* ViewerGroupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewerGroupController.swift; sourceTree = "<group>"; };
+		C9BB3CA41FD4EA7C008B6D37 /* ViewGroupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewGroupController.swift; sourceTree = "<group>"; };
 		C9BB3CA81FD4F3EE008B6D37 /* DemoViewableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoViewableView.swift; sourceTree = "<group>"; };
 		C9BB3CAC1FDA5A1D008B6D37 /* CwlLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CwlLayout.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -68,6 +76,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C992E66E201E6A3D00DFD7B6 /* ViewGroupViewable */ = {
+			isa = PBXGroup;
+			children = (
+				C992E673201E6C2700DFD7B6 /* ViewGroupViewable.swift */,
+				C992E675201E6C7400DFD7B6 /* EmptyViewable.swift */,
+			);
+			path = ViewGroupViewable;
+			sourceTree = "<group>";
+		};
 		C9BB3C741FD4E5FF008B6D37 = {
 			isa = PBXGroup;
 			children = (
@@ -91,8 +108,9 @@
 			children = (
 				C9BB3CAB1FDA5A0D008B6D37 /* Layout */,
 				C9BB3CAA1FD4F3F6008B6D37 /* DemoStuff */,
-				C9BB3CA11FD4E6FF008B6D37 /* ViewerGroupContainer */,
-				C9BB3CA01FD4E6EA008B6D37 /* ViewerGroupController */,
+				C992E66E201E6A3D00DFD7B6 /* ViewGroupViewable */,
+				C9BB3CA11FD4E6FF008B6D37 /* ViewGroupContainer */,
+				C9BB3CA01FD4E6EA008B6D37 /* ViewGroupController */,
 				C9BB3C801FD4E5FF008B6D37 /* AppDelegate.swift */,
 				C9BB3C821FD4E5FF008B6D37 /* ViewController.swift */,
 				C9BB3C841FD4E5FF008B6D37 /* Main.storyboard */,
@@ -112,20 +130,21 @@
 			path = FullscreenViewerDemoTests;
 			sourceTree = "<group>";
 		};
-		C9BB3CA01FD4E6EA008B6D37 /* ViewerGroupController */ = {
+		C9BB3CA01FD4E6EA008B6D37 /* ViewGroupController */ = {
 			isa = PBXGroup;
 			children = (
-				C9BB3CA41FD4EA7C008B6D37 /* ViewerGroupController.swift */,
+				C9BB3CA41FD4EA7C008B6D37 /* ViewGroupController.swift */,
 			);
-			path = ViewerGroupController;
+			path = ViewGroupController;
 			sourceTree = "<group>";
 		};
-		C9BB3CA11FD4E6FF008B6D37 /* ViewerGroupContainer */ = {
+		C9BB3CA11FD4E6FF008B6D37 /* ViewGroupContainer */ = {
 			isa = PBXGroup;
 			children = (
 				C9BB3CA21FD4E718008B6D37 /* BasicViewGroupContainer.swift */,
+				C992E671201E6BAF00DFD7B6 /* ViewGroupContainer.swift */,
 			);
-			path = ViewerGroupContainer;
+			path = ViewGroupContainer;
 			sourceTree = "<group>";
 		};
 		C9BB3CAA1FD4F3F6008B6D37 /* DemoStuff */ = {
@@ -134,6 +153,7 @@
 				C9BB3CA81FD4F3EE008B6D37 /* DemoViewableView.swift */,
 				C9B0EF95200B1BAF00A537BF /* DemoFullscreenViewableView.swift */,
 				C9B0EF972011BC3400A537BF /* DemoWebViewableView.swift */,
+				C992E66F201E6A8200DFD7B6 /* DemoViewGroupContainer.swift */,
 			);
 			path = DemoStuff;
 			sourceTree = "<group>";
@@ -251,9 +271,13 @@
 			files = (
 				C9BB3CAD1FDA5A1D008B6D37 /* CwlLayout.swift in Sources */,
 				C9B0EF982011BC3400A537BF /* DemoWebViewableView.swift in Sources */,
+				C992E672201E6BAF00DFD7B6 /* ViewGroupContainer.swift in Sources */,
+				C992E674201E6C2700DFD7B6 /* ViewGroupViewable.swift in Sources */,
 				C9BB3CA31FD4E718008B6D37 /* BasicViewGroupContainer.swift in Sources */,
-				C9BB3CA51FD4EA7C008B6D37 /* ViewerGroupController.swift in Sources */,
+				C992E670201E6A8200DFD7B6 /* DemoViewGroupContainer.swift in Sources */,
+				C9BB3CA51FD4EA7C008B6D37 /* ViewGroupController.swift in Sources */,
 				C9BB3CA91FD4F3EE008B6D37 /* DemoViewableView.swift in Sources */,
+				C992E676201E6C7400DFD7B6 /* EmptyViewable.swift in Sources */,
 				C9BB3C831FD4E5FF008B6D37 /* ViewController.swift in Sources */,
 				C9B0EF96200B1BAF00A537BF /* DemoFullscreenViewableView.swift in Sources */,
 				C9BB3C811FD4E5FF008B6D37 /* AppDelegate.swift in Sources */,

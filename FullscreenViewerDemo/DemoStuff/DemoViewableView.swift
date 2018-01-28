@@ -8,10 +8,10 @@
 
 import UIKit
 
-class DemoViewableView: UIView, ViewerGroupViewable {
+class DemoViewableView: UIView, ViewGroupViewable {
 	
 	var view: UIView! { return self }
-	weak var delegate: ViewerGroupViewableDelegate?
+	weak var delegate: ViewGroupViewableDelegate?
 	
 	var active: Bool = false
 	var fullscreen: Bool = false

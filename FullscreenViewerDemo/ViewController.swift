@@ -10,9 +10,9 @@ import UIKit
 
 class ViewController: UIViewController {
 
-	let viewables: [ViewerGroupViewable] = [DemoViewableView(color: .blue), DemoFullscreenViewable(), DemoWebViewable(), DemoViewableView(color: .green), DemoViewableView(color: .yellow)]
+	let viewables: [ViewGroupViewable] = [DemoViewableView(color: .blue), DemoFullscreenViewable(), DemoWebViewable(), DemoViewableView(color: .green), DemoViewableView(color: .yellow)]
 	
-	lazy var viewerGroupController: ViewerGroupController<BasicViewGroupContainer> = .init(viewableGroup: self.viewables)
+	lazy var viewGroupController: ViewGroupController<DemoViewGroupContainer> = .init(viewableGroup: self.viewables)
 	
 	override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
 		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -33,12 +33,12 @@ class ViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		self.addChildViewController(viewerGroupController)
+		self.addChildViewController(viewGroupController)
 		
 		view.applyLayout(
 			.horizontal(align: .center,
 				.vertical(align: .center, size: .breadthEqualTo(ratio: 0.5),
-					.sizedView(viewerGroupController.view, .breadthEqualTo(ratio: 1.0))
+					.sizedView(viewGroupController.view, .breadthEqualTo(ratio: 1.0))
 				)
 			)
 		)
@@ -46,10 +46,6 @@ class ViewController: UIViewController {
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		
-//		present(viewerGroupController, animated: true) {
-//
-//		}
 	}
 
 	override func didReceiveMemoryWarning() {

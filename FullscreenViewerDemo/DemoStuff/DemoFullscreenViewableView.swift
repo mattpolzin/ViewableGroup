@@ -12,10 +12,10 @@ class DemoFullscreenViewableView: DemoViewableView {
 	
 }
 
-class DemoFullscreenViewable: UIViewController, ViewerGroupViewable, UIGestureRecognizerDelegate {
+class DemoFullscreenViewable: UIViewController, ViewGroupViewable, UIGestureRecognizerDelegate {
 	
 	let backgroundColor: UIColor
-	weak var delegate: ViewerGroupViewableDelegate?
+	weak var delegate: ViewGroupViewableDelegate?
 	
 	var active: Bool = false
 	

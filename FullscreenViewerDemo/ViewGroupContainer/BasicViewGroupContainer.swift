@@ -7,7 +7,7 @@
 
 import UIKit
 
-class BasicViewGroupContainer: UIView, ViewerGroupContainer {
+class BasicViewGroupContainer: UIView, ViewGroupContainer {
 	
 	let viewableContainer = UIView(frame: .zero)
 	
@@ -24,13 +24,9 @@ class BasicViewGroupContainer: UIView, ViewerGroupContainer {
 	}
 	
 	func commonInit() {
-		layoutMargins = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
+		layoutMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
 		insetsLayoutMarginsFromSafeArea = true
 		
 		applyLayout(.horizontal(align: .fill, marginEdges: .allLayout, .view(viewableContainer)))
-		
-		backgroundColor = .red
-		
-		viewableContainer.backgroundColor = .gray
 	}
 }
