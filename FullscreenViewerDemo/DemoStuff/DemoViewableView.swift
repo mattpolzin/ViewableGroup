@@ -8,32 +8,18 @@
 
 import UIKit
 
-class DemoViewableView: UIView, ViewGroupViewable {
-	
-	var view: UIView! { return self }
-	weak var delegate: ViewGroupViewableDelegate?
-	
-	var active: Bool = false
-	var fullscreen: Bool = false
+class DemoViewableView: BasicViewable {
 	
 	init(color: UIColor) {
 		super.init(frame: .zero)
 		
 		backgroundColor = color
-		
-		commonInit()
 	}
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		
 		backgroundColor = .blue
-		
-		commonInit()
-	}
-	
-	func commonInit() {
-		
 	}
 	
 	required init?(coder aDecoder: NSCoder) {

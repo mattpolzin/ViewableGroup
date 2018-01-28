@@ -14,13 +14,7 @@ class DemoWebViewableView: DemoFullscreenViewableView {
 	
 	override init(color: UIColor) {
 		super.init(color: color)
-	}
-	
-	required init?(coder aDecoder: NSCoder) {
-		super.init(coder: aDecoder)
-	}
-	
-	override func commonInit() {
+		
 		webView = UIWebView()
 		self.applyLayout(.horizontal(align: .fill, .view(webView)))
 		
@@ -28,6 +22,10 @@ class DemoWebViewableView: DemoFullscreenViewableView {
 		
 		webView.scrollView.bounces = false
 		clipsToBounds = true
+	}
+	
+	required init?(coder aDecoder: NSCoder) {
+		fatalError()
 	}
 }
 
