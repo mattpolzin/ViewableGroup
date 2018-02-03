@@ -153,10 +153,10 @@
 		C9BB3CAA1FD4F3F6008B6D37 /* DemoStuff */ = {
 			isa = PBXGroup;
 			children = (
+				C992E66F201E6A8200DFD7B6 /* DemoViewGroupContainer.swift */,
 				C9BB3CA81FD4F3EE008B6D37 /* DemoViewableView.swift */,
 				C9B0EF95200B1BAF00A537BF /* DemoFullscreenViewableView.swift */,
 				C9B0EF972011BC3400A537BF /* DemoWebViewableView.swift */,
-				C992E66F201E6A8200DFD7B6 /* DemoViewGroupContainer.swift */,
 			);
 			path = DemoStuff;
 			sourceTree = "<group>";

@@ -9,10 +9,22 @@ import UIKit
 
 class DemoViewGroupContainer: BasicViewGroupContainer {
 	
-	override func commonInit() {
-		super.commonInit()
-		layoutMargins = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
-		insetsLayoutMarginsFromSafeArea = true
+	override var margins: MarginEdges { return .allLayout }
+	
+	override init(frame: CGRect) {
+		super.init(frame: frame)
+		
+		commonInit()
+	}
+	
+	required init?(coder aDecoder: NSCoder) {
+		super.init(coder: aDecoder)
+		
+		commonInit()
+	}
+	
+	func commonInit() {
+		layoutMargins = UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 25)
 		
 		backgroundColor = .red
 		viewableContainer.backgroundColor = .gray
