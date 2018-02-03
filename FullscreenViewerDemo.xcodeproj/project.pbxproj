@@ -144,8 +144,8 @@
 		C9BB3CA11FD4E6FF008B6D37 /* ViewGroupContainer */ = {
 			isa = PBXGroup;
 			children = (
-				C9BB3CA21FD4E718008B6D37 /* BasicViewGroupContainer.swift */,
 				C992E671201E6BAF00DFD7B6 /* ViewGroupContainer.swift */,
+				C9BB3CA21FD4E718008B6D37 /* BasicViewGroupContainer.swift */,
 			);
 			path = ViewGroupContainer;
 			sourceTree = "<group>";

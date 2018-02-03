@@ -8,9 +8,7 @@
 
 import UIKit
 
-class DemoFullscreenViewableView: DemoViewableView {
-	
-}
+class DemoFullscreenViewableView: DemoViewableView { }
 
 class DemoFullscreenViewable: UIViewController, ViewGroupViewable, UIGestureRecognizerDelegate {
 	

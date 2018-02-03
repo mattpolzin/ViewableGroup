@@ -8,13 +8,15 @@
 
 import UIKit
 
+/// A ViewGroupViewable is an object that can be viewed in a "view group."
 public protocol ViewGroupViewable: class {
 	
 	/// The Viewable must expose a view to be displayed in the view group.
 	var view: UIView! { get }
 	
-	/// Set by the controller to allow the viewable
-	/// to delegate to the controller.
+	/// Allows the viewable to delegate to the group controller.
+	/// You do not need to set this property, it will get
+	/// set by the group controller that the viewable gets added to.
 	weak var delegate: ViewGroupViewableDelegate? { get set }
 	
 	/// True if the viewable is fullscreen
@@ -24,7 +26,10 @@ public protocol ViewGroupViewable: class {
 	var active: Bool { get set }
 }
 
+/// The ViewGroupViewableDelegate allows a ViewGroupViewable to delegate
+/// key operations to its group controller.
 public protocol ViewGroupViewableDelegate: class {
+	
 	func requestFullscreen(for viewable: ViewGroupViewable)
 	
 	func requestUnfullscreen(for viewable: ViewGroupViewable)

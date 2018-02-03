@@ -8,6 +8,7 @@
 
 import UIKit
 
+/// A controller that manages a group of viewables.
 public class ViewGroupController<ContainerViewType: UIView>: UIViewController, UIGestureRecognizerDelegate, ViewGroupViewableDelegate where ContainerViewType: ViewGroupContainer {
 	private typealias Viewable = ViewGroupViewable
 	
@@ -29,7 +30,7 @@ public class ViewGroupController<ContainerViewType: UIView>: UIViewController, U
 		commonInit()
 	}
 	
-	func commonInit() {
+	private func commonInit() {
 		view.clipsToBounds = true
 		
 		let offscreenRight = CGRect(x: UIScreen.main.bounds.width, y: 0, width: 10, height: 10)
@@ -59,6 +60,11 @@ public class ViewGroupController<ContainerViewType: UIView>: UIViewController, U
 		view = containerView
 	}
 	
+	/// Show the viewable at the given index. All other viewables will be
+	/// laid out to the right and left of the viewable at the given index.
+	/// - properties:
+	///		- viewableIndex: The index of the viewable to show.
+	///		- animated: true to animate the viewables from their current location to the new one.
 	private func showViewable(at viewableIndex: Int, animated: Bool = true) {
 		guard viewableGroup.count > viewableIndex,
 			viewableIndex >= 0 else { return }
@@ -77,12 +83,17 @@ public class ViewGroupController<ContainerViewType: UIView>: UIViewController, U
 		currentViewIndex = viewableIndex
 	}
 	
-	enum CurrentViewable {
+	/// The current viewable can either be the viewable at a given index or it
+	/// can be a proxy view for the viewable at a certain index.
+	private enum CurrentViewable {
 		case viewable(at: Int)
 		case proxy(view: UIView, at: Int)
 	}
 	
 	/// Layout all of the viewables.
+	/// - properties:
+	///		- viewable: The viewable to layout as "current" (i.e. filling the viewableContainer).
+	///		- animated: true to animate the views from their current layout to the new one.
 	private func layout(around viewable: CurrentViewable, animated: Bool = true) {
 		let index: Int
 		let currentView: UIView
@@ -120,6 +131,9 @@ public class ViewGroupController<ContainerViewType: UIView>: UIViewController, U
 		animateIfNeeded(self.containerView.viewableContainer.layoutIfNeeded)
 	}
 	
+	/// Retrieve the viewable at the given index or an empty viewable if the
+	/// index specified is outside the filled indices.
+	/// - property index: The index of the viewable to retrieve
 	private func viewable(at index: Int) -> ViewGroupViewable {
 		guard viewableGroup.count > index,
 			index >= 0 else { return EmptyViewable() }
