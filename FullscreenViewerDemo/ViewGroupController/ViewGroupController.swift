@@ -12,8 +12,19 @@ import UIKit
 public class ViewGroupController<ContainerViewType: UIView>: UIViewController, UIGestureRecognizerDelegate, ViewGroupViewableDelegate where ContainerViewType: ViewGroupContainer {
 	private typealias Viewable = ViewGroupViewable
 	
-	let containerView = ContainerViewType()
+	/// If true, the user is allowed to swipe left and right to browse the
+	/// viewables. Default is true.
 	public var browsingEnabled: Bool = true
+	
+	/// The horizontal space between the current viewable and the viewables to its
+	/// left or right. Default is 0.
+	public var viewableSpacing: Int = 0 {
+		didSet {
+			showViewable(at: currentViewableIndex)
+		}
+	}
+	
+	private let containerView = ContainerViewType()
 	
 	private let viewableGroup: [Viewable]
 	private var proxies: [UIView: UIView] = [:] // viewable.view -> proxy view
@@ -21,7 +32,7 @@ public class ViewGroupController<ContainerViewType: UIView>: UIViewController, U
 	private var leftSwipeRecognizer: UISwipeGestureRecognizer?
 	private var rightSwipeRecognizer: UISwipeGestureRecognizer?
 	
-	private var currentViewIndex: Int = 0
+	private var currentViewableIndex: Int = 0
 	
 	public init(viewableGroup: [ViewGroupViewable]) {
 		self.viewableGroup = viewableGroup
@@ -33,6 +44,8 @@ public class ViewGroupController<ContainerViewType: UIView>: UIViewController, U
 	private func commonInit() {
 		view.clipsToBounds = true
 		
+		// start all viewables offscreen to the right because we will begin
+		// with the farthest left viewable as currently active
 		let offscreenRight = CGRect(x: UIScreen.main.bounds.width, y: 0, width: 10, height: 10)
 		viewableGroup.forEach { viewable in
 			viewable.delegate = self
@@ -53,7 +66,7 @@ public class ViewGroupController<ContainerViewType: UIView>: UIViewController, U
 		rightRecognizer.delegate = self
 		view.addGestureRecognizer(rightRecognizer)
 		
-		showViewable(at: currentViewIndex)
+		showViewable(at: currentViewableIndex)
 	}
 	
 	public override func loadView() {
@@ -62,7 +75,7 @@ public class ViewGroupController<ContainerViewType: UIView>: UIViewController, U
 	
 	/// Show the viewable at the given index. All other viewables will be
 	/// laid out to the right and left of the viewable at the given index.
-	/// - properties:
+	/// - parameters:
 	///		- viewableIndex: The index of the viewable to show.
 	///		- animated: true to animate the viewables from their current location to the new one.
 	private func showViewable(at viewableIndex: Int, animated: Bool = true) {
@@ -80,7 +93,7 @@ public class ViewGroupController<ContainerViewType: UIView>: UIViewController, U
 		
 		layout(around: .viewable(at: viewableIndex), animated: animated)
 		
-		currentViewIndex = viewableIndex
+		currentViewableIndex = viewableIndex
 	}
 	
 	/// The current viewable can either be the viewable at a given index or it
@@ -91,7 +104,7 @@ public class ViewGroupController<ContainerViewType: UIView>: UIViewController, U
 	}
 	
 	/// Layout all of the viewables.
-	/// - properties:
+	/// - parameters:
 	///		- viewable: The viewable to layout as "current" (i.e. filling the viewableContainer).
 	///		- animated: true to animate the views from their current layout to the new one.
 	private func layout(around viewable: CurrentViewable, animated: Bool = true) {
@@ -114,12 +127,17 @@ public class ViewGroupController<ContainerViewType: UIView>: UIViewController, U
 		var views = [index - 2, index - 1, index + 1, index + 2].map(viewable(at:)).flatMap { $0.view }
 		views.insert(currentView, at: 2)
 		
-		guard let leftView: LayoutEntity = views.first.map({ .sizedView($0, .lengthEqualTo(ratio: 1 / CGFloat(views.count))) }) else { return }
+		let viewableGroupWidthRatio = CGFloat(views.count)
+		let viewableWidthRatio = 1 / viewableGroupWidthRatio
+		
+		guard let leftView: LayoutEntity = views.first.map({ .sizedView($0, .lengthEqualTo(ratio: viewableWidthRatio)) }) else {
+			return
+		}
 		
 		let otherViews: [(independent: LayoutEntity, same: LayoutEntity)] = views.dropFirst().map { (independent: .space(0), same: .view($0)) }
 		
 		let layout: Layout = .vertical(align: .center, marginEdges: .none,
-			.horizontal(align: .fill, size: .breadthEqualTo(ratio: CGFloat(views.count)),
+			.horizontal(align: .fill, size: .breadthEqualTo(ratio: viewableGroupWidthRatio),
 						.matched(leftView, otherViews, priority: .required)
 				)
 		)
@@ -133,7 +151,7 @@ public class ViewGroupController<ContainerViewType: UIView>: UIViewController, U
 	
 	/// Retrieve the viewable at the given index or an empty viewable if the
 	/// index specified is outside the filled indices.
-	/// - property index: The index of the viewable to retrieve
+	/// - parameter index: The index of the viewable to retrieve
 	private func viewable(at index: Int) -> ViewGroupViewable {
 		guard viewableGroup.count > index,
 			index >= 0 else { return EmptyViewable() }
@@ -144,6 +162,12 @@ public class ViewGroupController<ContainerViewType: UIView>: UIViewController, U
 	// MARK: - ViewerGroupViewableDelegate
 	
 	public func requestFullscreen(for viewable: ViewGroupViewable) {
+		// strategy: Put a proxy view in place of viewable that wants fullscreen,
+		//		turn on frame-based constraints, add viewable as subview of
+		//		 window and animate its frame to the full size of that window.
+		//		The proxy view will be used to animate the viewable back from
+		//		fullscreen.
+		
 		let fullscreenWindow = UIApplication.shared.keyWindow!
 		
 		let currentFrame = fullscreenWindow.convert(viewable.view.frame, from: viewable.view)
@@ -165,13 +189,18 @@ public class ViewGroupController<ContainerViewType: UIView>: UIViewController, U
 		}) { [weak self] _ in
 			guard let strongSelf = self else { return }
 			
-			strongSelf.layout(around: .proxy(view: proxyView, at: strongSelf.currentViewIndex), animated: false)
+			strongSelf.layout(around: .proxy(view: proxyView, at: strongSelf.currentViewableIndex), animated: false)
 			
 			fullscreenWindow.applyLayout(.horizontal(align: .fill, .view(viewable.view)))
 		}
 	}
 	
 	public func requestUnfullscreen(for viewable: ViewGroupViewable) {
+		// strategy: Retrieve the frame of the proxy for the viewable that wants
+		//		to leave fullscreen, animate the viewables frame to equal the proxy
+		//		views frame, lay the viewable out in the group layout,
+		//		and remove the proxy view.
+		
 		guard let proxyView = proxies[viewable.view] else {
 			return
 		}
@@ -186,7 +215,7 @@ public class ViewGroupController<ContainerViewType: UIView>: UIViewController, U
 		}) { [weak self] _ in
 			guard let strongSelf = self else { return }
 			
-			strongSelf.showViewable(at: strongSelf.currentViewIndex, animated: false)
+			strongSelf.showViewable(at: strongSelf.currentViewableIndex, animated: false)
 			viewable.view.didMoveToSuperview()
 			
 			strongSelf.proxies.removeValue(forKey: viewable.view)
@@ -198,13 +227,13 @@ public class ViewGroupController<ContainerViewType: UIView>: UIViewController, U
 	@objc func userSwipedLeft(_ sender: UIGestureRecognizer) {
 		guard browsingEnabled else { return }
 		
-		showViewable(at: currentViewIndex + 1)
+		showViewable(at: currentViewableIndex + 1)
 	}
 	
 	@objc func userSwipedRight(_ sender: UIGestureRecognizer) {
 		guard browsingEnabled else { return }
 		
-		showViewable(at: currentViewIndex - 1)
+		showViewable(at: currentViewableIndex - 1)
 	}
 	
 	public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
