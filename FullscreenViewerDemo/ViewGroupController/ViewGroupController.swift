@@ -18,7 +18,7 @@ public class ViewGroupController<ContainerViewType: UIView>: UIViewController, U
 	
 	/// The horizontal space between the current viewable and the viewables to its
 	/// left or right. Default is 0.
-	public var viewableSpacing: Int = 0 {
+	public var viewableSpacing: CGFloat = 0 {
 		didSet {
 			showViewable(at: currentViewableIndex)
 		}
@@ -128,16 +128,30 @@ public class ViewGroupController<ContainerViewType: UIView>: UIViewController, U
 		views.insert(currentView, at: 2)
 		
 		let viewableGroupWidthRatio = CGFloat(views.count)
+		let viewableGroupAdditionalWidth = CGFloat(views.count - 1) * viewableSpacing
 		let viewableWidthRatio = 1 / viewableGroupWidthRatio
+		let viewableAdditionalWidth = -1 * viewableWidthRatio * viewableGroupAdditionalWidth
 		
-		guard let leftView: LayoutEntity = views.first.map({ .sizedView($0, .lengthEqualTo(ratio: viewableWidthRatio)) }) else {
+		// The viewable group's total width will be the viewable container's width
+		// multiplied by the viewableGroupWidthRatio added to the viewableGroupAdditionalWidth.
+		
+		// Each viewable' width will be the viewable group's total width multiplied by
+		// the viewableWidthRatio added to the viewableAdditionalWidth.
+		
+		// The end result is that each viewable is the same width as the viewable container
+		// and the viewable group's width is large enough to fit all the viewables being
+		// laid out AND the space between each viewable.
+		
+		let spacing: LayoutEntity = .space(LayoutDimension(constant: viewableSpacing))
+		
+		guard let leftView: LayoutEntity = views.first.map({ .sizedView($0, .lengthEqualTo(ratio: viewableWidthRatio, constant: viewableAdditionalWidth)) }) else {
 			return
 		}
 		
-		let otherViews: [(independent: LayoutEntity, same: LayoutEntity)] = views.dropFirst().map { (independent: .space(0), same: .view($0)) }
+		let otherViews: [(independent: LayoutEntity, same: LayoutEntity)] = views.dropFirst().map { (independent: spacing, same: .view($0)) }
 		
 		let layout: Layout = .vertical(align: .center, marginEdges: .none,
-			.horizontal(align: .fill, size: .breadthEqualTo(ratio: viewableGroupWidthRatio),
+		.horizontal(align: .fill, size: .breadthEqualTo(ratio: viewableGroupWidthRatio, constant: viewableGroupAdditionalWidth),
 						.matched(leftView, otherViews, priority: .required)
 				)
 		)
