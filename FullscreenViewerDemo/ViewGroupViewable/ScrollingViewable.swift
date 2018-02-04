@@ -41,10 +41,6 @@ public class ScrollingViewable: FullscreenViewable, UIScrollViewDelegate {
 	
 	private var scrolling: Bool = false
 	
-	required public init?(coder aDecoder: NSCoder) {
-		super.init(coder: aDecoder)
-	}
-	
 	override public func loadView() {
 		super.loadView()
 		
@@ -55,8 +51,6 @@ public class ScrollingViewable: FullscreenViewable, UIScrollViewDelegate {
 	}
 	
 	private func setupScrollView() {
-		view.applyLayout(.horizontal(align: .fill, .view(scrollView)))
-		
 		scrollView.delegate = self
 	}
 	
@@ -64,6 +58,7 @@ public class ScrollingViewable: FullscreenViewable, UIScrollViewDelegate {
 	/// Override this method to provide a non-default scroll view in a subclass.
 	open func loadScrollView() {
 		scrollView = UIScrollView()
+		view.applyLayout(.horizontal(align: .fill, .view(scrollView)))
 	}
 	
 	@objc private func userPanned(_ sender: UIPanGestureRecognizer) {
