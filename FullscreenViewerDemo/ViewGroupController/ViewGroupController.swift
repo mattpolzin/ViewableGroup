@@ -151,7 +151,7 @@ public class ViewGroupController<ContainerViewType: UIView>: UIViewController, U
 		let otherViews: [(independent: LayoutEntity, same: LayoutEntity)] = views.dropFirst().map { (independent: spacing, same: .view($0)) }
 		
 		let layout: Layout = .vertical(align: .center, marginEdges: .none,
-		.horizontal(align: .fill, size: .breadthEqualTo(ratio: viewableGroupWidthRatio, constant: viewableGroupAdditionalWidth),
+		.horizontal(align: .fill, size: .breadthEqualTo(ratio: viewableGroupWidthRatio, constant: viewableGroupAdditionalWidth, priority: .defaultHigh),
 						.matched(leftView, otherViews, priority: .required)
 				)
 		)

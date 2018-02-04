@@ -33,6 +33,8 @@ class ViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
+		viewGroupController.viewableSpacing = 10
+		
 		self.addChildViewController(viewGroupController)
 		
 		view.applyLayout(
