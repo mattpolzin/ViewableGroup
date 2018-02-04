@@ -8,9 +8,4 @@
 
 import UIKit
 
-public class EmptyViewable: UIView, ViewGroupViewable {
-	public var view: UIView! { return self }
-	public weak var delegate: ViewGroupViewableDelegate?
-	public var active: Bool = false
-	public var fullscreen: Bool = false
-}
+internal typealias EmptyViewable = BasicViewable

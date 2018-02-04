@@ -130,6 +130,9 @@ public class ViewGroupController<ContainerViewType: UIView>: UIViewController, U
 		guard viewableGroup.count > index,
 			index >= 0 else { return }
 		
+		// lay out 2 viewables to the left and 2 views to the right so that at the
+		// end of animating all viewables one spot to the left or right the next
+		// view over animates into view at the end correctly.
 		var views = [index - 2, index - 1, index + 1, index + 2].map(viewable(at:)).flatMap { $0.view }
 		views.insert(currentView, at: 2)
 		
