@@ -40,7 +40,11 @@ public class FullscreenViewable: ControlledViewable, UIGestureRecognizerDelegate
 		view.addGestureRecognizer(tapRecognizer)
 	}
 	
-	@objc func userTapped() {
+	public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+		return true
+	}
+	
+	@objc private func userTapped() {
 		
 		guard allowsFullscreen else { return }
 		

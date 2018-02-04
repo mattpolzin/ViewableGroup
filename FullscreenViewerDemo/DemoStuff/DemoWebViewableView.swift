@@ -52,10 +52,6 @@ class DemoWebViewable: DemoFullscreenViewable, UIScrollViewDelegate {
 		view.addGestureRecognizer(panGestureRecognizer)
 	}
 	
-	func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-		return true
-	}
-	
 	@objc func userPanned(_ sender: UIPanGestureRecognizer) {
 		
 		let velocity = sender.velocity(in: view)
