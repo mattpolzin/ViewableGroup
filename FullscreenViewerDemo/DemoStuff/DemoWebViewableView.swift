@@ -1,5 +1,5 @@
 //
-//  DemoWebViewableView.swift
+//  DemoWebViewable.swift
 //  FullscreenViewerDemo
 //
 //  Created by Mathew Polzin on 1/18/18.
