@@ -11,6 +11,8 @@ import UIKit
 /// A BasicViewable is just a UIView that conforms to ViewGroupViewable.
 /// Depending on whether it seems helpful to ignore some of that conformance or
 /// perhaps hurtful to hide it, this class may or may not be useful to you.
+/// It does not get you anything by default, not even fullscreen support.
+/// A BasicViewable can be viewed inline in a view group and that is it.
 public class BasicViewable: UIView, ViewGroupViewable {
 	
 	public var view: UIView! { return self }
