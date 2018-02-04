@@ -20,6 +20,8 @@ public class ViewGroupController<ContainerViewType: UIView>: UIViewController, U
 	/// left or right. Default is 0.
 	public var viewableSpacing: CGFloat = 0 {
 		didSet {
+			guard view.superview != nil else { return }
+			
 			showViewable(at: currentViewableIndex)
 		}
 	}
@@ -65,8 +67,12 @@ public class ViewGroupController<ContainerViewType: UIView>: UIViewController, U
 		rightRecognizer.direction = .right
 		rightRecognizer.delegate = self
 		view.addGestureRecognizer(rightRecognizer)
+	}
+	
+	public override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
 		
-		showViewable(at: currentViewableIndex)
+		showViewable(at: currentViewableIndex, animated: animated)
 	}
 	
 	public override func loadView() {
