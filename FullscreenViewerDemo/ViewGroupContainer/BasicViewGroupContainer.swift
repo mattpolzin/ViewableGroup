@@ -7,19 +7,19 @@
 
 import UIKit
 
-class BasicViewGroupContainer: UIView, ViewGroupContainer {
+public class BasicViewGroupContainer: UIView, ViewGroupContainer {
 	
-	let viewableContainer = UIView(frame: .zero)
+	public let viewableContainer = UIView(frame: .zero)
 	
 	var margins: MarginEdges { return .none }
 	
-	override init(frame: CGRect) {
+	override public init(frame: CGRect) {
 		super.init(frame: frame)
 		
 		commonInit()
 	}
 	
-	required init?(coder aDecoder: NSCoder) {
+	required public init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
 		
 		commonInit()

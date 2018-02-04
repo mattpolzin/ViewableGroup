@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C938573320268DF400F9695C /* FullscreenViewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C938573220268DF400F9695C /* FullscreenViewable.swift */; };
 		C992E670201E6A8200DFD7B6 /* DemoViewGroupContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C992E66F201E6A8200DFD7B6 /* DemoViewGroupContainer.swift */; };
 		C992E672201E6BAF00DFD7B6 /* ViewGroupContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C992E671201E6BAF00DFD7B6 /* ViewGroupContainer.swift */; };
 		C992E674201E6C2700DFD7B6 /* ViewGroupViewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C992E673201E6C2700DFD7B6 /* ViewGroupViewable.swift */; };
@@ -37,6 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C938573220268DF400F9695C /* FullscreenViewable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullscreenViewable.swift; sourceTree = "<group>"; };
 		C992E66F201E6A8200DFD7B6 /* DemoViewGroupContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoViewGroupContainer.swift; sourceTree = "<group>"; };
 		C992E671201E6BAF00DFD7B6 /* ViewGroupContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewGroupContainer.swift; sourceTree = "<group>"; };
 		C992E673201E6C2700DFD7B6 /* ViewGroupViewable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewGroupViewable.swift; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 				C992E673201E6C2700DFD7B6 /* ViewGroupViewable.swift */,
 				C992E675201E6C7400DFD7B6 /* EmptyViewable.swift */,
 				C992E677201E6DDB00DFD7B6 /* BasicViewable.swift */,
+				C938573220268DF400F9695C /* FullscreenViewable.swift */,
 			);
 			path = ViewGroupViewable;
 			sourceTree = "<group>";
@@ -275,6 +278,7 @@
 				C9BB3CAD1FDA5A1D008B6D37 /* CwlLayout.swift in Sources */,
 				C9B0EF982011BC3400A537BF /* DemoWebViewableView.swift in Sources */,
 				C992E672201E6BAF00DFD7B6 /* ViewGroupContainer.swift in Sources */,
+				C938573320268DF400F9695C /* FullscreenViewable.swift in Sources */,
 				C992E674201E6C2700DFD7B6 /* ViewGroupViewable.swift in Sources */,
 				C9BB3CA31FD4E718008B6D37 /* BasicViewGroupContainer.swift in Sources */,
 				C992E670201E6A8200DFD7B6 /* DemoViewGroupContainer.swift in Sources */,

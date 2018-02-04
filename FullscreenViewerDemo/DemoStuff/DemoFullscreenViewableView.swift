@@ -10,50 +10,25 @@ import UIKit
 
 class DemoFullscreenViewableView: DemoViewableView { }
 
-class DemoFullscreenViewable: UIViewController, ViewGroupViewable, UIGestureRecognizerDelegate {
+class DemoFullscreenViewable: FullscreenViewable {
 	
 	let backgroundColor: UIColor
-	weak var delegate: ViewGroupViewableDelegate?
-	
-	var active: Bool = false
-	
-	var fullscreen: Bool = false
 	
 	init(color: UIColor) {
 		backgroundColor = color
 		super.init(nibName: nil, bundle: nil)
-		
-		commonInit()
 	}
 	
 	override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
 		backgroundColor = .purple
 		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-		
-		commonInit()
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
 		fatalError()
 	}
 	
-	func commonInit() {
-		let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(userTapped))
-		tapRecognizer.delegate = self
-		view.addGestureRecognizer(tapRecognizer)
-	}
-	
 	override func loadView() {
 		view = DemoFullscreenViewableView(color: backgroundColor)
-	}
-	
-	@objc func userTapped() {
-		
-		if fullscreen {
-			delegate?.requestUnfullscreen(for: self)
-			return
-		}
-		
-		delegate?.requestFullscreen(for: self)
 	}
 }

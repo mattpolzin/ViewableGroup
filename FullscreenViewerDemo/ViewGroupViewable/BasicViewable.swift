@@ -11,11 +11,11 @@ import UIKit
 /// A BasicViewable is just a UIView that conforms to ViewGroupViewable.
 /// Depending on whether it seems helpful to ignore some of that conformance or
 /// perhaps hurtful to hide it, this class may or may not be useful to you.
-class BasicViewable: UIView, ViewGroupViewable {
+public class BasicViewable: UIView, ViewGroupViewable {
 	
-	var view: UIView! { return self }
-	weak var delegate: ViewGroupViewableDelegate?
+	public var view: UIView! { return self }
+	weak public var delegate: ViewGroupViewableDelegate?
 	
-	var active: Bool = false
-	var fullscreen: Bool = false
+	public var active: Bool = false
+	public var fullscreen: Bool = false
 }

@@ -37,6 +37,14 @@ class DemoWebViewable: DemoFullscreenViewable, UIScrollViewDelegate {
 	
 	var scrolling: Bool = false
 	
+	init() {
+		super.init(color: .black)
+	}
+	
+	required init?(coder aDecoder: NSCoder) {
+		super.init(coder: aDecoder)
+	}
+	
 	override func loadView() {
 		view = webViewable
 		webViewable.webView.scrollView.delegate = self
