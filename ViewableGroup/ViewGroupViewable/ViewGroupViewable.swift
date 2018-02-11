@@ -8,31 +8,52 @@
 
 import UIKit
 
+/// A Viewable's viewport is either `container`, meaning it is displayed
+/// within the `ViewGroupContainer.viewableContainer`, or `fullscreen`,
+/// meaning it is displayed over top of everything with the entire screen's
+/// bounds.
+public enum ViewableViewport {
+	case fullscreen
+	case container
+}
+
+/// A Viewable's positioning or "importance" indicates whether it is
+/// `central` (i.e. the focal or relevant viewable) or `background`.
+public enum ViewablePositioning {
+	case central
+	case background
+}
+
 /// A ViewGroupViewable is an object that can be viewed in a "view group."
 public protocol ViewGroupViewable: class {
 	
 	/// The Viewable must expose a view to be displayed in the view group.
 	var view: UIView! { get }
 	
-	/// Allows the viewable to delegate to the group controller.
-	/// You do not need to set this property, it will get
-	/// set by the group controller that the viewable gets added to.
-	weak var delegate: ViewGroupViewableDelegate? { get set }
+	/// This will get called when the viewable is added to a group to give the
+	/// viewable a delegate to the group.
+	func delegateAvailable(_ delegate: ViewGroupViewableDelegate)
 	
-	/// True if the viewable is fullscreen
-	var fullscreen: Bool { get set }
+	/// Called when the viewable's viewport changes.
+	func moved(to viewport: ViewableViewport)
 	
-	/// True if the viewable has focus
-	var active: Bool { get set }
+	/// Called to indicate the viewable is either central or backgorund
+	/// in the view group. Only one viewable at a time can be central, so
+	/// as the user swipes through the viewables in the group, each viewable
+	/// will receive this notification to indicate its positioning.
+	func positioning(is positioning: ViewablePositioning)
 }
 
 /// The ViewGroupViewableDelegate allows a ViewGroupViewable to delegate
 /// key operations to its group controller.
 public protocol ViewGroupViewableDelegate: class {
 	
-	func requestFullscreen(for viewable: ViewGroupViewable)
+	/// Call to request a particular viewable goes fullscreen. Note that
+	/// a viewable cannot be in `ViewablePositioning.background` when it is
+	/// fullscreen, so requesting fullscreen also will result in becoming
+	/// `central`.
+	func request(viewport: ViewableViewport, for viewable: ViewGroupViewable)
 	
-	func requestUnfullscreen(for viewable: ViewGroupViewable)
-	
+	/// Set this to enable or disable browsing of the viewable group by the user.
 	var browsingEnabled: Bool { get set }
 }

@@ -9,7 +9,7 @@
 import UIKit
 
 /// A controller that manages a group of viewables.
-public class ViewGroupController<ContainerViewType: UIView>: UIViewController, UIGestureRecognizerDelegate, ViewGroupViewableDelegate where ContainerViewType: ViewGroupContainer {
+public class ViewGroupController<ContainerViewType: UIView>: UIViewController, UIGestureRecognizerDelegate where ContainerViewType: ViewGroupContainer {
 	private typealias Viewable = ViewGroupViewable
 	
 	/// If true, the user is allowed to swipe left and right to browse the
@@ -50,7 +50,7 @@ public class ViewGroupController<ContainerViewType: UIView>: UIViewController, U
 		// with the farthest left viewable as currently active
 		let offscreenRight = CGRect(x: UIScreen.main.bounds.width, y: 0, width: 10, height: 10)
 		viewableGroup.forEach { viewable in
-			viewable.delegate = self
+			viewable.delegateAvailable(self)
 			viewable.view.frame = offscreenRight
 		}
 	}
@@ -92,7 +92,7 @@ public class ViewGroupController<ContainerViewType: UIView>: UIViewController, U
 		var idx = 0
 		for viewable in viewableGroup {
 			
-			viewable.active = idx == viewableIndex
+			viewable.positioning(is: idx == viewableIndex ? .central : .background)
 			
 			idx = idx + 1
 		}
@@ -182,71 +182,6 @@ public class ViewGroupController<ContainerViewType: UIView>: UIViewController, U
 		return viewableGroup[index]
 	}
 	
-	// MARK: - ViewerGroupViewableDelegate
-	
-	public func requestFullscreen(for viewable: ViewGroupViewable) {
-		// strategy: Put a proxy view in place of viewable that wants fullscreen,
-		//		turn on frame-based constraints, add viewable as subview of
-		//		 window and animate its frame to the full size of that window.
-		//		The proxy view will be used to animate the viewable back from
-		//		fullscreen.
-		
-		let fullscreenWindow = UIApplication.shared.keyWindow!
-		
-		let currentFrame = fullscreenWindow.convert(viewable.view.frame, from: viewable.view)
-		
-		let proxyView = UIView(frame: currentFrame)
-		proxyView.alpha = 0
-		fullscreenWindow.addSubview(proxyView)
-		proxies[viewable.view] = proxyView
-		
-		viewable.view.translatesAutoresizingMaskIntoConstraints = true
-		fullscreenWindow.addSubview(viewable.view)
-		viewable.view.didMoveToSuperview()
-		
-		viewable.view.frame = currentFrame
-		
-		viewable.fullscreen = true
-		
-		UIView.animate(withDuration: 0.3, animations: {
-			viewable.view.frame = fullscreenWindow.safeAreaLayoutGuide.layoutFrame
-		}) { [weak self] _ in
-			guard let strongSelf = self else { return }
-
-			strongSelf.layout(around: .proxy(view: proxyView, at: strongSelf.currentViewableIndex), animated: false)
-
-			fullscreenWindow.applyLayout(.horizontal(align: .fill, marginEdges: .allSafeArea, .view(viewable.view)))
-		}
-	}
-	
-	public func requestUnfullscreen(for viewable: ViewGroupViewable) {
-		// strategy: Retrieve the frame of the proxy for the viewable that wants
-		//		to leave fullscreen, animate the viewables frame to equal the proxy
-		//		views frame, lay the viewable out in the group layout,
-		//		and remove the proxy view.
-		
-		guard let proxyView = proxies[viewable.view] else {
-			return
-		}
-		
-		let fullscreenWindow = UIApplication.shared.keyWindow!
-		
-		let proxyFrame = fullscreenWindow.convert(proxyView.frame, from: proxyView)
-		
-		viewable.fullscreen = false
-		
-		UIView.animate(withDuration: 0.3, animations: {
-			viewable.view.frame = proxyFrame
-		}) { [weak self] _ in
-			guard let strongSelf = self else { return }
-			
-			strongSelf.showViewable(at: strongSelf.currentViewableIndex, animated: false)
-			viewable.view.didMoveToSuperview()
-			
-			strongSelf.proxies.removeValue(forKey: viewable.view)
-		}
-	}
-	
 	// MARK: - Gestures
 	
 	@objc func userSwipedLeft(_ sender: UIGestureRecognizer) {
@@ -273,5 +208,82 @@ public class ViewGroupController<ContainerViewType: UIView>: UIViewController, U
 	
 	public required init?(coder aDecoder: NSCoder) {
 		fatalError()
+	}
+}
+
+// MARK: - ViewerGroupViewableDelegate
+
+extension ViewGroupController: ViewGroupViewableDelegate {
+	
+	public func request(viewport: ViewableViewport, for viewable: ViewGroupViewable) {
+		switch viewport {
+		case .fullscreen:
+			requestFullscreen(for: viewable)
+		case .container:
+			requestUnfullscreen(for: viewable)
+		}
+	}
+	
+	private func requestFullscreen(for viewable: ViewGroupViewable) {
+		// strategy: Put a proxy view in place of viewable that wants fullscreen,
+		//		turn on frame-based constraints, add viewable as subview of
+		//		 window and animate its frame to the full size of that window.
+		//		The proxy view will be used to animate the viewable back from
+		//		fullscreen.
+		
+		let fullscreenWindow = UIApplication.shared.keyWindow!
+		
+		let currentFrame = fullscreenWindow.convert(viewable.view.frame, from: viewable.view)
+		
+		let proxyView = UIView(frame: currentFrame)
+		proxyView.alpha = 0
+		fullscreenWindow.addSubview(proxyView)
+		proxies[viewable.view] = proxyView
+		
+		viewable.view.translatesAutoresizingMaskIntoConstraints = true
+		fullscreenWindow.addSubview(viewable.view)
+		viewable.view.didMoveToSuperview()
+		
+		viewable.view.frame = currentFrame
+		
+		viewable.moved(to: .fullscreen)
+		
+		UIView.animate(withDuration: 0.3, animations: {
+			viewable.view.frame = fullscreenWindow.safeAreaLayoutGuide.layoutFrame
+		}) { [weak self] _ in
+			guard let strongSelf = self else { return }
+			
+			strongSelf.layout(around: .proxy(view: proxyView, at: strongSelf.currentViewableIndex), animated: false)
+			
+			fullscreenWindow.applyLayout(.horizontal(align: .fill, marginEdges: .allSafeArea, .view(viewable.view)))
+		}
+	}
+	
+	private func requestUnfullscreen(for viewable: ViewGroupViewable) {
+		// strategy: Retrieve the frame of the proxy for the viewable that wants
+		//		to leave fullscreen, animate the viewables frame to equal the proxy
+		//		views frame, lay the viewable out in the group layout,
+		//		and remove the proxy view.
+		
+		guard let proxyView = proxies[viewable.view] else {
+			return
+		}
+		
+		let fullscreenWindow = UIApplication.shared.keyWindow!
+		
+		let proxyFrame = fullscreenWindow.convert(proxyView.frame, from: proxyView)
+		
+		viewable.moved(to: .container)
+		
+		UIView.animate(withDuration: 0.3, animations: {
+			viewable.view.frame = proxyFrame
+		}) { [weak self] _ in
+			guard let strongSelf = self else { return }
+			
+			strongSelf.showViewable(at: strongSelf.currentViewableIndex, animated: false)
+			viewable.view.didMoveToSuperview()
+			
+			strongSelf.proxies.removeValue(forKey: viewable.view)
+		}
 	}
 }

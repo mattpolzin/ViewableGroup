@@ -49,10 +49,10 @@ public class FullscreenViewable: ControlledViewable, UIGestureRecognizerDelegate
 		guard allowsFullscreen else { return }
 		
 		if fullscreen {
-			delegate?.requestUnfullscreen(for: self)
+			delegate?.request(viewport: .container, for: self)
 			return
 		}
 		
-		delegate?.requestFullscreen(for: self)
+		delegate?.request(viewport: .fullscreen, for: self)
 	}
 }
