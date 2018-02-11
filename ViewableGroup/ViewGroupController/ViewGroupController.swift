@@ -79,12 +79,37 @@ public class ViewGroupController<ContainerViewType: UIView>: UIViewController, U
 		view = containerView
 	}
 	
+	/// A bit less efficient than showing the viewable at a particular index,
+	/// but this method will find the viewable and show it.
+	/// - parameters:
+	/// 	- viewable: The viewable to show.
+	///		- animated: True to animate the viewables from their current location
+	///			to the new one. Default is true.
+	///		- completion: Function to call once the viewable has been shown. It
+	///			will be passed one argument: `found`.
+	///		- found: `true` if the viewable was shown, `false` if it was not found in
+	///			the view group.
+	private func showViewable(_ viewable: Viewable, animated: Bool = true, completion: @escaping (_ found: Bool) -> Void = { _ in }) {
+		for idx in (0..<viewableGroup.count) {
+			if viewableGroup[idx].view == viewable.view {
+				guard idx != currentViewableIndex else {
+					completion(true)
+					return
+				}
+				
+				showViewable(at: idx, animated: animated, completion: { completion(true) } )
+				return
+			}
+		}
+		completion(false)
+	}
+	
 	/// Show the viewable at the given index. All other viewables will be
 	/// laid out to the right and left of the viewable at the given index.
 	/// - parameters:
 	///		- viewableIndex: The index of the viewable to show.
 	///		- animated: true to animate the viewables from their current location to the new one.
-	private func showViewable(at viewableIndex: Int, animated: Bool = true) {
+	private func showViewable(at viewableIndex: Int, animated: Bool = true, completion: @escaping () -> Void = {}) {
 		guard viewableGroup.count > viewableIndex,
 			viewableIndex >= 0 else { return }
 		
@@ -97,7 +122,7 @@ public class ViewGroupController<ContainerViewType: UIView>: UIViewController, U
 			idx = idx + 1
 		}
 		
-		layout(around: .viewable(at: viewableIndex), animated: animated)
+		layout(around: .viewable(at: viewableIndex), animated: animated, completion: completion)
 		
 		currentViewableIndex = viewableIndex
 	}
@@ -113,7 +138,7 @@ public class ViewGroupController<ContainerViewType: UIView>: UIViewController, U
 	/// - parameters:
 	///		- viewable: The viewable to layout as "current" (i.e. filling the viewableContainer).
 	///		- animated: true to animate the views from their current layout to the new one.
-	private func layout(around viewable: CurrentViewable, animated: Bool = true) {
+	private func layout(around viewable: CurrentViewable, animated: Bool = true, completion: @escaping () -> Void = {}) {
 		let index: Int
 		let currentView: UIView
 		
@@ -167,7 +192,14 @@ public class ViewGroupController<ContainerViewType: UIView>: UIViewController, U
 		
 		containerView.viewableContainer.applyLayout(layout)
 		
-		let animateIfNeeded: (@escaping () -> Void) -> Void = animated ? { action in UIView.animate(withDuration: 0.3, animations: action) } : { action in action() }
+		let animateIfNeeded: (@escaping () -> Void) -> Void = animated ? { action in
+			UIView.animate(withDuration: 0.3,
+						   animations: action,
+						   completion: { _ in completion() })
+		} : { action in
+			action()
+			completion()
+		}
 		
 		animateIfNeeded(self.containerView.viewableContainer.layoutIfNeeded)
 	}
@@ -231,31 +263,44 @@ extension ViewGroupController: ViewGroupViewableDelegate {
 		//		The proxy view will be used to animate the viewable back from
 		//		fullscreen.
 		
-		let fullscreenWindow = UIApplication.shared.keyWindow!
+		// A fullscreen viewable must be "current"
+		showViewable(viewable, animated: true) { [weak self] found in
 		
-		let currentFrame = fullscreenWindow.convert(viewable.view.frame, from: viewable.view)
-		
-		let proxyView = UIView(frame: currentFrame)
-		proxyView.alpha = 0
-		fullscreenWindow.addSubview(proxyView)
-		proxies[viewable.view] = proxyView
-		
-		viewable.view.translatesAutoresizingMaskIntoConstraints = true
-		fullscreenWindow.addSubview(viewable.view)
-		viewable.view.didMoveToSuperview()
-		
-		viewable.view.frame = currentFrame
-		
-		viewable.moved(to: .fullscreen)
-		
-		UIView.animate(withDuration: 0.3, animations: {
-			viewable.view.frame = fullscreenWindow.safeAreaLayoutGuide.layoutFrame
-		}) { [weak self] _ in
-			guard let strongSelf = self else { return }
+			guard let strongSelf = self else {
+				return
+			}
 			
-			strongSelf.layout(around: .proxy(view: proxyView, at: strongSelf.currentViewableIndex), animated: false)
+			guard found == true else {
+				assertionFailure("A viewable requesting fullscreen MUST be a part of the viewable group that provided the delegate being asked for fullscreen")
+				return
+			}
 			
-			fullscreenWindow.applyLayout(.horizontal(align: .fill, marginEdges: .allSafeArea, .view(viewable.view)))
+			let fullscreenWindow = UIApplication.shared.keyWindow!
+			
+			let currentFrame = fullscreenWindow.convert(viewable.view.frame, from: viewable.view)
+			
+			let proxyView = UIView(frame: currentFrame)
+			proxyView.alpha = 0
+			fullscreenWindow.addSubview(proxyView)
+			strongSelf.proxies[viewable.view] = proxyView
+			
+			viewable.view.translatesAutoresizingMaskIntoConstraints = true
+			fullscreenWindow.addSubview(viewable.view)
+			viewable.view.didMoveToSuperview()
+			
+			viewable.view.frame = currentFrame
+			
+			viewable.moved(to: .fullscreen)
+			
+			UIView.animate(withDuration: 0.3, animations: {
+				viewable.view.frame = fullscreenWindow.safeAreaLayoutGuide.layoutFrame
+			}) { [weak strongSelf] _ in
+				guard let strongSelf = strongSelf else { return }
+				
+				strongSelf.layout(around: .proxy(view: proxyView, at: strongSelf.currentViewableIndex), animated: false)
+				
+				fullscreenWindow.applyLayout(.horizontal(align: .fill, marginEdges: .allSafeArea, .view(viewable.view)))
+			}
 		}
 	}
 	

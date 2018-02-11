@@ -26,8 +26,9 @@ public enum ViewablePositioning {
 
 /// A ViewGroupViewable is an object that can be viewed in a "view group."
 public protocol ViewGroupViewable: class {
-	
 	/// The Viewable must expose a view to be displayed in the view group.
+	/// This `UIView` should not be used by multiple viewables in the same view
+	/// group.
 	var view: UIView! { get }
 	
 	/// This will get called when the viewable is added to a group to give the
