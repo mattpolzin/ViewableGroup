@@ -10,6 +10,7 @@
 		C938573320268DF400F9695C /* FullscreenViewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C938573220268DF400F9695C /* FullscreenViewable.swift */; };
 		C9385735202691F700F9695C /* ScrollingViewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9385734202691F700F9695C /* ScrollingViewable.swift */; };
 		C93857372026925E00F9695C /* ControlledViewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93857362026925E00F9695C /* ControlledViewable.swift */; };
+		C938573B202794BF00F9695C /* CwlLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C938573A202794BF00F9695C /* CwlLayout.swift */; };
 		C992E670201E6A8200DFD7B6 /* DemoViewGroupContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C992E66F201E6A8200DFD7B6 /* DemoViewGroupContainer.swift */; };
 		C992E672201E6BAF00DFD7B6 /* ViewGroupContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C992E671201E6BAF00DFD7B6 /* ViewGroupContainer.swift */; };
 		C992E674201E6C2700DFD7B6 /* ViewGroupViewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C992E673201E6C2700DFD7B6 /* ViewGroupViewable.swift */; };
@@ -26,7 +27,6 @@
 		C9BB3CA31FD4E718008B6D37 /* BasicViewGroupContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BB3CA21FD4E718008B6D37 /* BasicViewGroupContainer.swift */; };
 		C9BB3CA51FD4EA7C008B6D37 /* ViewGroupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BB3CA41FD4EA7C008B6D37 /* ViewGroupController.swift */; };
 		C9BB3CA91FD4F3EE008B6D37 /* DemoViewableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BB3CA81FD4F3EE008B6D37 /* DemoViewableView.swift */; };
-		C9BB3CAD1FDA5A1D008B6D37 /* CwlLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BB3CAC1FDA5A1D008B6D37 /* CwlLayout.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +43,7 @@
 		C938573220268DF400F9695C /* FullscreenViewable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullscreenViewable.swift; sourceTree = "<group>"; };
 		C9385734202691F700F9695C /* ScrollingViewable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScrollingViewable.swift; sourceTree = "<group>"; };
 		C93857362026925E00F9695C /* ControlledViewable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlledViewable.swift; sourceTree = "<group>"; };
+		C938573A202794BF00F9695C /* CwlLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CwlLayout.swift; sourceTree = "<group>"; };
 		C992E66F201E6A8200DFD7B6 /* DemoViewGroupContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoViewGroupContainer.swift; sourceTree = "<group>"; };
 		C992E671201E6BAF00DFD7B6 /* ViewGroupContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewGroupContainer.swift; sourceTree = "<group>"; };
 		C992E673201E6C2700DFD7B6 /* ViewGroupViewable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewGroupViewable.swift; sourceTree = "<group>"; };
@@ -63,7 +64,6 @@
 		C9BB3CA21FD4E718008B6D37 /* BasicViewGroupContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicViewGroupContainer.swift; sourceTree = "<group>"; };
 		C9BB3CA41FD4EA7C008B6D37 /* ViewGroupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewGroupController.swift; sourceTree = "<group>"; };
 		C9BB3CA81FD4F3EE008B6D37 /* DemoViewableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoViewableView.swift; sourceTree = "<group>"; };
-		C9BB3CAC1FDA5A1D008B6D37 /* CwlLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CwlLayout.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +84,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C93857382027947D00F9695C /* ViewableGroup */ = {
+			isa = PBXGroup;
+			children = (
+				C9BB3CA01FD4E6EA008B6D37 /* ViewGroupController */,
+				C9BB3CA11FD4E6FF008B6D37 /* ViewGroupContainer */,
+				C992E66E201E6A3D00DFD7B6 /* ViewGroupViewable */,
+				C93857392027949500F9695C /* Layout */,
+			);
+			path = ViewableGroup;
+			sourceTree = "<group>";
+		};
+		C93857392027949500F9695C /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				C938573A202794BF00F9695C /* CwlLayout.swift */,
+			);
+			path = Layout;
+			sourceTree = "<group>";
+		};
 		C992E66E201E6A3D00DFD7B6 /* ViewGroupViewable */ = {
 			isa = PBXGroup;
 			children = (
@@ -100,6 +119,7 @@
 		C9BB3C741FD4E5FF008B6D37 = {
 			isa = PBXGroup;
 			children = (
+				C93857382027947D00F9695C /* ViewableGroup */,
 				C9BB3C7F1FD4E5FF008B6D37 /* FullscreenViewerDemo */,
 				C9BB3C941FD4E5FF008B6D37 /* FullscreenViewerDemoTests */,
 				C9BB3C7E1FD4E5FF008B6D37 /* Products */,
@@ -118,11 +138,7 @@
 		C9BB3C7F1FD4E5FF008B6D37 /* FullscreenViewerDemo */ = {
 			isa = PBXGroup;
 			children = (
-				C9BB3CAB1FDA5A0D008B6D37 /* Layout */,
 				C9BB3CAA1FD4F3F6008B6D37 /* DemoStuff */,
-				C992E66E201E6A3D00DFD7B6 /* ViewGroupViewable */,
-				C9BB3CA11FD4E6FF008B6D37 /* ViewGroupContainer */,
-				C9BB3CA01FD4E6EA008B6D37 /* ViewGroupController */,
 				C9BB3C801FD4E5FF008B6D37 /* AppDelegate.swift */,
 				C9BB3C821FD4E5FF008B6D37 /* ViewController.swift */,
 				C9BB3C841FD4E5FF008B6D37 /* Main.storyboard */,
@@ -168,14 +184,6 @@
 				C9B0EF972011BC3400A537BF /* DemoWebViewableView.swift */,
 			);
 			path = DemoStuff;
-			sourceTree = "<group>";
-		};
-		C9BB3CAB1FDA5A0D008B6D37 /* Layout */ = {
-			isa = PBXGroup;
-			children = (
-				C9BB3CAC1FDA5A1D008B6D37 /* CwlLayout.swift */,
-			);
-			path = Layout;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -237,7 +245,7 @@
 					};
 				};
 			};
-			buildConfigurationList = C9BB3C781FD4E5FF008B6D37 /* Build configuration list for PBXProject "FullscreenViewerDemo" */;
+			buildConfigurationList = C9BB3C781FD4E5FF008B6D37 /* Build configuration list for PBXProject "ViewableGroup" */;
 			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -281,9 +289,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C9BB3CAD1FDA5A1D008B6D37 /* CwlLayout.swift in Sources */,
 				C9B0EF982011BC3400A537BF /* DemoWebViewableView.swift in Sources */,
 				C992E672201E6BAF00DFD7B6 /* ViewGroupContainer.swift in Sources */,
+				C938573B202794BF00F9695C /* CwlLayout.swift in Sources */,
 				C9385735202691F700F9695C /* ScrollingViewable.swift in Sources */,
 				C938573320268DF400F9695C /* FullscreenViewable.swift in Sources */,
 				C992E674201E6C2700DFD7B6 /* ViewGroupViewable.swift in Sources */,
@@ -512,7 +520,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C9BB3C781FD4E5FF008B6D37 /* Build configuration list for PBXProject "FullscreenViewerDemo" */ = {
+		C9BB3C781FD4E5FF008B6D37 /* Build configuration list for PBXProject "ViewableGroup" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				C9BB3C981FD4E5FF008B6D37 /* Debug */,

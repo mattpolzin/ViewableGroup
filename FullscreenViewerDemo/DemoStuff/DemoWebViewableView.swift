@@ -12,14 +12,21 @@ class DemoWebViewable: ScrollingViewable {
 	
 	let webView = UIWebView()
 	
-	override func loadScrollView() {
-		scrollView = webView.scrollView
+	override func loadView() {
+		view = webView
 		
-		view.applyLayout(.horizontal(align: .fill, .view(webView)))
+		configureView()
+	}
+	
+	override func loadScrollView() {
+		webView.scrollView.contentInsetAdjustmentBehavior = .never
+		
+		scrollView = webView.scrollView
 		
 		webView.loadRequest(URLRequest(url: URL(string: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Large_Scaled_Forest_Lizard.jpg")!))
 		
 		webView.scrollView.bounces = false
-		view.clipsToBounds = true
+		webView.insetsLayoutMarginsFromSafeArea = false
+		webView.clipsToBounds = true
 	}
 }

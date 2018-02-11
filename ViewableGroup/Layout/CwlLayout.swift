@@ -287,7 +287,7 @@ public struct MarginEdges: OptionSet {
 // DEBUGGING TIP:
 // As of Xcode 8, the "Debug View Hierarchy" option does not show layout guides, making debugging of constraints involving layout guides tricky. To aid debugging in these cases, set the following condition to `true && DEBUG` and CwlLayout will create views instead of layout guides.
 // Otherwise, you can set this to `false && DEBUG`.
-#if true && DEBUG
+#if false && DEBUG
 	fileprivate typealias LayoutBox = Layout.View
 	
 	extension Layout.View {

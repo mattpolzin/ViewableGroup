@@ -207,14 +207,15 @@ public class ViewGroupController<ContainerViewType: UIView>: UIViewController, U
 		viewable.view.frame = currentFrame
 		
 		viewable.fullscreen = true
+		
 		UIView.animate(withDuration: 0.3, animations: {
-			viewable.view.frame = fullscreenWindow.bounds
+			viewable.view.frame = fullscreenWindow.safeAreaLayoutGuide.layoutFrame
 		}) { [weak self] _ in
 			guard let strongSelf = self else { return }
-			
+
 			strongSelf.layout(around: .proxy(view: proxyView, at: strongSelf.currentViewableIndex), animated: false)
-			
-			fullscreenWindow.applyLayout(.horizontal(align: .fill, .view(viewable.view)))
+
+			fullscreenWindow.applyLayout(.horizontal(align: .fill, marginEdges: .allSafeArea, .view(viewable.view)))
 		}
 	}
 	
@@ -233,6 +234,7 @@ public class ViewGroupController<ContainerViewType: UIView>: UIViewController, U
 		let proxyFrame = fullscreenWindow.convert(proxyView.frame, from: proxyView)
 		
 		viewable.fullscreen = false
+		
 		UIView.animate(withDuration: 0.3, animations: {
 			viewable.view.frame = proxyFrame
 		}) { [weak self] _ in

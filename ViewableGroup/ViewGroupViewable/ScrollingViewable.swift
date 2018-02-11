@@ -41,9 +41,21 @@ public class ScrollingViewable: FullscreenViewable, UIScrollViewDelegate {
 	
 	private var scrolling: Bool = false
 	
+	/// Creates a UIVIew and stores in the `view` property of the View Controller.
+	/// If you subclass `ScrollingViewable`
+	/// and you override `loadView()` then you should first set the `view` property
+	/// and then call `super.configureView()` to let the `ScrollingViewable` set up
+	/// its gesture recognizers on your custom view.
 	override public func loadView() {
-		super.loadView()
+		view = UIView()
 		
+		configureView()
+	}
+	
+	/// This should be called by any subclass implementation of `loadView()` in
+	/// order to set up the gesture recognizers required for the `ScrollingViewable`
+	/// to function.
+	public func configureView() {
 		panGestureRecognizer.delegate = self
 		view.addGestureRecognizer(panGestureRecognizer)
 		
