@@ -7,6 +7,12 @@
 //
 
 import UIKit
+import BrightFutures
+import Result
+
+private enum ViewGroupError: Error {
+	case error
+}
 
 /// A controller that manages a group of viewables.
 public class ViewGroupController<ContainerViewType: UIView>: UIViewController, UIGestureRecognizerDelegate where ContainerViewType: ViewGroupContainer {
@@ -263,17 +269,15 @@ extension ViewGroupController: ViewGroupViewableDelegate {
 		//		The proxy view will be used to animate the viewable back from
 		//		fullscreen.
 		
-		// A fullscreen viewable must be "current"
-		showViewable(viewable, animated: true) { [weak self] found in
-		
+		// we will execute all this fullscreen goodness below after making sure
+		// the viewable requesting fullscreen is the only viewable that will be
+		// in fullscreen and also that it is `central` rather than `background`.
+		let unsafeFullscreen = { [weak self] in
 			guard let strongSelf = self else {
 				return
 			}
 			
-			guard found == true else {
-				assertionFailure("A viewable requesting fullscreen MUST be a part of the viewable group that provided the delegate being asked for fullscreen")
-				return
-			}
+			print("fullscreening \(viewable.view)")
 			
 			let fullscreenWindow = UIApplication.shared.keyWindow!
 			
@@ -302,15 +306,40 @@ extension ViewGroupController: ViewGroupViewableDelegate {
 				fullscreenWindow.applyLayout(.horizontal(align: .fill, marginEdges: .allSafeArea, .view(viewable.view)))
 			}
 		}
+		
+		let futures = viewableGroup.traverse { viewable in
+			Future<Void, ViewGroupError> { complete in
+				requestUnfullscreen(for: viewable, completion: { success in
+					complete(.success(()))
+				})
+			}
+		}
+		
+		futures.onComplete { [weak self] _ in
+			guard let strongSelf = self else { return }
+			
+			// A fullscreen viewable must be "current"
+			strongSelf.showViewable(viewable, animated: true) { found in
+				
+				guard found == true else {
+					assertionFailure("A viewable requesting fullscreen MUST be a part of the viewable group that provided the delegate being asked for fullscreen")
+					return
+				}
+				
+				unsafeFullscreen()
+			}
+		}
 	}
 	
-	private func requestUnfullscreen(for viewable: ViewGroupViewable) {
+	private func requestUnfullscreen(for viewable: ViewGroupViewable, completion: @escaping (_ success: Bool) -> Void = { _ in }) {
 		// strategy: Retrieve the frame of the proxy for the viewable that wants
 		//		to leave fullscreen, animate the viewables frame to equal the proxy
 		//		views frame, lay the viewable out in the group layout,
 		//		and remove the proxy view.
 		
 		guard let proxyView = proxies[viewable.view] else {
+			print("don't need to unfullscreen \(viewable.view)")
+			completion(false)
 			return
 		}
 		
@@ -329,6 +358,9 @@ extension ViewGroupController: ViewGroupViewableDelegate {
 			viewable.view.didMoveToSuperview()
 			
 			strongSelf.proxies.removeValue(forKey: viewable.view)
+			
+			print("done unfullscreening \(viewable.view)")
+			completion(true)
 		}
 	}
 }

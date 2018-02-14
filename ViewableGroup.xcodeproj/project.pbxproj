@@ -16,6 +16,8 @@
 		C992E674201E6C2700DFD7B6 /* ViewGroupViewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C992E673201E6C2700DFD7B6 /* ViewGroupViewable.swift */; };
 		C992E676201E6C7400DFD7B6 /* EmptyViewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C992E675201E6C7400DFD7B6 /* EmptyViewable.swift */; };
 		C992E678201E6DDB00DFD7B6 /* BasicViewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C992E677201E6DDB00DFD7B6 /* BasicViewable.swift */; };
+		C99FDD442031227C00188080 /* BrightFutures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C99FDD422031227C00188080 /* BrightFutures.framework */; };
+		C99FDD452031227C00188080 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C99FDD432031227C00188080 /* Result.framework */; };
 		C9B0EF96200B1BAF00A537BF /* DemoFullscreenViewableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B0EF95200B1BAF00A537BF /* DemoFullscreenViewableView.swift */; };
 		C9B0EF982011BC3400A537BF /* DemoWebViewableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B0EF972011BC3400A537BF /* DemoWebViewableView.swift */; };
 		C9BB3C811FD4E5FF008B6D37 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BB3C801FD4E5FF008B6D37 /* AppDelegate.swift */; };
@@ -49,6 +51,8 @@
 		C992E673201E6C2700DFD7B6 /* ViewGroupViewable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewGroupViewable.swift; sourceTree = "<group>"; };
 		C992E675201E6C7400DFD7B6 /* EmptyViewable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyViewable.swift; sourceTree = "<group>"; };
 		C992E677201E6DDB00DFD7B6 /* BasicViewable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicViewable.swift; sourceTree = "<group>"; };
+		C99FDD422031227C00188080 /* BrightFutures.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BrightFutures.framework; path = Carthage/Build/iOS/BrightFutures.framework; sourceTree = "<group>"; };
+		C99FDD432031227C00188080 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = "<group>"; };
 		C9B0EF95200B1BAF00A537BF /* DemoFullscreenViewableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoFullscreenViewableView.swift; sourceTree = "<group>"; };
 		C9B0EF972011BC3400A537BF /* DemoWebViewableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoWebViewableView.swift; sourceTree = "<group>"; };
 		C9BB3C7D1FD4E5FF008B6D37 /* FullscreenViewerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FullscreenViewerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -71,6 +75,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C99FDD442031227C00188080 /* BrightFutures.framework in Frameworks */,
+				C99FDD452031227C00188080 /* Result.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -116,6 +122,15 @@
 			path = ViewGroupViewable;
 			sourceTree = "<group>";
 		};
+		C99FDD412031227C00188080 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C99FDD422031227C00188080 /* BrightFutures.framework */,
+				C99FDD432031227C00188080 /* Result.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		C9BB3C741FD4E5FF008B6D37 = {
 			isa = PBXGroup;
 			children = (
@@ -123,6 +138,7 @@
 				C9BB3C7F1FD4E5FF008B6D37 /* FullscreenViewerDemo */,
 				C9BB3C941FD4E5FF008B6D37 /* FullscreenViewerDemoTests */,
 				C9BB3C7E1FD4E5FF008B6D37 /* Products */,
+				C99FDD412031227C00188080 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -196,6 +212,7 @@
 				C9BB3C791FD4E5FF008B6D37 /* Sources */,
 				C9BB3C7A1FD4E5FF008B6D37 /* Frameworks */,
 				C9BB3C7B1FD4E5FF008B6D37 /* Resources */,
+				C99FDD40203121E300188080 /* Carthage Copy Frameworks */,
 			);
 			buildRules = (
 			);
@@ -283,6 +300,25 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		C99FDD40203121E300188080 /* Carthage Copy Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/Result.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/BrightFutures.framework",
+			);
+			name = "Carthage Copy Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "carthage copy-frameworks";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C9BB3C791FD4E5FF008B6D37 /* Sources */ = {
@@ -459,6 +495,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JQ7925Z798;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = FullscreenViewerDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mpolzin.FullscreenViewerDemo;
@@ -474,6 +514,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JQ7925Z798;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = FullscreenViewerDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mpolzin.FullscreenViewerDemo;

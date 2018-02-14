@@ -48,6 +48,13 @@ class ViewController: UIViewController {
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
+		
+		let delegate = (viewables[0] as! DemoViewableView).delegate!
+		
+		delegate.request(viewport: .fullscreen, for: viewables[1])
+		DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
+			delegate.request(viewport: .fullscreen, for: self.viewables[2])
+		})
 	}
 
 	override func didReceiveMemoryWarning() {
