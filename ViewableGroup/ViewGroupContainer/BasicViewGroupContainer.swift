@@ -10,6 +10,7 @@ import UIKit
 open class BasicViewGroupContainer: UIView, ViewGroupContainer {
 	
 	public let viewableContainer = UIView(frame: .zero)
+	public var groupContainer: UIView { return self }
 	
 	open var margins: MarginEdges { return .none }
 	
@@ -21,6 +22,12 @@ open class BasicViewGroupContainer: UIView, ViewGroupContainer {
 	
 	required public init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
+		
+		commonInit()
+	}
+	
+	required public init(with controller: ViewGroupController) {
+		super.init(frame: .zero)
 		
 		commonInit()
 	}

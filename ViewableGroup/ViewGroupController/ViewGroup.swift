@@ -15,7 +15,7 @@ private enum ViewGroupError: Error {
 }
 
 /// A controller that manages a group of viewables.
-public class ViewGroup<ContainerViewType: UIView>: UIViewController, UIGestureRecognizerDelegate where ContainerViewType: ViewGroupContainer {
+public class ViewGroup<ContainerViewType: ViewGroupContainer>: UIViewController, UIGestureRecognizerDelegate {
 	
 	/// If true, the user is allowed to swipe left and right to browse the
 	/// viewables. Default is true.
@@ -45,7 +45,7 @@ public class ViewGroup<ContainerViewType: UIView>: UIViewController, UIGestureRe
 	private var viewportChangeHandlers: [ViewportChangeHandler] = []
 	private var browseHandlers: [BrowseHandler] = []
 	
-	private let containerView = ContainerViewType()
+	private lazy var containerView: ContainerViewType = .init(with: self)
 	
 	private var viewableGroup: [InternalViewable]
 	private var proxies: [UIView: UIView] = [:] // viewable.view -> proxy view
@@ -95,7 +95,7 @@ public class ViewGroup<ContainerViewType: UIView>: UIViewController, UIGestureRe
 	}
 	
 	public override func loadView() {
-		view = containerView
+		view = containerView.groupContainer
 	}
 	
 	/// A bit less efficient than showing the viewable at a particular index,
