@@ -13,13 +13,13 @@ import UIKit
 /// inline in a view group and that is it.
 open class ControlledViewable: UIViewController, ViewGroupViewable {
 	
-	public weak var delegate: ViewGroupViewableDelegate?
+	public weak var delegate: ViewGroupController?
 	
 	public var active: Bool = false
 	
 	public var fullscreen: Bool = false
 	
-	public func delegateAvailable(_ delegate: ViewGroupViewableDelegate) {
+	public func controllerAvailable(_ delegate: ViewGroupController) {
 		self.delegate = delegate
 	}
 	

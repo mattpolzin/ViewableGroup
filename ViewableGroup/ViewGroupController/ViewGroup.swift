@@ -15,7 +15,7 @@ private enum ViewGroupError: Error {
 }
 
 /// A controller that manages a group of viewables.
-public class ViewGroupController<ContainerViewType: UIView>: UIViewController, UIGestureRecognizerDelegate where ContainerViewType: ViewGroupContainer {
+public class ViewGroup<ContainerViewType: UIView>: UIViewController, UIGestureRecognizerDelegate where ContainerViewType: ViewGroupContainer {
 	private typealias Viewable = ViewGroupViewable
 	
 	/// If true, the user is allowed to swipe left and right to browse the
@@ -56,7 +56,7 @@ public class ViewGroupController<ContainerViewType: UIView>: UIViewController, U
 		// with the farthest left viewable as currently active
 		let offscreenRight = CGRect(x: UIScreen.main.bounds.width, y: 0, width: 10, height: 10)
 		viewableGroup.forEach { viewable in
-			viewable.delegateAvailable(self)
+			viewable.controllerAvailable(self)
 			viewable.view.frame = offscreenRight
 		}
 	}
@@ -251,7 +251,7 @@ public class ViewGroupController<ContainerViewType: UIView>: UIViewController, U
 
 // MARK: - ViewerGroupViewableDelegate
 
-extension ViewGroupController: ViewGroupViewableDelegate {
+extension ViewGroup: ViewGroupController {
 	
 	public func request(viewport: ViewableViewport, for viewable: ViewGroupViewable) {
 		// TODO: make these actions synchronous and allow them to be queued up so that

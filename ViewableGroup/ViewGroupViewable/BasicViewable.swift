@@ -16,12 +16,12 @@ import UIKit
 open class BasicViewable: UIView, ViewGroupViewable {
 	
 	public var view: UIView! { return self }
-	weak public var delegate: ViewGroupViewableDelegate?
+	weak public var delegate: ViewGroupController?
 	
 	public var active: Bool = false
 	public var fullscreen: Bool = false
 	
-	public func delegateAvailable(_ delegate: ViewGroupViewableDelegate) {
+	public func controllerAvailable(_ delegate: ViewGroupController) {
 		self.delegate = delegate
 	}
 	

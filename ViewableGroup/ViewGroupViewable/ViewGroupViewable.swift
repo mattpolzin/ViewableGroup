@@ -33,7 +33,7 @@ public protocol ViewGroupViewable: class {
 	
 	/// This will get called when the viewable is added to a group to give the
 	/// viewable a delegate to the group.
-	func delegateAvailable(_ delegate: ViewGroupViewableDelegate)
+	func controllerAvailable(_ delegate: ViewGroupController)
 	
 	/// Called when the viewable's viewport changes.
 	func moved(to viewport: ViewableViewport)
@@ -47,7 +47,7 @@ public protocol ViewGroupViewable: class {
 
 /// The ViewGroupViewableDelegate allows a ViewGroupViewable to delegate
 /// key operations to its group controller.
-public protocol ViewGroupViewableDelegate: class {
+public protocol ViewGroupController: class {
 	
 	/// Call to request a particular viewable goes fullscreen. Note that
 	/// a viewable cannot be in `ViewablePositioning.background` when it is

@@ -13,7 +13,7 @@ class ViewController: UIViewController {
 
 	let viewables: [ViewGroupViewable] = [DemoViewableView(color: .blue), DemoFullscreenViewable(color: .purple), DemoWebViewable(), DemoViewableView(color: .green), DemoViewableView(color: .yellow)]
 	
-	lazy var viewGroupController: ViewGroupController<DemoViewGroupContainer> = .init(viewableGroup: self.viewables)
+	lazy var viewGroup: ViewGroup<DemoViewGroupContainer> = .init(viewableGroup: self.viewables)
 	
 	override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
 		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -34,14 +34,14 @@ class ViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		viewGroupController.viewableSpacing = 10
+		viewGroup.viewableSpacing = 10
 		
-		self.addChildViewController(viewGroupController)
+		self.addChildViewController(viewGroup)
 		
 		view.applyLayout(
 			.horizontal(align: .center,
 				.vertical(align: .center, size: .breadthEqualTo(ratio: 0.5),
-					.sizedView(viewGroupController.view, .breadthEqualTo(ratio: 1.0))
+					.sizedView(viewGroup.view, .breadthEqualTo(ratio: 1.0))
 				)
 			)
 		)
@@ -50,12 +50,6 @@ class ViewController: UIViewController {
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
 		
-		let delegate = (viewables[0] as! DemoViewableView).delegate!
-		
-		delegate.request(viewport: .fullscreen, for: viewables[1])
-		DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
-			delegate.request(viewport: .fullscreen, for: self.viewables[2])
-		})
 	}
 
 	override func didReceiveMemoryWarning() {
