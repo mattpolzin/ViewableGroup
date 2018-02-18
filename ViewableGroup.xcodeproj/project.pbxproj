@@ -27,6 +27,7 @@
 		C99FDD722038F7C600188080 /* CwlLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C938573A202794BF00F9695C /* CwlLayout.swift */; };
 		C99FDD732038F82C00188080 /* BrightFutures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C99FDD422031227C00188080 /* BrightFutures.framework */; };
 		C99FDD742038F82C00188080 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C99FDD432031227C00188080 /* Result.framework */; };
+		C99FDD76203913C900188080 /* ViewGroupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99FDD75203913C900188080 /* ViewGroupController.swift */; };
 		C9B0EF96200B1BAF00A537BF /* DemoFullscreenViewableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B0EF95200B1BAF00A537BF /* DemoFullscreenViewableView.swift */; };
 		C9B0EF982011BC3400A537BF /* DemoWebViewableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B0EF972011BC3400A537BF /* DemoWebViewableView.swift */; };
 		C9BB3C811FD4E5FF008B6D37 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BB3C801FD4E5FF008B6D37 /* AppDelegate.swift */; };
@@ -101,6 +102,7 @@
 		C99FDD532038F78500188080 /* ViewableGroupTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ViewableGroupTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C99FDD5A2038F78500188080 /* ViewableGroupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewableGroupTests.swift; sourceTree = "<group>"; };
 		C99FDD5C2038F78500188080 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C99FDD75203913C900188080 /* ViewGroupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewGroupController.swift; sourceTree = "<group>"; };
 		C9B0EF95200B1BAF00A537BF /* DemoFullscreenViewableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoFullscreenViewableView.swift; sourceTree = "<group>"; };
 		C9B0EF972011BC3400A537BF /* DemoWebViewableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoWebViewableView.swift; sourceTree = "<group>"; };
 		C9BB3C7D1FD4E5FF008B6D37 /* FullscreenViewerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FullscreenViewerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -258,6 +260,7 @@
 			isa = PBXGroup;
 			children = (
 				C9BB3CA41FD4EA7C008B6D37 /* ViewGroup.swift */,
+				C99FDD75203913C900188080 /* ViewGroupController.swift */,
 			);
 			path = ViewGroupController;
 			sourceTree = "<group>";
@@ -490,6 +493,7 @@
 				C99FDD6A2038F7B700188080 /* ViewGroupContainer.swift in Sources */,
 				C99FDD722038F7C600188080 /* CwlLayout.swift in Sources */,
 				C99FDD692038F7B000188080 /* ViewGroup.swift in Sources */,
+				C99FDD76203913C900188080 /* ViewGroupController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

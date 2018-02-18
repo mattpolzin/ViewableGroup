@@ -1,5 +1,5 @@
 //
-//  ViewGroupController.swift
+//  ViewGroup.swift
 //  FullscreenViewerDemo
 //
 //  Created by Mathew Polzin on 12/3/17.
