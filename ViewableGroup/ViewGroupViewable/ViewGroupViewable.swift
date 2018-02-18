@@ -25,7 +25,7 @@ public enum ViewablePositioning {
 }
 
 /// A ViewGroupViewable is an object that can be viewed in a "view group."
-public protocol ViewGroupViewable: class {
+public protocol ViewGroupViewable {
 	/// The Viewable must expose a view to be displayed in the view group.
 	/// This `UIView` should not be used by multiple viewables in the same view
 	/// group.
@@ -33,14 +33,5 @@ public protocol ViewGroupViewable: class {
 	
 	/// This will get called when the viewable is added to a group to give the
 	/// viewable a delegate to the group.
-	func controllerAvailable(_ delegate: ViewGroupController)
-	
-	/// Called when the viewable's viewport changes.
-	func moved(to viewport: ViewableViewport)
-	
-	/// Called to indicate the viewable is either central or backgorund
-	/// in the view group. Only one viewable at a time can be central, so
-	/// as the user swipes through the viewables in the group, each viewable
-	/// will receive this notification to indicate its positioning.
-	func positioning(is positioning: ViewablePositioning)
+	func controlled(by controller: ViewGroupController)
 }

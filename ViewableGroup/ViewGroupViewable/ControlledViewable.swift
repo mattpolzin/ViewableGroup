@@ -11,6 +11,8 @@ import UIKit
 /// A ControlledViewable is a UIViewController viewable that has no special features built
 /// in. It does not even know how to enter/exist fullscreen. It can be viewed
 /// inline in a view group and that is it.
+/// What it does get you for free, is a viewable that knows what viewort it is
+/// in and whether it is active or not.
 open class ControlledViewable: UIViewController, ViewGroupViewable {
 	
 	public weak var delegate: ViewGroupController?
@@ -19,11 +21,23 @@ open class ControlledViewable: UIViewController, ViewGroupViewable {
 	
 	public var fullscreen: Bool = false
 	
-	public func controllerAvailable(_ delegate: ViewGroupController) {
-		self.delegate = delegate
+	public func controlled(by controller: ViewGroupController) {
+		self.delegate = controller
+		
+		controller.onBrowse { [weak self] (viewable, index) in
+			guard let strongSelf = self else { return }
+			
+			strongSelf.positioning(is: viewable.view == strongSelf.view ? .central : .background)
+		}
+		
+		controller.onViewportChange { [weak self] (viewable, viewport) in
+			guard let strongSelf = self, viewable.view == strongSelf.view else { return }
+			
+			strongSelf.moved(to: viewport)
+		}
 	}
 	
-	public func moved(to viewport: ViewableViewport) {
+	private func moved(to viewport: ViewableViewport) {
 		switch viewport {
 		case .fullscreen:
 			fullscreen = true
@@ -32,7 +46,7 @@ open class ControlledViewable: UIViewController, ViewGroupViewable {
 		}
 	}
 	
-	public func positioning(is positioning: ViewablePositioning) {
+	private func positioning(is positioning: ViewablePositioning) {
 		switch positioning {
 		case .background:
 			active = false

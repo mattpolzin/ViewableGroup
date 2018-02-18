@@ -16,7 +16,6 @@ private enum ViewGroupError: Error {
 
 /// A controller that manages a group of viewables.
 public class ViewGroup<ContainerViewType: UIView>: UIViewController, UIGestureRecognizerDelegate where ContainerViewType: ViewGroupContainer {
-	private typealias Viewable = ViewGroupViewable
 	
 	/// If true, the user is allowed to swipe left and right to browse the
 	/// viewables. Default is true.
@@ -32,9 +31,23 @@ public class ViewGroup<ContainerViewType: UIView>: UIViewController, UIGestureRe
 		}
 	}
 	
+	private struct InternalViewable: ViewGroupViewable {
+		var viewable: ViewGroupViewable
+		var positioning: ViewablePositioning
+		
+		var view: UIView! { return viewable.view }
+		
+		func controlled(by controller: ViewGroupController) {
+			viewable.controlled(by: controller)
+		}
+	}
+	
+	private var viewportChangeHandlers: [ViewportChangeHandler] = []
+	private var browseHandlers: [BrowseHandler] = []
+	
 	private let containerView = ContainerViewType()
 	
-	private let viewableGroup: [Viewable]
+	private var viewableGroup: [InternalViewable]
 	private var proxies: [UIView: UIView] = [:] // viewable.view -> proxy view
 	
 	private var leftSwipeRecognizer: UISwipeGestureRecognizer?
@@ -42,8 +55,8 @@ public class ViewGroup<ContainerViewType: UIView>: UIViewController, UIGestureRe
 	
 	private var currentViewableIndex: Int = 0
 	
-	public init(viewableGroup: [ViewGroupViewable]) {
-		self.viewableGroup = viewableGroup
+	public init(viewables: [ViewGroupViewable]) {
+		self.viewableGroup = viewables.map { .init(viewable: $0, positioning: .background) }
 		
 		super.init(nibName: nil, bundle: nil)
 		commonInit()
@@ -56,7 +69,7 @@ public class ViewGroup<ContainerViewType: UIView>: UIViewController, UIGestureRe
 		// with the farthest left viewable as currently active
 		let offscreenRight = CGRect(x: UIScreen.main.bounds.width, y: 0, width: 10, height: 10)
 		viewableGroup.forEach { viewable in
-			viewable.controllerAvailable(self)
+			viewable.controlled(by: self)
 			viewable.view.frame = offscreenRight
 		}
 	}
@@ -95,7 +108,7 @@ public class ViewGroup<ContainerViewType: UIView>: UIViewController, UIGestureRe
 	///			will be passed one argument: `found`.
 	///		- found: `true` if the viewable was shown, `false` if it was not found in
 	///			the view group.
-	private func showViewable(_ viewable: Viewable, animated: Bool = true, completion: @escaping (_ found: Bool) -> Void = { _ in }) {
+	private func showViewable(_ viewable: ViewGroupViewable, animated: Bool = true, completion: @escaping (_ found: Bool) -> Void = { _ in }) {
 		for idx in (0..<viewableGroup.count) {
 			if viewableGroup[idx].view == viewable.view {
 				guard idx != currentViewableIndex else {
@@ -120,12 +133,16 @@ public class ViewGroup<ContainerViewType: UIView>: UIViewController, UIGestureRe
 			viewableIndex >= 0 else { return }
 		
 		// update viewable focus before laying out views
-		var idx = 0
-		for viewable in viewableGroup {
+		for idx in 0..<viewableGroup.count {
 			
-			viewable.positioning(is: idx == viewableIndex ? .central : .background)
+			let positioning: ViewablePositioning = idx == viewableIndex ? .central : .background
+			let positioningChanged = viewableGroup[idx].positioning != positioning
 			
-			idx = idx + 1
+			viewableGroup[idx].positioning = positioning
+			
+			guard positioning == .central && positioningChanged else { continue }
+			
+			onBrowse(to: viewableGroup[idx], at: idx)
 		}
 		
 		layout(around: .viewable(at: viewableIndex), animated: animated, completion: completion)
@@ -220,6 +237,16 @@ public class ViewGroup<ContainerViewType: UIView>: UIViewController, UIGestureRe
 		return viewableGroup[index]
 	}
 	
+	// MARK: - Callbacks
+	
+	private func onViewportChanged(to viewport: ViewableViewport, for viewable: ViewGroupViewable) {
+		viewportChangeHandlers.forEach { $0(viewable, viewport) }
+	}
+	
+	private func onBrowse(to viewable: ViewGroupViewable, at index: Int) {
+		browseHandlers.forEach { $0(viewable, index) }
+	}
+	
 	// MARK: - Gestures
 	
 	@objc func userSwipedLeft(_ sender: UIGestureRecognizer) {
@@ -270,6 +297,18 @@ extension ViewGroup: ViewGroupController {
 		}
 	}
 	
+	public var count: Int {
+		return viewableGroup.count
+	}
+	
+	public func onViewportChange(_ callback: @escaping ViewGroupController.ViewportChangeHandler) {
+		viewportChangeHandlers.append(callback)
+	}
+	
+	public func onBrowse(_ callback: @escaping ViewGroupController.BrowseHandler) {
+		browseHandlers.append(callback)
+	}
+	
 	private func requestFullscreen(for viewable: ViewGroupViewable) {
 		// strategy: Put a proxy view in place of viewable that wants fullscreen,
 		//		turn on frame-based constraints, add viewable as subview of
@@ -302,7 +341,7 @@ extension ViewGroup: ViewGroupController {
 			
 			viewable.view.frame = currentFrame
 			
-			viewable.moved(to: .fullscreen)
+			strongSelf.onViewportChanged(to: .fullscreen, for: viewable)
 			
 			UIView.animate(withDuration: 0.3, animations: {
 				viewable.view.frame = fullscreenWindow.safeAreaLayoutGuide.layoutFrame
@@ -355,7 +394,7 @@ extension ViewGroup: ViewGroupController {
 		
 		let proxyFrame = fullscreenWindow.convert(proxyView.frame, from: proxyView)
 		
-		viewable.moved(to: .container)
+		onViewportChanged(to: .container, for: viewable)
 		
 		UIView.animate(withDuration: 0.3, animations: {
 			viewable.view.frame = proxyFrame

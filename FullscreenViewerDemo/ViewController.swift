@@ -13,7 +13,7 @@ class ViewController: UIViewController {
 
 	let viewables: [ViewGroupViewable] = [DemoViewableView(color: .blue), DemoFullscreenViewable(color: .purple), DemoWebViewable(), DemoViewableView(color: .green), DemoViewableView(color: .yellow)]
 	
-	lazy var viewGroup: ViewGroup<DemoViewGroupContainer> = .init(viewableGroup: self.viewables)
+	lazy var viewGroup: ViewGroup<DemoViewGroupContainer> = .init(viewables: self.viewables)
 	
 	override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
 		super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
