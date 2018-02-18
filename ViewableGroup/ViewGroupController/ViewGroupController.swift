@@ -254,6 +254,14 @@ public class ViewGroupController<ContainerViewType: UIView>: UIViewController, U
 extension ViewGroupController: ViewGroupViewableDelegate {
 	
 	public func request(viewport: ViewableViewport, for viewable: ViewGroupViewable) {
+		// TODO: make these actions synchronous and allow them to be queued up so that
+		//		things don't get wonky if, for example, fullscreen is requested and
+		//		then contained is requested immediately before the fullscreen animations
+		// 		have completed.
+		
+		// TODO: allow animated to be specified for these requests so that code can
+		//		start a particular viewable in fullscreen without needing to animate
+		//		into that state.
 		switch viewport {
 		case .fullscreen:
 			requestFullscreen(for: viewable)

@@ -7,17 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C938573320268DF400F9695C /* FullscreenViewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C938573220268DF400F9695C /* FullscreenViewable.swift */; };
-		C9385735202691F700F9695C /* ScrollingViewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9385734202691F700F9695C /* ScrollingViewable.swift */; };
-		C93857372026925E00F9695C /* ControlledViewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93857362026925E00F9695C /* ControlledViewable.swift */; };
-		C938573B202794BF00F9695C /* CwlLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C938573A202794BF00F9695C /* CwlLayout.swift */; };
 		C992E670201E6A8200DFD7B6 /* DemoViewGroupContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C992E66F201E6A8200DFD7B6 /* DemoViewGroupContainer.swift */; };
-		C992E672201E6BAF00DFD7B6 /* ViewGroupContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C992E671201E6BAF00DFD7B6 /* ViewGroupContainer.swift */; };
-		C992E674201E6C2700DFD7B6 /* ViewGroupViewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C992E673201E6C2700DFD7B6 /* ViewGroupViewable.swift */; };
-		C992E676201E6C7400DFD7B6 /* EmptyViewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C992E675201E6C7400DFD7B6 /* EmptyViewable.swift */; };
-		C992E678201E6DDB00DFD7B6 /* BasicViewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C992E677201E6DDB00DFD7B6 /* BasicViewable.swift */; };
 		C99FDD442031227C00188080 /* BrightFutures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C99FDD422031227C00188080 /* BrightFutures.framework */; };
 		C99FDD452031227C00188080 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C99FDD432031227C00188080 /* Result.framework */; };
+		C99FDD542038F78500188080 /* ViewableGroup.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C99FDD4B2038F78400188080 /* ViewableGroup.framework */; };
+		C99FDD5B2038F78500188080 /* ViewableGroupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99FDD5A2038F78500188080 /* ViewableGroupTests.swift */; };
+		C99FDD5D2038F78500188080 /* ViewableGroup.h in Headers */ = {isa = PBXBuildFile; fileRef = C99FDD4D2038F78400188080 /* ViewableGroup.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C99FDD602038F78500188080 /* ViewableGroup.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C99FDD4B2038F78400188080 /* ViewableGroup.framework */; };
+		C99FDD622038F78500188080 /* ViewableGroup.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C99FDD4B2038F78400188080 /* ViewableGroup.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C99FDD692038F7B000188080 /* ViewGroupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BB3CA41FD4EA7C008B6D37 /* ViewGroupController.swift */; };
+		C99FDD6A2038F7B700188080 /* ViewGroupContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C992E671201E6BAF00DFD7B6 /* ViewGroupContainer.swift */; };
+		C99FDD6B2038F7B700188080 /* BasicViewGroupContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BB3CA21FD4E718008B6D37 /* BasicViewGroupContainer.swift */; };
+		C99FDD6C2038F7BF00188080 /* ViewGroupViewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C992E673201E6C2700DFD7B6 /* ViewGroupViewable.swift */; };
+		C99FDD6D2038F7BF00188080 /* EmptyViewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C992E675201E6C7400DFD7B6 /* EmptyViewable.swift */; };
+		C99FDD6E2038F7BF00188080 /* BasicViewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C992E677201E6DDB00DFD7B6 /* BasicViewable.swift */; };
+		C99FDD6F2038F7BF00188080 /* ControlledViewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93857362026925E00F9695C /* ControlledViewable.swift */; };
+		C99FDD702038F7BF00188080 /* FullscreenViewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C938573220268DF400F9695C /* FullscreenViewable.swift */; };
+		C99FDD712038F7BF00188080 /* ScrollingViewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9385734202691F700F9695C /* ScrollingViewable.swift */; };
+		C99FDD722038F7C600188080 /* CwlLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C938573A202794BF00F9695C /* CwlLayout.swift */; };
+		C99FDD732038F82C00188080 /* BrightFutures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C99FDD422031227C00188080 /* BrightFutures.framework */; };
+		C99FDD742038F82C00188080 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C99FDD432031227C00188080 /* Result.framework */; };
 		C9B0EF96200B1BAF00A537BF /* DemoFullscreenViewableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B0EF95200B1BAF00A537BF /* DemoFullscreenViewableView.swift */; };
 		C9B0EF982011BC3400A537BF /* DemoWebViewableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9B0EF972011BC3400A537BF /* DemoWebViewableView.swift */; };
 		C9BB3C811FD4E5FF008B6D37 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BB3C801FD4E5FF008B6D37 /* AppDelegate.swift */; };
@@ -26,12 +35,31 @@
 		C9BB3C881FD4E5FF008B6D37 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9BB3C871FD4E5FF008B6D37 /* Assets.xcassets */; };
 		C9BB3C8B1FD4E5FF008B6D37 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C9BB3C891FD4E5FF008B6D37 /* LaunchScreen.storyboard */; };
 		C9BB3C961FD4E5FF008B6D37 /* FullscreenViewerDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BB3C951FD4E5FF008B6D37 /* FullscreenViewerDemoTests.swift */; };
-		C9BB3CA31FD4E718008B6D37 /* BasicViewGroupContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BB3CA21FD4E718008B6D37 /* BasicViewGroupContainer.swift */; };
-		C9BB3CA51FD4EA7C008B6D37 /* ViewGroupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BB3CA41FD4EA7C008B6D37 /* ViewGroupController.swift */; };
 		C9BB3CA91FD4F3EE008B6D37 /* DemoViewableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9BB3CA81FD4F3EE008B6D37 /* DemoViewableView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		C99FDD552038F78500188080 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C9BB3C751FD4E5FF008B6D37 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C99FDD4A2038F78400188080;
+			remoteInfo = ViewableGroup;
+		};
+		C99FDD572038F78500188080 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C9BB3C751FD4E5FF008B6D37 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C9BB3C7C1FD4E5FF008B6D37;
+			remoteInfo = FullscreenViewerDemo;
+		};
+		C99FDD5E2038F78500188080 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C9BB3C751FD4E5FF008B6D37 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C99FDD4A2038F78400188080;
+			remoteInfo = ViewableGroup;
+		};
 		C9BB3C921FD4E5FF008B6D37 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C9BB3C751FD4E5FF008B6D37 /* Project object */;
@@ -40,6 +68,20 @@
 			remoteInfo = FullscreenViewerDemo;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		C99FDD612038F78500188080 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C99FDD622038F78500188080 /* ViewableGroup.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		C938573220268DF400F9695C /* FullscreenViewable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullscreenViewable.swift; sourceTree = "<group>"; };
@@ -53,6 +95,12 @@
 		C992E677201E6DDB00DFD7B6 /* BasicViewable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicViewable.swift; sourceTree = "<group>"; };
 		C99FDD422031227C00188080 /* BrightFutures.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BrightFutures.framework; path = Carthage/Build/iOS/BrightFutures.framework; sourceTree = "<group>"; };
 		C99FDD432031227C00188080 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/iOS/Result.framework; sourceTree = "<group>"; };
+		C99FDD4B2038F78400188080 /* ViewableGroup.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = ViewableGroup.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C99FDD4D2038F78400188080 /* ViewableGroup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewableGroup.h; sourceTree = "<group>"; };
+		C99FDD4E2038F78400188080 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C99FDD532038F78500188080 /* ViewableGroupTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ViewableGroupTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C99FDD5A2038F78500188080 /* ViewableGroupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewableGroupTests.swift; sourceTree = "<group>"; };
+		C99FDD5C2038F78500188080 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C9B0EF95200B1BAF00A537BF /* DemoFullscreenViewableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoFullscreenViewableView.swift; sourceTree = "<group>"; };
 		C9B0EF972011BC3400A537BF /* DemoWebViewableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoWebViewableView.swift; sourceTree = "<group>"; };
 		C9BB3C7D1FD4E5FF008B6D37 /* FullscreenViewerDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FullscreenViewerDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -71,12 +119,30 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		C99FDD472038F78400188080 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C99FDD732038F82C00188080 /* BrightFutures.framework in Frameworks */,
+				C99FDD742038F82C00188080 /* Result.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C99FDD502038F78500188080 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C99FDD542038F78500188080 /* ViewableGroup.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C9BB3C7A1FD4E5FF008B6D37 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				C99FDD442031227C00188080 /* BrightFutures.framework in Frameworks */,
 				C99FDD452031227C00188080 /* Result.framework in Frameworks */,
+				C99FDD602038F78500188080 /* ViewableGroup.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -90,17 +156,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		C93857382027947D00F9695C /* ViewableGroup */ = {
-			isa = PBXGroup;
-			children = (
-				C9BB3CA01FD4E6EA008B6D37 /* ViewGroupController */,
-				C9BB3CA11FD4E6FF008B6D37 /* ViewGroupContainer */,
-				C992E66E201E6A3D00DFD7B6 /* ViewGroupViewable */,
-				C93857392027949500F9695C /* Layout */,
-			);
-			path = ViewableGroup;
-			sourceTree = "<group>";
-		};
 		C93857392027949500F9695C /* Layout */ = {
 			isa = PBXGroup;
 			children = (
@@ -131,12 +186,35 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		C99FDD4C2038F78400188080 /* ViewableGroup */ = {
+			isa = PBXGroup;
+			children = (
+				C9BB3CA01FD4E6EA008B6D37 /* ViewGroupController */,
+				C9BB3CA11FD4E6FF008B6D37 /* ViewGroupContainer */,
+				C992E66E201E6A3D00DFD7B6 /* ViewGroupViewable */,
+				C93857392027949500F9695C /* Layout */,
+				C99FDD4D2038F78400188080 /* ViewableGroup.h */,
+				C99FDD4E2038F78400188080 /* Info.plist */,
+			);
+			path = ViewableGroup;
+			sourceTree = "<group>";
+		};
+		C99FDD592038F78500188080 /* ViewableGroupTests */ = {
+			isa = PBXGroup;
+			children = (
+				C99FDD5A2038F78500188080 /* ViewableGroupTests.swift */,
+				C99FDD5C2038F78500188080 /* Info.plist */,
+			);
+			path = ViewableGroupTests;
+			sourceTree = "<group>";
+		};
 		C9BB3C741FD4E5FF008B6D37 = {
 			isa = PBXGroup;
 			children = (
-				C93857382027947D00F9695C /* ViewableGroup */,
 				C9BB3C7F1FD4E5FF008B6D37 /* FullscreenViewerDemo */,
 				C9BB3C941FD4E5FF008B6D37 /* FullscreenViewerDemoTests */,
+				C99FDD4C2038F78400188080 /* ViewableGroup */,
+				C99FDD592038F78500188080 /* ViewableGroupTests */,
 				C9BB3C7E1FD4E5FF008B6D37 /* Products */,
 				C99FDD412031227C00188080 /* Frameworks */,
 			);
@@ -147,6 +225,8 @@
 			children = (
 				C9BB3C7D1FD4E5FF008B6D37 /* FullscreenViewerDemo.app */,
 				C9BB3C911FD4E5FF008B6D37 /* FullscreenViewerDemoTests.xctest */,
+				C99FDD4B2038F78400188080 /* ViewableGroup.framework */,
+				C99FDD532038F78500188080 /* ViewableGroupTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -204,7 +284,55 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXHeadersBuildPhase section */
+		C99FDD482038F78400188080 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C99FDD5D2038F78500188080 /* ViewableGroup.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
 /* Begin PBXNativeTarget section */
+		C99FDD4A2038F78400188080 /* ViewableGroup */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C99FDD672038F78500188080 /* Build configuration list for PBXNativeTarget "ViewableGroup" */;
+			buildPhases = (
+				C99FDD462038F78400188080 /* Sources */,
+				C99FDD472038F78400188080 /* Frameworks */,
+				C99FDD482038F78400188080 /* Headers */,
+				C99FDD492038F78400188080 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ViewableGroup;
+			productName = ViewableGroup;
+			productReference = C99FDD4B2038F78400188080 /* ViewableGroup.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		C99FDD522038F78500188080 /* ViewableGroupTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C99FDD682038F78500188080 /* Build configuration list for PBXNativeTarget "ViewableGroupTests" */;
+			buildPhases = (
+				C99FDD4F2038F78500188080 /* Sources */,
+				C99FDD502038F78500188080 /* Frameworks */,
+				C99FDD512038F78500188080 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				C99FDD562038F78500188080 /* PBXTargetDependency */,
+				C99FDD582038F78500188080 /* PBXTargetDependency */,
+			);
+			name = ViewableGroupTests;
+			productName = ViewableGroupTests;
+			productReference = C99FDD532038F78500188080 /* ViewableGroupTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		C9BB3C7C1FD4E5FF008B6D37 /* FullscreenViewerDemo */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C9BB3C9A1FD4E5FF008B6D37 /* Build configuration list for PBXNativeTarget "FullscreenViewerDemo" */;
@@ -213,10 +341,12 @@
 				C9BB3C7A1FD4E5FF008B6D37 /* Frameworks */,
 				C9BB3C7B1FD4E5FF008B6D37 /* Resources */,
 				C99FDD40203121E300188080 /* Carthage Copy Frameworks */,
+				C99FDD612038F78500188080 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				C99FDD5F2038F78500188080 /* PBXTargetDependency */,
 			);
 			name = FullscreenViewerDemo;
 			productName = FullscreenViewerDemo;
@@ -247,10 +377,19 @@
 		C9BB3C751FD4E5FF008B6D37 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0910;
+				LastSwiftUpdateCheck = 0920;
 				LastUpgradeCheck = 0910;
 				ORGANIZATIONNAME = "Mathew Polzin";
 				TargetAttributes = {
+					C99FDD4A2038F78400188080 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+					C99FDD522038F78500188080 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+						TestTargetID = C9BB3C7C1FD4E5FF008B6D37;
+					};
 					C9BB3C7C1FD4E5FF008B6D37 = {
 						CreatedOnToolsVersion = 9.1;
 						ProvisioningStyle = Automatic;
@@ -277,11 +416,27 @@
 			targets = (
 				C9BB3C7C1FD4E5FF008B6D37 /* FullscreenViewerDemo */,
 				C9BB3C901FD4E5FF008B6D37 /* FullscreenViewerDemoTests */,
+				C99FDD4A2038F78400188080 /* ViewableGroup */,
+				C99FDD522038F78500188080 /* ViewableGroupTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		C99FDD492038F78400188080 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C99FDD512038F78500188080 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C9BB3C7B1FD4E5FF008B6D37 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -321,25 +476,40 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		C99FDD462038F78400188080 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C99FDD6B2038F7B700188080 /* BasicViewGroupContainer.swift in Sources */,
+				C99FDD6E2038F7BF00188080 /* BasicViewable.swift in Sources */,
+				C99FDD6C2038F7BF00188080 /* ViewGroupViewable.swift in Sources */,
+				C99FDD712038F7BF00188080 /* ScrollingViewable.swift in Sources */,
+				C99FDD6D2038F7BF00188080 /* EmptyViewable.swift in Sources */,
+				C99FDD6F2038F7BF00188080 /* ControlledViewable.swift in Sources */,
+				C99FDD702038F7BF00188080 /* FullscreenViewable.swift in Sources */,
+				C99FDD6A2038F7B700188080 /* ViewGroupContainer.swift in Sources */,
+				C99FDD722038F7C600188080 /* CwlLayout.swift in Sources */,
+				C99FDD692038F7B000188080 /* ViewGroupController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C99FDD4F2038F78500188080 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C99FDD5B2038F78500188080 /* ViewableGroupTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		C9BB3C791FD4E5FF008B6D37 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				C9B0EF982011BC3400A537BF /* DemoWebViewableView.swift in Sources */,
-				C992E672201E6BAF00DFD7B6 /* ViewGroupContainer.swift in Sources */,
-				C938573B202794BF00F9695C /* CwlLayout.swift in Sources */,
-				C9385735202691F700F9695C /* ScrollingViewable.swift in Sources */,
-				C938573320268DF400F9695C /* FullscreenViewable.swift in Sources */,
-				C992E674201E6C2700DFD7B6 /* ViewGroupViewable.swift in Sources */,
-				C9BB3CA31FD4E718008B6D37 /* BasicViewGroupContainer.swift in Sources */,
 				C992E670201E6A8200DFD7B6 /* DemoViewGroupContainer.swift in Sources */,
-				C93857372026925E00F9695C /* ControlledViewable.swift in Sources */,
-				C9BB3CA51FD4EA7C008B6D37 /* ViewGroupController.swift in Sources */,
 				C9BB3CA91FD4F3EE008B6D37 /* DemoViewableView.swift in Sources */,
-				C992E676201E6C7400DFD7B6 /* EmptyViewable.swift in Sources */,
 				C9BB3C831FD4E5FF008B6D37 /* ViewController.swift in Sources */,
 				C9B0EF96200B1BAF00A537BF /* DemoFullscreenViewableView.swift in Sources */,
-				C992E678201E6DDB00DFD7B6 /* BasicViewable.swift in Sources */,
 				C9BB3C811FD4E5FF008B6D37 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -355,6 +525,21 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		C99FDD562038F78500188080 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C99FDD4A2038F78400188080 /* ViewableGroup */;
+			targetProxy = C99FDD552038F78500188080 /* PBXContainerItemProxy */;
+		};
+		C99FDD582038F78500188080 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C9BB3C7C1FD4E5FF008B6D37 /* FullscreenViewerDemo */;
+			targetProxy = C99FDD572038F78500188080 /* PBXContainerItemProxy */;
+		};
+		C99FDD5F2038F78500188080 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C99FDD4A2038F78400188080 /* ViewableGroup */;
+			targetProxy = C99FDD5E2038F78500188080 /* PBXContainerItemProxy */;
+		};
 		C9BB3C931FD4E5FF008B6D37 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C9BB3C7C1FD4E5FF008B6D37 /* FullscreenViewerDemo */;
@@ -382,6 +567,98 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		C99FDD632038F78500188080 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = JQ7925Z798;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = ViewableGroup/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.mpolzin.ViewableGroup;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		C99FDD642038F78500188080 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = JQ7925Z798;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = ViewableGroup/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.mpolzin.ViewableGroup;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		C99FDD652038F78500188080 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = JQ7925Z798;
+				INFOPLIST_FILE = ViewableGroupTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.mpolzin.ViewableGroupTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FullscreenViewerDemo.app/FullscreenViewerDemo";
+			};
+			name = Debug;
+		};
+		C99FDD662038F78500188080 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = JQ7925Z798;
+				INFOPLIST_FILE = ViewableGroupTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.2;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.mpolzin.ViewableGroupTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FullscreenViewerDemo.app/FullscreenViewerDemo";
+			};
+			name = Release;
+		};
 		C9BB3C981FD4E5FF008B6D37 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -492,6 +769,7 @@
 		C9BB3C9B1FD4E5FF008B6D37 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JQ7925Z798;
@@ -511,6 +789,7 @@
 		C9BB3C9C1FD4E5FF008B6D37 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = JQ7925Z798;
@@ -564,6 +843,24 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		C99FDD672038F78500188080 /* Build configuration list for PBXNativeTarget "ViewableGroup" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C99FDD632038F78500188080 /* Debug */,
+				C99FDD642038F78500188080 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C99FDD682038F78500188080 /* Build configuration list for PBXNativeTarget "ViewableGroupTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C99FDD652038F78500188080 /* Debug */,
+				C99FDD662038F78500188080 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		C9BB3C781FD4E5FF008B6D37 /* Build configuration list for PBXProject "ViewableGroup" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:FullscreenViewerDemo.xcodeproj">
+      location = "self:/Users/matt/staging/FullscreenViewerDemo/ViewableGroup.xcodeproj">
    </FileRef>
 </Workspace>

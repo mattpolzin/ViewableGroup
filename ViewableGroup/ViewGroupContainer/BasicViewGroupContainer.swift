@@ -7,11 +7,11 @@
 
 import UIKit
 
-public class BasicViewGroupContainer: UIView, ViewGroupContainer {
+open class BasicViewGroupContainer: UIView, ViewGroupContainer {
 	
 	public let viewableContainer = UIView(frame: .zero)
 	
-	var margins: MarginEdges { return .none }
+	open var margins: MarginEdges { return .none }
 	
 	override public init(frame: CGRect) {
 		super.init(frame: frame)

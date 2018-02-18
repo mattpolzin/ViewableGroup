@@ -11,7 +11,7 @@ import UIKit
 /// A ControlledViewable is a UIViewController viewable that has no special features built
 /// in. It does not even know how to enter/exist fullscreen. It can be viewed
 /// inline in a view group and that is it.
-public class ControlledViewable: UIViewController, ViewGroupViewable {
+open class ControlledViewable: UIViewController, ViewGroupViewable {
 	
 	public weak var delegate: ViewGroupViewableDelegate?
 	

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import ViewableGroup
 
 class DemoViewGroupContainer: BasicViewGroupContainer {
 	

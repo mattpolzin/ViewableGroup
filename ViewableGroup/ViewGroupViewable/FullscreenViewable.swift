@@ -12,7 +12,7 @@ import UIKit
 /// and out of fullscreen when it is part of a viewable group.
 /// It can be told to disallow the user entering/exiting fullscreen on tap by
 /// setting `allowsFullscreen` to false.
-public class FullscreenViewable: ControlledViewable, UIGestureRecognizerDelegate {
+open class FullscreenViewable: ControlledViewable, UIGestureRecognizerDelegate {
 	
 	/// Set to false to disallow entering/existing fullscreen by tapping on the
 	/// view. Default is true.

@@ -13,7 +13,7 @@ import UIKit
 /// perhaps hurtful to hide it, this class may or may not be useful to you.
 /// It does not get you anything by default, not even fullscreen support.
 /// A BasicViewable can be viewed inline in a view group and that is it.
-public class BasicViewable: UIView, ViewGroupViewable {
+open class BasicViewable: UIView, ViewGroupViewable {
 	
 	public var view: UIView! { return self }
 	weak public var delegate: ViewGroupViewableDelegate?

@@ -12,7 +12,7 @@ import UIKit
 /// By default, a ScrollingViewable will also allow the user to enter/exit
 /// fullscreen to get a larger view of its content. Fullscreen can be disallowed
 /// by setting `allowsFullscreen` to false.
-public class ScrollingViewable: FullscreenViewable, UIScrollViewDelegate {
+open class ScrollingViewable: FullscreenViewable, UIScrollViewDelegate {
 	
 	private var _scrollView: UIScrollView?
 	
@@ -46,7 +46,7 @@ public class ScrollingViewable: FullscreenViewable, UIScrollViewDelegate {
 	/// and you override `loadView()` then you should first set the `view` property
 	/// and then call `super.configureView()` to let the `ScrollingViewable` set up
 	/// its gesture recognizers on your custom view.
-	override public func loadView() {
+	override open func loadView() {
 		view = UIView()
 		
 		configureView()
