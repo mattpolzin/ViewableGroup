@@ -27,6 +27,7 @@ class DemoWebViewable: ScrollingViewable {
 		webView.loadRequest(URLRequest(url: URL(string: "https://upload.wikimedia.org/wikipedia/commons/e/e0/Large_Scaled_Forest_Lizard.jpg")!))
 		
 		webView.scrollView.bounces = false
+		webView.scrollView.isDirectionalLockEnabled = false
 		webView.insetsLayoutMarginsFromSafeArea = false
 		webView.clipsToBounds = true
 	}

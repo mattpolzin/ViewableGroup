@@ -16,9 +16,13 @@ import UIKit
 open class ImageViewable: ScrollingViewable {
 	
 	public var image: UIImage? {
-		didSet {
-			imageView.image = image
+		set(value) {
+			imageView.image = value
+			updateViewForNewImage()
 			// TODO: update view when this is set.
+		}
+		get {
+			return imageView.image
 		}
 	}
 	
@@ -29,16 +33,53 @@ open class ImageViewable: ScrollingViewable {
 		}
 	}
 	
-	private var imageView: UIImageView = UIImageView()
+	private var imageView: UIImageView = UIImageView(frame: .zero)
+	
+	override public init() {
+		super.init()
+		commonInit()
+	}
+	
+	public init(image: UIImage) {
+		super.init()
+		self.image = image
+		commonInit()
+	}
+	
+	public required init?(coder aDecoder: NSCoder) {
+		super.init(coder: aDecoder)
+		commonInit()
+	}
+	
+	private func commonInit() {
+		allowsFullscreen = false
+	}
+	
+	override open func loadView() {
+		view = imageView
+	}
 	
 	/// Loads the scroll view for this viewable. Do not call this method directly.
 	/// Override this method to provide a non-default scroll view in a subclass.
 	override open func loadScrollView() {
-		scrollView = UIScrollView()
-		view.applyLayout(.horizontal(align: .fill, .view(scrollView)))
+		super.loadScrollView()
+		
+		scrollView.addSubview(imageView)
+		
+		scrollView.showsVerticalScrollIndicator = false
+		scrollView.showsHorizontalScrollIndicator = false
+		scrollView.bouncesZoom = true
+		scrollView.decelerationRate = UIScrollViewDecelerationRateFast
+		scrollView.minimumZoomScale=0.5
+		scrollView.maximumZoomScale=6.0
+		updateViewForNewImage()
 	}
 	
 	public func viewForZooming(in scrollView: UIScrollView) -> UIView? {
 		return imageView
+	}
+	
+	private func updateViewForNewImage() {
+//		scrollView.contentSize=image?.size ?? CGSize(width: 0, height: 0)
 	}
 }

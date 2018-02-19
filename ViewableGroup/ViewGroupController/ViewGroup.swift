@@ -324,8 +324,6 @@ extension ViewGroup: ViewGroupController {
 				return
 			}
 			
-			print("fullscreening \(viewable.view)")
-			
 			let fullscreenWindow = UIApplication.shared.keyWindow!
 			
 			let currentFrame = fullscreenWindow.convert(viewable.view.frame, from: viewable.view)
@@ -385,7 +383,6 @@ extension ViewGroup: ViewGroupController {
 		//		and remove the proxy view.
 		
 		guard let proxyView = proxies[viewable.view] else {
-			print("don't need to unfullscreen \(viewable.view)")
 			completion(false)
 			return
 		}
@@ -406,7 +403,6 @@ extension ViewGroup: ViewGroupController {
 			
 			strongSelf.proxies.removeValue(forKey: viewable.view)
 			
-			print("done unfullscreening \(viewable.view)")
 			completion(true)
 		}
 	}

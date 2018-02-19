@@ -10,8 +10,8 @@ import UIKit
 import ViewableGroup
 
 class ViewController: UIViewController {
-
-	let viewables: [ViewGroupViewable] = [DemoViewableView(color: .blue), DemoFullscreenViewable(color: .purple), DemoWebViewable(), DemoViewableView(color: .green), DemoViewableView(color: .yellow)]
+	
+	let viewables: [ViewGroupViewable] = [DemoViewableView(color: .blue), DemoFullscreenViewable(color: .purple), DemoWebViewable(), ImageViewable(image: UIImage(named: "DemoImage")!), DemoViewableView(color: .yellow)]
 	
 	lazy var viewGroup: ViewGroup<DemoViewGroupContainer> = .init(viewables: self.viewables)
 	
