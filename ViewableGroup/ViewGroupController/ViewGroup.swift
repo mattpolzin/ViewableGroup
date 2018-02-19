@@ -1,9 +1,9 @@
 //
 //  ViewGroup.swift
-//  FullscreenViewerDemo
+//  ViewableGroup
 //
 //  Created by Mathew Polzin on 12/3/17.
-//  Copyright © 2017 Mathew Polzin. All rights reserved.
+//  Copyright © 2017 Mathew Polzin. MIT License.
 //
 
 import UIKit

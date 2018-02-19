@@ -1,9 +1,9 @@
 //
 //  ScrollingViewable.swift
-//  FullscreenViewerDemo
+//  ViewableGroup
 //
 //  Created by Mathew Polzin on 2/3/18.
-//  Copyright © 2018 Mathew Polzin. All rights reserved.
+//  Copyright © 2018 Mathew Polzin. MIT License.
 //
 
 import UIKit
@@ -68,6 +68,10 @@ open class ScrollingViewable: FullscreenViewable, UIScrollViewDelegate {
 	
 	/// Loads the scroll view for this viewable. Do not call this method directly.
 	/// Override this method to provide a non-default scroll view in a subclass.
+	/// You can also override this method to perform logic immediately after
+	/// calling `super.loadScrollView()` in much the same way as you would with
+	/// `loadView()` to perform some actions immediatley after the view and
+	/// scroll view have been set up.
 	open func loadScrollView() {
 		scrollView = UIScrollView()
 		view.applyLayout(.horizontal(align: .fill, .view(scrollView)))
