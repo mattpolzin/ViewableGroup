@@ -18,7 +18,7 @@ open class ImageViewable: ScrollingViewable {
 	public var image: UIImage? {
 		set(value) {
 			imageView.image = value
-			updateViewForNewImage()
+			updateView()
 		}
 		get {
 			return imageView.image
@@ -27,15 +27,14 @@ open class ImageViewable: ScrollingViewable {
 	
 	public var allowsZooming: Bool = true {
 		didSet {
-			// reset zoom:
-			updateViewForNewImage()
+			updateView()
 		}
 	}
 	
 	override open var active: Bool {
 		didSet {
 			guard active else { return }
-			updateViewForNewImage()
+			updateView()
 		}
 	}
 	
@@ -74,7 +73,7 @@ open class ImageViewable: ScrollingViewable {
 		scrollView.bounces = false
 		scrollView.decelerationRate = UIScrollViewDecelerationRateFast
 		
-		updateViewForNewImage()
+		updateView()
 	}
 	
 	public func viewForZooming(in scrollView: UIScrollView) -> UIView? {
@@ -85,7 +84,7 @@ open class ImageViewable: ScrollingViewable {
 		scrollView.bouncesZoom = scrollView.zoomScale >= scrollView.maximumZoomScale
 	}
 	
-	private func updateViewForNewImage() {
+	private func updateView() {
 		guard let strongImage = image else {
 			scrollView.contentSize = CGSize(width: 0, height: 0)
 			return
