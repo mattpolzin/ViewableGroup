@@ -27,8 +27,8 @@ open class ImageViewable: ScrollingViewable {
 	
 	public var allowsZooming: Bool = true {
 		didSet {
-			// TODO: enable/disable zooming on scroll view. if disabled, also
-			// return scroll view to showing the entire image.
+			// reset zoom:
+			updateViewForNewImage()
 		}
 	}
 	
@@ -73,7 +73,6 @@ open class ImageViewable: ScrollingViewable {
 		scrollView.showsHorizontalScrollIndicator = false
 		scrollView.bounces = false
 		scrollView.decelerationRate = UIScrollViewDecelerationRateFast
-		scrollView.maximumZoomScale = 6.0
 		
 		updateViewForNewImage()
 	}
@@ -91,6 +90,8 @@ open class ImageViewable: ScrollingViewable {
 			scrollView.contentSize = CGSize(width: 0, height: 0)
 			return
 		}
+		
+		scrollView.maximumZoomScale = allowsZooming ? 6.0 : 1.0
 		
 		let oldZoomScale = scrollView.zoomScale
 		scrollView.zoomScale = 1.0
