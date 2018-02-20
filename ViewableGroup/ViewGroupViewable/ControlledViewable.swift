@@ -17,9 +17,14 @@ open class ControlledViewable: UIViewController, ViewGroupViewable {
 	
 	public weak var delegate: ViewGroupController?
 	
-	public var active: Bool = false
+	/// Set by methods listening to the controller so that this variable always
+	/// accurately represents whether the viewable is active (i.e. `.central`)
+	/// or not (i.e. `.background`).
+	open var active: Bool = false
 	
-	public var fullscreen: Bool = false
+	/// Set by methods listening to the controller so that this variable always
+	/// accurately represents whether the viewable is fullscreen or not.
+	open var fullscreen: Bool = false
 	
 	public func controlled(by controller: ViewGroupController) {
 		self.delegate = controller

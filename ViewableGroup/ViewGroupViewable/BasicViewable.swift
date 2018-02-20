@@ -20,8 +20,14 @@ open class BasicViewable: UIView, ViewGroupViewable {
 	public var view: UIView! { return self }
 	weak public var delegate: ViewGroupController?
 	
-	public var active: Bool = false
-	public var fullscreen: Bool = false
+	/// Set by methods listening to the controller so that this variable always
+	/// accurately represents whether the viewable is active (i.e. `.central`)
+	/// or not (i.e. `.background`).
+	open var active: Bool = false
+	
+	/// Set by methods listening to the controller so that this variable always
+	/// accurately represents whether the viewable is fullscreen or not.
+	open var fullscreen: Bool = false
 	
 	public func controlled(by controller: ViewGroupController) {
 		self.delegate = controller
@@ -39,7 +45,7 @@ open class BasicViewable: UIView, ViewGroupViewable {
 		}
 	}
 	
-	public func moved(to viewport: ViewableViewport) {
+	private func moved(to viewport: ViewableViewport) {
 		switch viewport {
 		case .fullscreen:
 			fullscreen = true
@@ -48,7 +54,7 @@ open class BasicViewable: UIView, ViewGroupViewable {
 		}
 	}
 	
-	public func positioning(is positioning: ViewablePositioning) {
+	private func positioning(is positioning: ViewablePositioning) {
 		switch positioning {
 		case .background:
 			active = false

@@ -33,8 +33,7 @@ open class ImageViewable: ScrollingViewable {
 		}
 	}
 	
-	// TODO: make active `open` rather than public
-	override public var active: Bool {
+	override open var active: Bool {
 		didSet {
 			guard active else { return }
 			updateViewForNewImage()
@@ -90,6 +89,7 @@ open class ImageViewable: ScrollingViewable {
 			return
 		}
 		
+		let oldZoomScale = scrollView.zoomScale
 		scrollView.zoomScale = 1.0
 		scrollView.contentOffset = CGPoint(x: 0, y: 0)
 		
@@ -130,6 +130,9 @@ open class ImageViewable: ScrollingViewable {
 											   right: horizontalInset)
 		
 		// zoom all the way out
-		scrollView.zoomScale = scrollView.minimumZoomScale
+		scrollView.zoomScale = oldZoomScale
+		UIView.animate(withDuration: 0.3) {
+			self.scrollView.zoomScale = self.scrollView.minimumZoomScale
+		}
 	}
 }
