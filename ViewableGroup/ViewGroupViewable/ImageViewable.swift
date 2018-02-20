@@ -33,7 +33,15 @@ open class ImageViewable: ScrollingViewable {
 		}
 	}
 	
-	private var imageView: UIImageView = UIImageView(frame: .zero)
+	// TODO: make active `open` rather than public
+	override public var active: Bool {
+		didSet {
+			guard active else { return }
+			updateViewForNewImage()
+		}
+	}
+	
+	private let imageView: UIImageView = UIImageView(frame: .zero)
 	
 	override public init() {
 		super.init()
@@ -55,10 +63,6 @@ open class ImageViewable: ScrollingViewable {
 		allowsFullscreen = false
 	}
 	
-	override open func loadView() {
-		view = imageView
-	}
-	
 	/// Loads the scroll view for this viewable. Do not call this method directly.
 	/// Override this method to provide a non-default scroll view in a subclass.
 	override open func loadScrollView() {
@@ -69,9 +73,10 @@ open class ImageViewable: ScrollingViewable {
 		scrollView.showsVerticalScrollIndicator = false
 		scrollView.showsHorizontalScrollIndicator = false
 		scrollView.bouncesZoom = true
+		scrollView.bounces = false
 		scrollView.decelerationRate = UIScrollViewDecelerationRateFast
-		scrollView.minimumZoomScale=0.5
-		scrollView.maximumZoomScale=6.0
+		scrollView.maximumZoomScale = 6.0
+		
 		updateViewForNewImage()
 	}
 	
@@ -80,6 +85,51 @@ open class ImageViewable: ScrollingViewable {
 	}
 	
 	private func updateViewForNewImage() {
-//		scrollView.contentSize=image?.size ?? CGSize(width: 0, height: 0)
+		guard let strongImage = image else {
+			scrollView.contentSize = CGSize(width: 0, height: 0)
+			return
+		}
+		
+		scrollView.zoomScale = 1.0
+		scrollView.contentOffset = CGPoint(x: 0, y: 0)
+		
+		// set content size
+		var newFrame = imageView.frame
+		newFrame.size = strongImage.size
+		imageView.frame = newFrame
+		scrollView.contentSize = strongImage.size
+		
+		// set zoom scales
+		let scaleWidth = scrollView.bounds.width / strongImage.size.width
+		let scaleHeight = scrollView.bounds.height / strongImage.size.height
+		let minScale = min(scaleWidth, scaleHeight)
+		
+		scrollView.minimumZoomScale = minScale
+		scrollView.maximumZoomScale = max(minScale, scrollView.maximumZoomScale)
+		
+		// center content
+		var horizontalInset: CGFloat = 0
+		var verticalInset: CGFloat = 0
+
+		if (scrollView.contentSize.width * minScale < scrollView.bounds.width) {
+			horizontalInset = (scrollView.bounds.width - scrollView.contentSize.width * minScale) * 0.5
+		}
+
+		if (scrollView.contentSize.height * minScale < scrollView.bounds.height) {
+			verticalInset = (scrollView.bounds.height - scrollView.contentSize.height * minScale) * 0.5
+		}
+
+		if let scale = scrollView.window?.screen.scale, scale < 2.0 {
+			horizontalInset = floor(horizontalInset);
+			verticalInset = floor(verticalInset);
+		}
+
+		scrollView.contentInset = UIEdgeInsets(top: verticalInset,
+											   left: horizontalInset,
+											   bottom: verticalInset,
+											   right: horizontalInset)
+		
+		// zoom all the way out
+		scrollView.zoomScale = scrollView.minimumZoomScale
 	}
 }

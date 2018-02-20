@@ -9,7 +9,7 @@
 import UIKit
 import ViewableGroup
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UIScrollViewDelegate {
 	
 	let viewables: [ViewGroupViewable] = [DemoViewableView(color: .blue), DemoFullscreenViewable(color: .purple), DemoWebViewable(), ImageViewable(image: UIImage(named: "DemoImage")!), DemoViewableView(color: .yellow)]
 	
@@ -31,6 +31,9 @@ class ViewController: UIViewController {
 		
 	}
 	
+	let tmp2 = UIImageView(frame: .zero)
+	let tmp = UIScrollView(frame: .zero)
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -38,10 +41,15 @@ class ViewController: UIViewController {
 		
 		self.addChildViewController(viewGroup)
 		
+		tmp.addSubview(tmp2)
+		tmp2.image = UIImage(named: "DemoImage")!
+		tmp.contentSize = tmp2.image?.size ?? CGSize(width: 100, height: 100)
+		
 		view.applyLayout(
 			.horizontal(align: .center,
 				.vertical(align: .center, size: .breadthEqualTo(ratio: 0.5),
-					.sizedView(viewGroup.view, .breadthEqualTo(ratio: 1.0))
+					.sizedView(viewGroup.view, .breadthEqualTo(ratio: 1.0)),
+					.sizedView(tmp, .lengthEqualTo(ratio: 0.5))
 				)
 			)
 		)
@@ -55,6 +63,10 @@ class ViewController: UIViewController {
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
 		// Dispose of any resources that can be recreated.
+	}
+	
+	func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+		return tmp2
 	}
 
 }

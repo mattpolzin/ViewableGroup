@@ -78,7 +78,9 @@ open class ScrollingViewable: FullscreenViewable, UIScrollViewDelegate {
 	}
 	
 	@objc private func userPanned(_ sender: UIPanGestureRecognizer) {
-		
+		// TODO: logic appears to be wrong here when zoomed in -- can't swipe right
+		// to advance but can swipe left to go back, which makes sense because origin
+		// is always (0,0).
 		let velocity = sender.velocity(in: view)
 		
 		let viewSize = scrollView.frame
