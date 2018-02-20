@@ -19,7 +19,6 @@ open class ImageViewable: ScrollingViewable {
 		set(value) {
 			imageView.image = value
 			updateViewForNewImage()
-			// TODO: update view when this is set.
 		}
 		get {
 			return imageView.image
@@ -41,7 +40,6 @@ open class ImageViewable: ScrollingViewable {
 	}
 	
 	private let imageView: UIImageView = UIImageView(frame: .zero)
-//	private var zoomScale: CGFloat = 1.0
 	
 	override public init() {
 		super.init()
