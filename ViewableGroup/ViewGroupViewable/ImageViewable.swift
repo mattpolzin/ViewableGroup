@@ -41,6 +41,7 @@ open class ImageViewable: ScrollingViewable {
 	}
 	
 	private let imageView: UIImageView = UIImageView(frame: .zero)
+//	private var zoomScale: CGFloat = 1.0
 	
 	override public init() {
 		super.init()
@@ -60,6 +61,7 @@ open class ImageViewable: ScrollingViewable {
 	
 	private func commonInit() {
 		allowsFullscreen = false
+		view.backgroundColor = .black
 	}
 	
 	/// Loads the scroll view for this viewable. Do not call this method directly.
@@ -71,7 +73,6 @@ open class ImageViewable: ScrollingViewable {
 		
 		scrollView.showsVerticalScrollIndicator = false
 		scrollView.showsHorizontalScrollIndicator = false
-		scrollView.bouncesZoom = true
 		scrollView.bounces = false
 		scrollView.decelerationRate = UIScrollViewDecelerationRateFast
 		scrollView.maximumZoomScale = 6.0
@@ -81,6 +82,10 @@ open class ImageViewable: ScrollingViewable {
 	
 	public func viewForZooming(in scrollView: UIScrollView) -> UIView? {
 		return imageView
+	}
+	
+	public func scrollViewDidZoom(_ scrollView: UIScrollView) {
+		scrollView.bouncesZoom = scrollView.zoomScale >= scrollView.maximumZoomScale
 	}
 	
 	private func updateViewForNewImage() {
