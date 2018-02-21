@@ -18,17 +18,11 @@ open class ImageViewable: ScrollingViewable {
 	public var image: UIImage? {
 		set(value) {
 			imageView.image = value
-			
-			guard let strongImage = image else { return }
-			
-			scrollView.contentOffset = CGPoint(x: 0, y: 0)
-			
-			// set content size
-			var newFrame = imageView.frame
-			newFrame.size = strongImage.size
-			imageView.frame = newFrame
-			scrollView.contentSize = strongImage.size
-			
+
+//            guard let strongImage = value else { return }
+
+//            scrollView.contentOffset = CGPoint(x: strongImage.size.width / 2.0, y: strongImage.size.height / 2.0)
+
 			updateView()
 		}
 		get {
@@ -83,9 +77,13 @@ open class ImageViewable: ScrollingViewable {
 	/// Override this method to provide a non-default scroll view in a subclass.
 	override open func loadScrollView() {
 		super.loadScrollView()
-		
-		scrollView.addSubview(imageView)
-		
+
+        scrollView.applyLayout(
+            .horizontal(align: .fill, marginEdges: .none,
+                .view(imageView)
+            )
+        )
+
 		scrollView.showsVerticalScrollIndicator = false
 		scrollView.showsHorizontalScrollIndicator = false
 		scrollView.bounces = false
@@ -120,36 +118,37 @@ open class ImageViewable: ScrollingViewable {
 		let minScale = min(scaleWidth, scaleHeight)
 		
 		// center content
-		var horizontalInset: CGFloat = 0
-		var verticalInset: CGFloat = 0
-		
-		if (scrollView.contentSize.width * minScale < viewSize.width) {
-			horizontalInset = (viewSize.width - scrollView.contentSize.width * minScale) * 0.5
-		}
-		
-		if (scrollView.contentSize.height * minScale < viewSize.height) {
-			verticalInset = (viewSize.height - scrollView.contentSize.height * minScale) * 0.5
-		}
-		
-		if let scale = scrollView.window?.screen.scale, scale < 2.0 {
-			horizontalInset = floor(horizontalInset);
-			verticalInset = floor(verticalInset);
-		}
-		
+//        var horizontalInset: CGFloat = 0
+//        var verticalInset: CGFloat = 0
+//
+//        if (scrollView.contentSize.width * minScale < viewSize.width) {
+//            horizontalInset = (viewSize.width - scrollView.contentSize.width * minScale) * 0.5
+//        }
+//
+//        if (scrollView.contentSize.height * minScale < viewSize.height) {
+//            verticalInset = (viewSize.height - scrollView.contentSize.height * minScale) * 0.5
+//        }
+//
+//        if let scale = scrollView.window?.screen.scale, scale < 2.0 {
+//            horizontalInset = floor(horizontalInset);
+//            verticalInset = floor(verticalInset);
+//        }
+
 		// set max/min
+        // TODO: make logic that the min zoom scale cannot be larger than 1.0?
 		scrollView.minimumZoomScale = minScale
-		scrollView.maximumZoomScale = allowsZooming ? max(minScale, scrollView.maximumZoomScale) : 1.0
+		scrollView.maximumZoomScale = allowsZooming ? max(minScale, 6.0) : 1.0
 		
 		// zoom all the way out
 		scrollView.zoomScale = oldZoomScale
 		return { [weak self] in
 			guard let strongSelf = self else { return }
 			
-			strongSelf.scrollView.contentInset = UIEdgeInsets(top: verticalInset,
-															  left: horizontalInset,
-															  bottom: verticalInset,
-															  right: horizontalInset)
-			
+//            strongSelf.scrollView.contentInset = UIEdgeInsets(top: verticalInset,
+//                                                              left: horizontalInset,
+//                                                              bottom: verticalInset,
+//                                                              right: horizontalInset)
+
 			strongSelf.scrollView.zoomScale = strongSelf.scrollView.minimumZoomScale
 		}
 	}
