@@ -84,9 +84,9 @@ open class ScrollingViewable: FullscreenViewable, UIScrollViewDelegate {
 		let scrollPos = scrollView.contentOffset
 		let contentSize = scrollView.contentSize
 		
-		let atMin = (x: scrollPos.x == 0, y: scrollPos.y == 0)
-		let atMax = (x: scrollPos.x + viewSize.width >= floor(contentSize.width),
-					 y: scrollPos.y + viewSize.height >= floor(contentSize.height))
+		let atMin = (x: scrollPos.x <= -1 * floor(scrollView.contentInset.left), y: scrollPos.y <= -1 * floor(scrollView.contentInset.top))
+		let atMax = (x: scrollPos.x + scrollView.contentInset.left + viewSize.width >= floor(contentSize.width),
+					 y: scrollPos.y + scrollView.contentInset.top + viewSize.height >= floor(contentSize.height))
 		
 		let isNeutral = (x: velocity.x == 0 ||
 			(velocity.x <= 75 && abs(velocity.y) > abs(velocity.x)) ||

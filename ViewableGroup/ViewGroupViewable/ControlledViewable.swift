@@ -35,7 +35,7 @@ open class ControlledViewable: UIViewController, ViewGroupViewable {
 			strongSelf.positioning(is: viewable.view == strongSelf.view ? .central : .background)
 		}
 		
-		controller.onViewportChange { [weak self] (viewable, viewport) in
+		controller.onViewportChanged { [weak self] (viewable, viewport, _) in
 			guard let strongSelf = self, viewable.view == strongSelf.view else { return }
 			
 			strongSelf.moved(to: viewport)

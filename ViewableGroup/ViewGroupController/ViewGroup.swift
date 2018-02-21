@@ -42,7 +42,8 @@ public class ViewGroup<ContainerViewType: ViewGroupContainer>: UIViewController,
 		}
 	}
 	
-	private var viewportChangeHandlers: [ViewportChangeHandler] = []
+	private var viewportChangedHandlers: [ViewportChangedHandler] = []
+	private var viewportWillChangeHandlers: [ViewportWillChangeHandler] = []
 	private var browseHandlers: [BrowseHandler] = []
 	
 	private lazy var containerView: ContainerViewType = .init(with: self)
@@ -239,8 +240,12 @@ public class ViewGroup<ContainerViewType: ViewGroupContainer>: UIViewController,
 	
 	// MARK: - Callbacks
 	
-	private func onViewportChanged(to viewport: ViewableViewport, for viewable: ViewGroupViewable) {
-		viewportChangeHandlers.forEach { $0(viewable, viewport) }
+	private func onViewportWillChange(to viewport: ViewableViewport, for viewable: ViewGroupViewable, newFrame: CGRect) -> [() -> Void] {
+		return viewportWillChangeHandlers.map { $0(viewable, viewport, newFrame) }
+	}
+	
+	private func onViewportChanged(to viewport: ViewableViewport, for viewable: ViewGroupViewable, oldFrame: CGRect) {
+		viewportChangedHandlers.forEach { $0(viewable, viewport, oldFrame) }
 	}
 	
 	private func onBrowse(to viewable: ViewGroupViewable, at index: Int) {
@@ -301,8 +306,12 @@ extension ViewGroup: ViewGroupController {
 		return viewableGroup.count
 	}
 	
-	public func onViewportChange(_ callback: @escaping ViewGroupController.ViewportChangeHandler) {
-		viewportChangeHandlers.append(callback)
+	public func onViewportWillChange(_ callback: @escaping ViewGroupController.ViewportWillChangeHandler) {
+		viewportWillChangeHandlers.append(callback)
+	}
+	
+	public func onViewportChanged(_ callback: @escaping ViewGroupController.ViewportChangedHandler) {
+		viewportChangedHandlers.append(callback)
 	}
 	
 	public func onBrowse(_ callback: @escaping ViewGroupController.BrowseHandler) {
@@ -326,6 +335,7 @@ extension ViewGroup: ViewGroupController {
 			
 			let fullscreenWindow = UIApplication.shared.keyWindow!
 			
+			let oldViewableFrame = viewable.view.frame
 			let currentFrame = fullscreenWindow.convert(viewable.view.frame, from: viewable.view)
 			
 			let proxyView = UIView(frame: currentFrame)
@@ -339,16 +349,22 @@ extension ViewGroup: ViewGroupController {
 			
 			viewable.view.frame = currentFrame
 			
-			strongSelf.onViewportChanged(to: .fullscreen, for: viewable)
+			let animations = strongSelf.onViewportWillChange(to: .fullscreen,
+											for: viewable,
+											newFrame: fullscreenWindow.safeAreaLayoutGuide.layoutFrame)
 			
 			UIView.animate(withDuration: 0.3, animations: {
 				viewable.view.frame = fullscreenWindow.safeAreaLayoutGuide.layoutFrame
+				animations.forEach { $0() }
+				
 			}) { [weak strongSelf] _ in
 				guard let strongSelf = strongSelf else { return }
 				
 				strongSelf.layout(around: .proxy(view: proxyView, at: strongSelf.currentViewableIndex), animated: false)
 				
 				fullscreenWindow.applyLayout(.horizontal(align: .fill, marginEdges: .allSafeArea, .view(viewable.view)))
+				
+				strongSelf.onViewportChanged(to: .fullscreen, for: viewable, oldFrame: oldViewableFrame)
 			}
 		}
 		
@@ -390,11 +406,16 @@ extension ViewGroup: ViewGroupController {
 		let fullscreenWindow = UIApplication.shared.keyWindow!
 		
 		let proxyFrame = fullscreenWindow.convert(proxyView.frame, from: proxyView)
+		let oldViewableFrame = viewable.view.frame
 		
-		onViewportChanged(to: .container, for: viewable)
+		let animations = onViewportWillChange(to: .container,
+											  for: viewable,
+											  newFrame: proxyView.frame)
 		
 		UIView.animate(withDuration: 0.3, animations: {
 			viewable.view.frame = proxyFrame
+			animations.forEach { $0() }
+			
 		}) { [weak self] _ in
 			guard let strongSelf = self else { return }
 			
@@ -403,6 +424,7 @@ extension ViewGroup: ViewGroupController {
 			
 			strongSelf.proxies.removeValue(forKey: viewable.view)
 			
+			strongSelf.onViewportChanged(to: .container, for: viewable, oldFrame: oldViewableFrame)
 			completion(true)
 		}
 	}
