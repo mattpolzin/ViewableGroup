@@ -33,7 +33,7 @@ class DemoViewGroupContainer: BasicViewGroupContainer {
 	func commonInit() {
 		layoutMargins = UIEdgeInsets(top: 0, left: 25, bottom: 0, right: 25)
 		
-		backgroundColor = .red
-		viewableContainer.backgroundColor = .gray
+		backgroundColor = .white
+//        viewableContainer.backgroundColor = .gray
 	}
 }

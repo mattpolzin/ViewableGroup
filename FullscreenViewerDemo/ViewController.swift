@@ -11,7 +11,7 @@ import ViewableGroup
 
 class ViewController: UIViewController, UIScrollViewDelegate {
 	
-	let viewables: [ViewGroupViewable] = [DemoViewableView(color: .blue), DemoFullscreenViewable(color: .purple), DemoWebViewable(), ImageViewable(image: UIImage(named: "DemoImage")!), DemoViewableView(color: .yellow)]
+	let viewables: [ViewGroupViewable] = [DemoViewableView(color: .blue), DemoViewableView(color: .yellow), DemoFullscreenViewable(color: .purple), DemoViewableView(color: .orange), DemoWebViewable(), ImageViewable(image: UIImage(named: "DemoImage")!), DemoViewableView(color: .yellow)]
 	
 	lazy var viewGroup: ViewGroup<DemoViewGroupContainer> = .init(viewables: self.viewables)
 	
