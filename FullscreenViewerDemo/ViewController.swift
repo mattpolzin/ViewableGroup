@@ -43,9 +43,7 @@ class ViewController: UIViewController, UIScrollViewDelegate {
 		
 		view.applyLayout(
 			.horizontal(align: .center,
-				.vertical(align: .center, size: .breadthEqualTo(ratio: 0.5),
-					.sizedView(viewGroup.view, .breadthEqualTo(ratio: 1.0))
-				)
+                .sizedView(viewGroup.view, .init(length: .equalTo(ratio: 1.0), breadth: (.equalTo(ratio: 0.5), relativeToLength: false)))
 			)
 		)
 	}
