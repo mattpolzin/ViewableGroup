@@ -41,15 +41,10 @@ class ViewController: UIViewController, UIScrollViewDelegate {
 		
 		self.addChildViewController(viewGroup)
 		
-		tmp.addSubview(tmp2)
-		tmp2.image = UIImage(named: "DemoImage")!
-		tmp.contentSize = tmp2.image?.size ?? CGSize(width: 100, height: 100)
-		
 		view.applyLayout(
 			.horizontal(align: .center,
 				.vertical(align: .center, size: .breadthEqualTo(ratio: 0.5),
-					.sizedView(viewGroup.view, .breadthEqualTo(ratio: 1.0)),
-					.sizedView(tmp, .lengthEqualTo(ratio: 0.5))
+					.sizedView(viewGroup.view, .breadthEqualTo(ratio: 1.0))
 				)
 			)
 		)

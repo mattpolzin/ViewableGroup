@@ -19,10 +19,6 @@ open class ImageViewable: ScrollingViewable {
 		set(value) {
 			imageView.image = value
 
-//            guard let strongImage = value else { return }
-
-//            scrollView.contentOffset = CGPoint(x: strongImage.size.width / 2.0, y: strongImage.size.height / 2.0)
-
 			updateView()
 		}
 		get {
@@ -70,6 +66,7 @@ open class ImageViewable: ScrollingViewable {
 	}
 	
 	private func commonInit() {
+		allowsFullscreen = false
 		view.backgroundColor = .black
 	}
 	
@@ -118,21 +115,21 @@ open class ImageViewable: ScrollingViewable {
 		let minScale = min(scaleWidth, scaleHeight)
 		
 		// center content
-//        var horizontalInset: CGFloat = 0
-//        var verticalInset: CGFloat = 0
-//
-//        if (scrollView.contentSize.width * minScale < viewSize.width) {
-//            horizontalInset = (viewSize.width - scrollView.contentSize.width * minScale) * 0.5
-//        }
-//
-//        if (scrollView.contentSize.height * minScale < viewSize.height) {
-//            verticalInset = (viewSize.height - scrollView.contentSize.height * minScale) * 0.5
-//        }
-//
-//        if let scale = scrollView.window?.screen.scale, scale < 2.0 {
-//            horizontalInset = floor(horizontalInset);
-//            verticalInset = floor(verticalInset);
-//        }
+        var horizontalInset: CGFloat = 0
+        var verticalInset: CGFloat = 0
+
+        if (scrollView.contentSize.width * minScale < viewSize.width) {
+            horizontalInset = (viewSize.width - scrollView.contentSize.width * minScale) * 0.5
+        }
+
+        if (scrollView.contentSize.height * minScale < viewSize.height) {
+            verticalInset = (viewSize.height - scrollView.contentSize.height * minScale) * 0.5
+        }
+
+        if let scale = scrollView.window?.screen.scale, scale < 2.0 {
+            horizontalInset = floor(horizontalInset);
+            verticalInset = floor(verticalInset);
+        }
 
 		// set max/min
         // TODO: make logic that the min zoom scale cannot be larger than 1.0?
@@ -144,10 +141,10 @@ open class ImageViewable: ScrollingViewable {
 		return { [weak self] in
 			guard let strongSelf = self else { return }
 			
-//            strongSelf.scrollView.contentInset = UIEdgeInsets(top: verticalInset,
-//                                                              left: horizontalInset,
-//                                                              bottom: verticalInset,
-//                                                              right: horizontalInset)
+            strongSelf.scrollView.contentInset = UIEdgeInsets(top: verticalInset,
+                                                              left: horizontalInset,
+                                                              bottom: verticalInset,
+                                                              right: horizontalInset)
 
 			strongSelf.scrollView.zoomScale = strongSelf.scrollView.minimumZoomScale
 		}
