@@ -42,8 +42,7 @@ open class ImageViewable: ScrollingViewable {
 	override public var delegate: ViewGroupController? {
 		didSet {
 			delegate?.onViewportWillChange({ [weak self] (viewable, viewport, newFrame) in
-				self?.updateView(for: newFrame)
-				return {}
+				return self?.updateViewBlock(for: newFrame)
 			})
 		}
 	}
@@ -98,10 +97,6 @@ open class ImageViewable: ScrollingViewable {
 		scrollView.bouncesZoom = scrollView.zoomScale >= scrollView.maximumZoomScale
 		centerContent()
 	}
-
-	override open func viewDidLayoutSubviews() {
-//		updateView(animated: true)
-	}
 	
 	private func updateZoomScales(for proxyFrame: CGRect? = nil, reset: Bool = false) {
 		guard let strongImage = image else {
@@ -121,9 +116,14 @@ open class ImageViewable: ScrollingViewable {
 		scrollView.minimumZoomScale = minScale
 		scrollView.maximumZoomScale = allowsZooming ? max(minScale, 6.0) : 1.0
 		
-		if reset {
+		guard !reset else {
 			scrollView.zoomScale = scrollView.minimumZoomScale
+			return
 		}
+		
+		// make sure we are within the acceptable min and max
+		scrollView.zoomScale = max(scrollView.zoomScale, scrollView.minimumZoomScale)
+		scrollView.zoomScale = min(scrollView.zoomScale, scrollView.maximumZoomScale)
 	}
 	
 	private func centerContent(for proxyFrame: CGRect? = nil) {
@@ -157,9 +157,7 @@ open class ImageViewable: ScrollingViewable {
 		return { [weak self] in
 			guard let strongSelf = self else { return }
 			
-			if reset {
-				strongSelf.updateZoomScales(for: proxyFrame, reset: reset)
-			}
+			strongSelf.updateZoomScales(for: proxyFrame, reset: reset)
 			
 			strongSelf.centerContent(for: proxyFrame)
 		}
