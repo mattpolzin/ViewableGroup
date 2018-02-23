@@ -19,7 +19,7 @@ open class ImageViewable: ScrollingViewable {
 		set(value) {
 			imageView.image = value
 
-			updateView()
+			updateZoomScales(reset: true)
 		}
 		get {
 			return imageView.image
@@ -35,14 +35,15 @@ open class ImageViewable: ScrollingViewable {
 	override open var active: Bool {
 		didSet {
 			guard active else { return }
-			updateView()
+			updateView(reset: true)
 		}
 	}
 	
 	override public var delegate: ViewGroupController? {
 		didSet {
 			delegate?.onViewportWillChange({ [weak self] (viewable, viewport, newFrame) in
-				return self?.updateBlock(for: newFrame) ?? {}
+				self?.updateView(for: newFrame)
+				return {}
 			})
 		}
 	}
@@ -66,7 +67,7 @@ open class ImageViewable: ScrollingViewable {
 	}
 	
 	private func commonInit() {
-		allowsFullscreen = false
+		allowsFullscreen = true
 		view.backgroundColor = .black
 	}
 	
@@ -95,62 +96,81 @@ open class ImageViewable: ScrollingViewable {
 	
 	public func scrollViewDidZoom(_ scrollView: UIScrollView) {
 		scrollView.bouncesZoom = scrollView.zoomScale >= scrollView.maximumZoomScale
+		centerContent()
+	}
+
+	override open func viewDidLayoutSubviews() {
+//		updateView(animated: true)
 	}
 	
-	private func updateBlock(for proxyFrame: CGRect? = nil) -> () -> Void {
-		// TODO: this breaks down when the view's frame changes, like for device rotation.
+	private func updateZoomScales(for proxyFrame: CGRect? = nil, reset: Bool = false) {
 		guard let strongImage = image else {
 			scrollView.contentSize = CGSize(width: 0, height: 0)
-			return {}
+			return
 		}
 		
 		let viewSize = proxyFrame?.size ?? scrollView.bounds.size
-		
-		let oldZoomScale = scrollView.zoomScale
-		scrollView.zoomScale = 1.0
 		
 		// set zoom scales
 		let scaleWidth = viewSize.width / strongImage.size.width
 		let scaleHeight = viewSize.height / strongImage.size.height
 		let minScale = min(scaleWidth, scaleHeight)
 		
-		// center content
-        var horizontalInset: CGFloat = 0
-        var verticalInset: CGFloat = 0
-
-        if (scrollView.contentSize.width * minScale < viewSize.width) {
-            horizontalInset = (viewSize.width - scrollView.contentSize.width * minScale) * 0.5
-        }
-
-        if (scrollView.contentSize.height * minScale < viewSize.height) {
-            verticalInset = (viewSize.height - scrollView.contentSize.height * minScale) * 0.5
-        }
-
-        if let scale = scrollView.window?.screen.scale, scale < 2.0 {
-            horizontalInset = floor(horizontalInset);
-            verticalInset = floor(verticalInset);
-        }
-
 		// set max/min
-        // TODO: make logic that the min zoom scale cannot be larger than 1.0?
+		// TODO: make logic that the min zoom scale cannot be larger than 1.0?
 		scrollView.minimumZoomScale = minScale
 		scrollView.maximumZoomScale = allowsZooming ? max(minScale, 6.0) : 1.0
 		
-		// zoom all the way out
-		scrollView.zoomScale = oldZoomScale
-		return { [weak self] in
-			guard let strongSelf = self else { return }
-			
-            strongSelf.scrollView.contentInset = UIEdgeInsets(top: verticalInset,
-                                                              left: horizontalInset,
-                                                              bottom: verticalInset,
-                                                              right: horizontalInset)
-
-			strongSelf.scrollView.zoomScale = strongSelf.scrollView.minimumZoomScale
+		if reset {
+			scrollView.zoomScale = scrollView.minimumZoomScale
 		}
 	}
 	
-	private func updateView(proxyFrame: CGRect? = nil) {
-		UIView.animate(withDuration: 0.3, animations: updateBlock(for: proxyFrame))
+	private func centerContent(for proxyFrame: CGRect? = nil) {
+		// TODO: this breaks down when the view's frame changes, like for device rotation.
+		let viewSize = proxyFrame?.size ?? scrollView.bounds.size
+		
+		// center content
+		var horizontalInset: CGFloat = 0
+		var verticalInset: CGFloat = 0
+		
+		if (scrollView.contentSize.width < viewSize.width) {
+			horizontalInset = (viewSize.width - scrollView.contentSize.width) * 0.5
+		}
+		
+		if (scrollView.contentSize.height < viewSize.height) {
+			verticalInset = (viewSize.height - scrollView.contentSize.height) * 0.5
+		}
+		
+		if let scale = scrollView.window?.screen.scale, scale < 2.0 {
+			horizontalInset = floor(horizontalInset);
+			verticalInset = floor(verticalInset);
+		}
+		
+		scrollView.contentInset = UIEdgeInsets(top: verticalInset,
+											   left: horizontalInset,
+											   bottom: verticalInset,
+											   right: horizontalInset)
+	}
+	
+	private func updateViewBlock(for proxyFrame: CGRect? = nil, reset: Bool = false) -> () -> Void {
+		return { [weak self] in
+			guard let strongSelf = self else { return }
+			
+			if reset {
+				strongSelf.updateZoomScales(for: proxyFrame, reset: reset)
+			}
+			
+			strongSelf.centerContent(for: proxyFrame)
+		}
+	}
+	
+	private func updateView(for proxyFrame: CGRect? = nil, animated: Bool = true, reset: Bool = false) {
+		guard animated else {
+			updateViewBlock(for: proxyFrame, reset: reset)()
+			return
+		}
+		
+		UIView.animate(withDuration: 0.3, animations: updateViewBlock(for: proxyFrame, reset: reset))
 	}
 }

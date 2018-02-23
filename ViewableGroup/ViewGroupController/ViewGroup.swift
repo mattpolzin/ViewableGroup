@@ -209,9 +209,9 @@ public class ViewGroup<ContainerViewType: ViewGroupContainer>: UIViewController,
 		let otherViews: [(independent: LayoutEntity, same: LayoutEntity)] = views.dropFirst().map { (independent: spacing, same: .view($0)) }
 		
 		let layout: Layout = .vertical(align: .center, marginEdges: .none,
-		.horizontal(align: .fill, size: .breadthEqualTo(ratio: viewableGroupWidthRatio, constant: viewableGroupAdditionalWidth, priority: .defaultHigh),
-						.matched(leftView, otherViews, priority: .required)
-				)
+			.horizontal(align: .fill, size: .breadthEqualTo(ratio: viewableGroupWidthRatio, constant: viewableGroupAdditionalWidth, priority: .defaultHigh),
+				.matched(leftView, otherViews, priority: .required)
+			)
 		)
 		
 		containerView.viewableContainer.applyLayout(layout)
@@ -241,11 +241,11 @@ public class ViewGroup<ContainerViewType: ViewGroupContainer>: UIViewController,
 	// MARK: - Callbacks
 	
 	private func onViewportWillChange(to viewport: ViewableViewport, for viewable: ViewGroupViewable, newFrame: CGRect) -> [() -> Void] {
-		return viewportWillChangeHandlers.map { $0(viewable, viewport, newFrame) }
+		return viewportWillChangeHandlers.map { $0(viewable, viewport, newFrame) }.flatMap { $0 }
 	}
 	
-	private func onViewportChanged(to viewport: ViewableViewport, for viewable: ViewGroupViewable, oldFrame: CGRect) {
-		viewportChangedHandlers.forEach { $0(viewable, viewport, oldFrame) }
+	private func onViewportChanged(to viewport: ViewableViewport, for viewable: ViewGroupViewable) {
+		viewportChangedHandlers.forEach { $0(viewable, viewport) }
 	}
 	
 	private func onBrowse(to viewable: ViewGroupViewable, at index: Int) {
@@ -335,8 +335,7 @@ extension ViewGroup: ViewGroupController {
 			
 			let fullscreenWindow = UIApplication.shared.keyWindow!
 			
-			let oldViewableFrame = viewable.view.frame
-			let currentFrame = fullscreenWindow.convert(viewable.view.frame, from: viewable.view)
+			let currentFrame = fullscreenWindow.convert(viewable.view.bounds, from: viewable.view)
 			
 			let proxyView = UIView(frame: currentFrame)
 			proxyView.alpha = 0
@@ -353,19 +352,23 @@ extension ViewGroup: ViewGroupController {
 											for: viewable,
 											newFrame: fullscreenWindow.safeAreaLayoutGuide.layoutFrame)
 			
-			UIView.animate(withDuration: 0.3, animations: {
+			let animator = UIViewPropertyAnimator(duration: 0.3, curve: .easeInOut) {
 				viewable.view.frame = fullscreenWindow.safeAreaLayoutGuide.layoutFrame
-				animations.forEach { $0() }
-				
-			}) { [weak strongSelf] _ in
+			}
+			
+			animations.forEach { animator.addAnimations($0) }
+			
+			animator.addCompletion { [weak strongSelf] _ in
 				guard let strongSelf = strongSelf else { return }
 				
 				strongSelf.layout(around: .proxy(view: proxyView, at: strongSelf.currentViewableIndex), animated: false)
 				
 				fullscreenWindow.applyLayout(.horizontal(align: .fill, marginEdges: .allSafeArea, .view(viewable.view)))
 				
-				strongSelf.onViewportChanged(to: .fullscreen, for: viewable, oldFrame: oldViewableFrame)
+				strongSelf.onViewportChanged(to: .fullscreen, for: viewable)
 			}
+			
+			animator.startAnimation()
 		}
 		
 		let futures = viewableGroup.traverse { viewable in
@@ -405,18 +408,26 @@ extension ViewGroup: ViewGroupController {
 		
 		let fullscreenWindow = UIApplication.shared.keyWindow!
 		
-		let proxyFrame = fullscreenWindow.convert(proxyView.frame, from: proxyView)
-		let oldViewableFrame = viewable.view.frame
+		let proxyFrame = fullscreenWindow.convert(proxyView.bounds, from: proxyView)
+		let currentFrame = fullscreenWindow.convert(viewable.view.bounds, from: viewable.view)
 		
 		let animations = onViewportWillChange(to: .container,
 											  for: viewable,
 											  newFrame: proxyView.frame)
 		
-		UIView.animate(withDuration: 0.3, animations: {
+		viewable.view.translatesAutoresizingMaskIntoConstraints = true
+		viewable.view.removeFromSuperview()
+		fullscreenWindow.addSubview(viewable.view)
+		viewable.view.didMoveToSuperview()
+		viewable.view.frame = currentFrame
+		
+		let animator = UIViewPropertyAnimator(duration: 0.3, curve: .easeInOut) {
 			viewable.view.frame = proxyFrame
-			animations.forEach { $0() }
-			
-		}) { [weak self] _ in
+		}
+		
+		animations.forEach { animator.addAnimations($0) }
+		
+		animator.addCompletion { [weak self] _ in
 			guard let strongSelf = self else { return }
 			
 			strongSelf.showViewable(at: strongSelf.currentViewableIndex, animated: false)
@@ -424,8 +435,10 @@ extension ViewGroup: ViewGroupController {
 			
 			strongSelf.proxies.removeValue(forKey: viewable.view)
 			
-			strongSelf.onViewportChanged(to: .container, for: viewable, oldFrame: oldViewableFrame)
+			strongSelf.onViewportChanged(to: .container, for: viewable)
 			completion(true)
 		}
+		
+		animator.startAnimation()
 	}
 }

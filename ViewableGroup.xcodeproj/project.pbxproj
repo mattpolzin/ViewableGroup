@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		C947BA1B203B53AA008C11C8 /* ImageViewable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C947BA1A203B53A9008C11C8 /* ImageViewable.swift */; };
+		C947BA1E203FCC3F008C11C8 /* Array+Execute.swift in Sources */ = {isa = PBXBuildFile; fileRef = C947BA1D203FCC3F008C11C8 /* Array+Execute.swift */; };
 		C992E670201E6A8200DFD7B6 /* DemoViewGroupContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C992E66F201E6A8200DFD7B6 /* DemoViewGroupContainer.swift */; };
 		C99FDD442031227C00188080 /* BrightFutures.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C99FDD422031227C00188080 /* BrightFutures.framework */; };
 		C99FDD452031227C00188080 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C99FDD432031227C00188080 /* Result.framework */; };
@@ -91,6 +92,7 @@
 		C93857362026925E00F9695C /* ControlledViewable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlledViewable.swift; sourceTree = "<group>"; };
 		C938573A202794BF00F9695C /* CwlLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CwlLayout.swift; sourceTree = "<group>"; };
 		C947BA1A203B53A9008C11C8 /* ImageViewable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewable.swift; sourceTree = "<group>"; };
+		C947BA1D203FCC3F008C11C8 /* Array+Execute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Execute.swift"; sourceTree = "<group>"; };
 		C992E66F201E6A8200DFD7B6 /* DemoViewGroupContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoViewGroupContainer.swift; sourceTree = "<group>"; };
 		C992E671201E6BAF00DFD7B6 /* ViewGroupContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewGroupContainer.swift; sourceTree = "<group>"; };
 		C992E673201E6C2700DFD7B6 /* ViewGroupViewable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewGroupViewable.swift; sourceTree = "<group>"; };
@@ -168,6 +170,14 @@
 			path = Layout;
 			sourceTree = "<group>";
 		};
+		C947BA1C203FCC2B008C11C8 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				C947BA1D203FCC3F008C11C8 /* Array+Execute.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
 		C992E66E201E6A3D00DFD7B6 /* ViewGroupViewable */ = {
 			isa = PBXGroup;
 			children = (
@@ -194,6 +204,7 @@
 		C99FDD4C2038F78400188080 /* ViewableGroup */ = {
 			isa = PBXGroup;
 			children = (
+				C947BA1C203FCC2B008C11C8 /* Utility */,
 				C9BB3CA01FD4E6EA008B6D37 /* ViewGroupController */,
 				C9BB3CA11FD4E6FF008B6D37 /* ViewGroupContainer */,
 				C992E66E201E6A3D00DFD7B6 /* ViewGroupViewable */,
@@ -496,6 +507,7 @@
 				C99FDD702038F7BF00188080 /* FullscreenViewable.swift in Sources */,
 				C99FDD6A2038F7B700188080 /* ViewGroupContainer.swift in Sources */,
 				C99FDD722038F7C600188080 /* CwlLayout.swift in Sources */,
+				C947BA1E203FCC3F008C11C8 /* Array+Execute.swift in Sources */,
 				C99FDD692038F7B000188080 /* ViewGroup.swift in Sources */,
 				C99FDD76203913C900188080 /* ViewGroupController.swift in Sources */,
 			);

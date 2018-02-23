@@ -18,14 +18,13 @@ public protocol ViewGroupController: class {
 	///		- viewport: The viewable's new viewport.
 	///		- newFrame: The viewable's frame after the viewport change.
 	/// - returns: A function that executes actions that should be animated
-	///		during the viewport change.
-	typealias ViewportWillChangeHandler = (_ viewable: ViewGroupViewable, _ viewport: ViewableViewport, _ newFrame: CGRect) -> () -> Void
+	///		during the viewport change or nil to not add any animations.
+	typealias ViewportWillChangeHandler = (_ viewable: ViewGroupViewable, _ viewport: ViewableViewport, _ newFrame: CGRect) -> (() -> Void)?
 	
 	/// - parameters:
 	///		- viewable: The viewable that changed viewports.
 	///		- viewport: The viewable's new viewport.
-	///		- oldFrame: The viewable's frame before the viewport change.
-	typealias ViewportChangedHandler = (_ viewable: ViewGroupViewable, _ viewport: ViewableViewport, _ oldFrame: CGRect) -> Void
+	typealias ViewportChangedHandler = (_ viewable: ViewGroupViewable, _ viewport: ViewableViewport) -> Void
 	
 	///	- parameters:
 	///		- viewable: The viewable that is now `ViewablePositioning.central`
