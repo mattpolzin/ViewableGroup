@@ -14,6 +14,7 @@ import UIKit
 /// by setting `allowsFullscreen` to false.
 /// Zooming can be disabled by setting `allowsZooming` to false.
 open class ImageViewable: ScrollingViewable {
+	// TODO: this breaks down when the view's frame changes, like for device rotation.
 	
 	public var image: UIImage? {
 		set(value) {
@@ -106,17 +107,22 @@ open class ImageViewable: ScrollingViewable {
 		
 		let viewSize = proxyFrame?.size ?? scrollView.bounds.size
 		
+		let atMin = scrollView.zoomScale == scrollView.minimumZoomScale
+		
 		// set zoom scales
 		let scaleWidth = viewSize.width / strongImage.size.width
 		let scaleHeight = viewSize.height / strongImage.size.height
-		let minScale = min(scaleWidth, scaleHeight)
+		
+		// min scale should be no larger than 1 or else
+		// it is impossible to get the image down to its original size to view
+		// without pixellation or aliasing.
+		let minScale = min(1, min(scaleWidth, scaleHeight))
 		
 		// set max/min
-		// TODO: make logic that the min zoom scale cannot be larger than 1.0?
 		scrollView.minimumZoomScale = minScale
-		scrollView.maximumZoomScale = allowsZooming ? max(minScale, 6.0) : 1.0
+		scrollView.maximumZoomScale = allowsZooming ? 6.0 : 1.0
 		
-		guard !reset else {
+		guard !reset && !atMin else {
 			scrollView.zoomScale = scrollView.minimumZoomScale
 			return
 		}
@@ -127,7 +133,6 @@ open class ImageViewable: ScrollingViewable {
 	}
 	
 	private func centerContent(for proxyFrame: CGRect? = nil) {
-		// TODO: this breaks down when the view's frame changes, like for device rotation.
 		let viewSize = proxyFrame?.size ?? scrollView.bounds.size
 		
 		// center content
