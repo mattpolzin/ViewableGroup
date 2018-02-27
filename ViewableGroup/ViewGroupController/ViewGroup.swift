@@ -53,6 +53,7 @@ public class ViewGroup<ContainerViewType: ViewGroupContainer>: UIViewController,
 	
 	private var leftSwipeRecognizer: UISwipeGestureRecognizer?
 	private var rightSwipeRecognizer: UISwipeGestureRecognizer?
+	private var panRecognizer: UIPanGestureRecognizer?
 	
 	private var currentViewableIndex: Int = 0
 	
@@ -87,6 +88,11 @@ public class ViewGroup<ContainerViewType: ViewGroupContainer>: UIViewController,
 		rightRecognizer.direction = .right
 		rightRecognizer.delegate = self
 		view.addGestureRecognizer(rightRecognizer)
+		
+		let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(userPanned(_:)))
+		panRecognizer = panGestureRecognizer
+		panGestureRecognizer.delegate = self
+		view.addGestureRecognizer(panGestureRecognizer)
 	}
 	
 	public override func viewWillAppear(_ animated: Bool) {
@@ -124,6 +130,9 @@ public class ViewGroup<ContainerViewType: ViewGroupContainer>: UIViewController,
 		completion(false)
 	}
 	
+	var forwardAnimator: UIViewPropertyAnimator?
+	var backAnimator: UIViewPropertyAnimator?
+	
 	/// Show the viewable at the given index. All other viewables will be
 	/// laid out to the right and left of the viewable at the given index.
 	/// - parameters:
@@ -131,7 +140,10 @@ public class ViewGroup<ContainerViewType: ViewGroupContainer>: UIViewController,
 	///		- animated: true to animate the viewables from their current location to the new one.
 	private func showViewable(at viewableIndex: Int, animated: Bool = true, completion: @escaping () -> Void = {}) {
 		guard viewableGroup.count > viewableIndex,
-			viewableIndex >= 0 else { return }
+			viewableIndex >= 0 else {
+				showViewable(at: currentViewableIndex, animated: animated, completion: completion)
+				return
+		}
 		
 		// update viewable focus before laying out views
 		for idx in 0..<viewableGroup.count {
@@ -146,7 +158,29 @@ public class ViewGroup<ContainerViewType: ViewGroupContainer>: UIViewController,
 			onBrowse(to: viewableGroup[idx], at: idx)
 		}
 		
-		layout(around: .viewable(at: viewableIndex), animated: animated, completion: completion)
+		let animationDuration = 0.3
+		let nextViewableIndex = viewableIndex + 1
+		let previousViewableIndex = viewableIndex - 1
+		forwardAnimator?.stopAnimation(true)
+		backAnimator?.stopAnimation(true)
+		layout(around: .viewable(at: viewableIndex), animated: animated) { [weak self] in
+			guard let strongSelf = self else {
+				completion()
+				return
+			}
+			
+			strongSelf.forwardAnimator = UIViewPropertyAnimator(duration: animationDuration, curve: .easeInOut) { [ weak strongSelf ] in
+				guard let strongSelf = strongSelf else { return }
+				
+				strongSelf.layout(around: .viewable(at: nextViewableIndex), animated: false)
+			}
+			strongSelf.backAnimator = UIViewPropertyAnimator(duration: animationDuration, curve: .easeInOut) { [ weak strongSelf ] in
+				guard let strongSelf = strongSelf else { return }
+				
+				strongSelf.layout(around: .viewable(at: previousViewableIndex), animated: false)
+			}
+			completion()
+		}
 		
 		currentViewableIndex = viewableIndex
 	}
@@ -176,8 +210,8 @@ public class ViewGroup<ContainerViewType: ViewGroupContainer>: UIViewController,
 			currentView = view
 		}
 		
-		guard viewableGroup.count > index,
-			index >= 0 else { return }
+//		guard viewableGroup.count > index,
+//			index >= 0 else { return }
 		
 		// lay out 2 viewables to the left and 2 views to the right so that at the
 		// end of animating all viewables one spot to the left or right the next
@@ -266,11 +300,55 @@ public class ViewGroup<ContainerViewType: ViewGroupContainer>: UIViewController,
 		showViewable(at: currentViewableIndex - 1)
 	}
 	
+	@objc func userPanned(_ sender: UIPanGestureRecognizer) {
+		guard browsingEnabled else { return }
+		
+		let xPos = sender.translation(in: view).x
+		let xPercentage = abs(xPos) / (viewable(at: currentViewableIndex).view.bounds.width + viewableSpacing)
+		let velocity = sender.velocity(in: view).x
+		
+		switch sender.state {
+		case .ended:
+//			forwardAnimator?.stopAnimation(true)
+//			backAnimator?.stopAnimation(true)
+//			forwardAnimator?.fractionComplete = 0
+//			backAnimator?.fractionComplete = 0
+			print("velocity: \(velocity)")
+			if xPercentage > 0.5 || abs(velocity) > 1500 {
+				if xPos < 0 || velocity < -1500 {
+					// forward
+					showViewable(at: currentViewableIndex + 1)
+				} else {
+					showViewable(at: currentViewableIndex - 1)
+				}
+			} else {
+				showViewable(at: currentViewableIndex)
+			}
+			
+		case .changed:
+			if xPos < 0 {
+				// forward
+				backAnimator?.fractionComplete = 0
+				forwardAnimator?.fractionComplete = xPercentage
+			} else {
+				// backward
+				forwardAnimator?.fractionComplete = 0
+				backAnimator?.fractionComplete = xPercentage
+			}
+			
+		default:
+			print("translation: \(sender.translation(in: view).x)")
+			print("width: \(viewable(at: currentViewableIndex).view.bounds.width)")
+		}
+	}
+	
 	public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
 		return gestureRecognizer == leftSwipeRecognizer || gestureRecognizer == rightSwipeRecognizer
 	}
 	
 	public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+		guard otherGestureRecognizer != panRecognizer else { return true }
+		
 		return false
 	}
 	
