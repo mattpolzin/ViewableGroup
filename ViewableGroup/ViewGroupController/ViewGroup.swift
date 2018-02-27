@@ -285,20 +285,17 @@ public class ViewGroup<ContainerViewType: ViewGroupContainer>: UIViewController,
 
 extension ViewGroup: ViewGroupController {
 	
-	public func request(viewport: ViewableViewport, for viewable: ViewGroupViewable) {
+	public func request(viewport: ViewableViewport, for viewable: ViewGroupViewable, animated: Bool = true) {
 		// TODO: make these actions synchronous and allow them to be queued up so that
 		//		things don't get wonky if, for example, fullscreen is requested and
 		//		then contained is requested immediately before the fullscreen animations
 		// 		have completed.
 		
-		// TODO: allow animated to be specified for these requests so that code can
-		//		start a particular viewable in fullscreen without needing to animate
-		//		into that state.
 		switch viewport {
 		case .fullscreen:
-			requestFullscreen(for: viewable)
+			requestFullscreen(for: viewable, animated: animated)
 		case .container:
-			requestUnfullscreen(for: viewable)
+			requestUnfullscreen(for: viewable, animated: animated)
 		}
 	}
 	
@@ -318,7 +315,7 @@ extension ViewGroup: ViewGroupController {
 		browseHandlers.append(callback)
 	}
 	
-	private func requestFullscreen(for viewable: ViewGroupViewable) {
+	private func requestFullscreen(for viewable: ViewGroupViewable, animated: Bool = true) {
 		// strategy: Put a proxy view in place of viewable that wants fullscreen,
 		//		turn on frame-based constraints, add viewable as subview of
 		//		 window and animate its frame to the full size of that window.
@@ -352,7 +349,7 @@ extension ViewGroup: ViewGroupController {
 											for: viewable,
 											newFrame: fullscreenWindow.safeAreaLayoutGuide.layoutFrame)
 			
-			let animator = UIViewPropertyAnimator(duration: 0.3, curve: .easeInOut) {
+			let animator = UIViewPropertyAnimator(duration: (animated ? 0.3 : 0.0), curve: .easeInOut) {
 				viewable.view.frame = fullscreenWindow.safeAreaLayoutGuide.layoutFrame
 			}
 			
@@ -373,7 +370,7 @@ extension ViewGroup: ViewGroupController {
 		
 		let futures = viewableGroup.traverse { viewable in
 			Future<Void, ViewGroupError> { complete in
-				requestUnfullscreen(for: viewable, completion: { success in
+				requestUnfullscreen(for: viewable, animated: animated, completion: { success in
 					complete(.success(()))
 				})
 			}
@@ -383,7 +380,7 @@ extension ViewGroup: ViewGroupController {
 			guard let strongSelf = self else { return }
 			
 			// A fullscreen viewable must be "current"
-			strongSelf.showViewable(viewable, animated: true) { found in
+			strongSelf.showViewable(viewable, animated: animated) { found in
 				
 				guard found == true else {
 					assertionFailure("A viewable requesting fullscreen MUST be a part of the viewable group that provided the delegate being asked for fullscreen")
@@ -395,7 +392,7 @@ extension ViewGroup: ViewGroupController {
 		}
 	}
 	
-	private func requestUnfullscreen(for viewable: ViewGroupViewable, completion: @escaping (_ success: Bool) -> Void = { _ in }) {
+	private func requestUnfullscreen(for viewable: ViewGroupViewable, animated: Bool = true, completion: @escaping (_ success: Bool) -> Void = { _ in }) {
 		// strategy: Retrieve the frame of the proxy for the viewable that wants
 		//		to leave fullscreen, animate the viewables frame to equal the proxy
 		//		views frame, lay the viewable out in the group layout,
@@ -421,7 +418,7 @@ extension ViewGroup: ViewGroupController {
 		viewable.view.didMoveToSuperview()
 		viewable.view.frame = currentFrame
 		
-		let animator = UIViewPropertyAnimator(duration: 0.3, curve: .easeInOut) {
+		let animator = UIViewPropertyAnimator(duration: (animated ? 0.3 : 0.0), curve: .easeInOut) {
 			viewable.view.frame = proxyFrame
 		}
 		

@@ -35,7 +35,11 @@ public protocol ViewGroupController: class {
 	/// a viewable cannot be in `ViewablePositioning.background` when it is
 	/// fullscreen, so requesting fullscreen also will result in becoming
 	/// `central`.
-	func request(viewport: ViewableViewport, for viewable: ViewGroupViewable)
+	/// - parameters:
+	///		- viewport: The viewport being requested.
+	///		- viewable: The viewable to gain the requested viewport.
+	///		- animated: True to animate transition to given viewport.
+	func request(viewport: ViewableViewport, for viewable: ViewGroupViewable, animated: Bool)
 	
 	/// Set this to enable or disable browsing of the viewable group by the user.
 	var browsingEnabled: Bool { get set }
