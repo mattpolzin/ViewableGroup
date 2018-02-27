@@ -14,7 +14,6 @@ import UIKit
 /// by setting `allowsFullscreen` to false.
 /// Zooming can be disabled by setting `allowsZooming` to false.
 open class ImageViewable: ScrollingViewable {
-	// TODO: this breaks down when the view's frame changes, like for device rotation.
 	
 	public var image: UIImage? {
 		set(value) {
@@ -87,6 +86,10 @@ open class ImageViewable: ScrollingViewable {
 		scrollView.bounces = false
 		scrollView.decelerationRate = UIScrollViewDecelerationRateFast
 		
+		updateView()
+	}
+	
+	open override func viewDidLayoutSubviews() {
 		updateView()
 	}
 	
