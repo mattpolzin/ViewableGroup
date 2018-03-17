@@ -8,6 +8,11 @@
 
 import UIKit
 
+/// A UIView that is set up to be a view group container. It has
+/// one subview (the `viewableContainer`) that is lays out to
+/// fill itself up to its layout margins.
+/// If all you want is a ViewGroupContainer with margins or possibly
+/// no insets at all, this will work just fine as-is.
 open class BasicViewGroupContainer: UIView, ViewGroupContainer {
 	
 	public let viewableContainer = UIView(frame: .zero)
