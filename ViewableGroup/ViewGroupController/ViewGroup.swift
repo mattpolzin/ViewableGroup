@@ -37,10 +37,6 @@ public class ViewGroup<ContainerViewType: ViewGroupContainer>: UIViewController,
 		
 		var view: UIView! { return externalViewable.view }
 		
-		var viewController: UIViewController? {
-			return externalViewable.viewController
-		}
-		
 		func controlled(by controller: ViewGroupController) {
 			externalViewable.controlled(by: controller)
 		}
@@ -77,7 +73,7 @@ public class ViewGroup<ContainerViewType: ViewGroupContainer>: UIViewController,
 			viewable.controlled(by: self)
 			viewable.view.frame = offscreenRight
 			
-			viewable.addAsChildViewController(group: self)
+			viewable.externalViewable.addAsChildViewController(group: self)
 		}
 	}
 	
