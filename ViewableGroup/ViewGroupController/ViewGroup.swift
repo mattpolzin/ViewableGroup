@@ -32,13 +32,17 @@ public class ViewGroup<ContainerViewType: ViewGroupContainer>: UIViewController,
 	}
 	
 	private struct InternalViewable: ViewGroupViewable {
-		var viewable: ViewGroupViewable
+		var externalViewable: ViewGroupViewable
 		var positioning: ViewablePositioning
 		
-		var view: UIView! { return viewable.view }
+		var view: UIView! { return externalViewable.view }
+		
+		var viewController: UIViewController? {
+			return externalViewable.viewController
+		}
 		
 		func controlled(by controller: ViewGroupController) {
-			viewable.controlled(by: controller)
+			externalViewable.controlled(by: controller)
 		}
 	}
 	
@@ -57,7 +61,7 @@ public class ViewGroup<ContainerViewType: ViewGroupContainer>: UIViewController,
 	private var currentViewableIndex: Int = 0
 	
 	public init(viewables: [ViewGroupViewable]) {
-		self.viewableGroup = viewables.map { .init(viewable: $0, positioning: .background) }
+		self.viewableGroup = viewables.map { .init(externalViewable: $0, positioning: .background) }
 		
 		super.init(nibName: nil, bundle: nil)
 		commonInit()
@@ -72,6 +76,8 @@ public class ViewGroup<ContainerViewType: ViewGroupContainer>: UIViewController,
 		viewableGroup.forEach { viewable in
 			viewable.controlled(by: self)
 			viewable.view.frame = offscreenRight
+			
+			viewable.addAsChildViewController(group: self)
 		}
 	}
 	
@@ -342,6 +348,7 @@ extension ViewGroup: ViewGroupController {
 			viewable.view.translatesAutoresizingMaskIntoConstraints = true
 			fullscreenWindow.addSubview(viewable.view)
 			viewable.view.didMoveToSuperview()
+			viewable.removeFromParentViewController()
 			
 			viewable.view.frame = currentFrame
 			
@@ -429,6 +436,7 @@ extension ViewGroup: ViewGroupController {
 			
 			strongSelf.showViewable(at: strongSelf.currentViewableIndex, animated: false)
 			viewable.view.didMoveToSuperview()
+			viewable.addAsChildViewController(group: strongSelf)
 			
 			strongSelf.proxies.removeValue(forKey: viewable.view)
 			
@@ -437,5 +445,26 @@ extension ViewGroup: ViewGroupController {
 		}
 		
 		animator.startAnimation()
+	}
+}
+
+private extension ViewGroupViewable {
+	
+	var viewController: UIViewController? {
+		return self as? UIViewController
+	}
+	
+	func addAsChildViewController<T>(group: ViewGroup<T>) {
+		guard let controller = viewController else { return }
+		
+		group.addChildViewController(controller)
+		controller.didMove(toParentViewController: group)
+	}
+	
+	func removeFromParentViewController() {
+		guard let controller = viewController else { return }
+		
+		controller.removeFromParentViewController()
+		controller.didMove(toParentViewController: nil)
 	}
 }
